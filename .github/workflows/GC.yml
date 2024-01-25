@@ -30,8 +30,8 @@ jobs:
         name: Build and push Backend image
         uses: docker/build-push-action@v4
         with:
-          context: ./Sources/Backend/.
-          file: ./Sources/Backend/Dockerfile
+          context: ./Sources/Backend/TheLastCandle/.
+          file: ./Sources/Backend/TheLastCandle/Dockerfile
           push: false
           tags: |
             the-last-candle-back:${{github.run_number}}
