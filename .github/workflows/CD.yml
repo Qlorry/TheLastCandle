@@ -6,19 +6,13 @@ on:
 
 jobs:
   front:
-    name: Build and Push docker images
+    name: Build docker images
     runs-on: ubuntu-latest
 
     steps:
       -
         name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -30,8 +24,8 @@ jobs:
           file: ./Sources/Frontend/Dockerfile
           push: false
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/the-last-candle-front:${{github.run_number}}
-            ${{ secrets.DOCKERHUB_USERNAME }}/the-last-candle-front:latest
+            the-last-candle-front:${{github.run_number}}
+            the-last-candle-front:latest
       -
         name: Build and push Backend image
         uses: docker/build-push-action@v4
@@ -40,5 +34,5 @@ jobs:
           file: ./Sources/Backend/Dockerfile
           push: false
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/the-last-candle-back:${{github.run_number}}
-            ${{ secrets.DOCKERHUB_USERNAME }}/the-last-candle-back:latest
+            the-last-candle-back:${{github.run_number}}
+            the-last-candle-back:latest
