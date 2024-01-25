@@ -8,15 +8,13 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["TheLastCandle/TheLastCandle.csproj", "TheLastCandle/"]
-RUN dotnet restore "./TheLastCandle/./TheLastCandle.csproj"
 COPY . .
-WORKDIR "/src/TheLastCandle"
-RUN dotnet build "./TheLastCandle.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet restore "./TheLastCandle.sln"
+RUN dotnet build "./TheLastCandle.sln" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./TheLastCandle.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./TheLastCandle.sln" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
