@@ -65,5 +65,5 @@ npm run lint
 
 ## Login docs 
 https://github.com/auth0-samples/auth0-vue-samples/tree/master
-https://developer.auth0.com/resources/code-samples/spa/vue/basic-authentication
+https://developer.auth0.com/resources/code-samples/spa/vue/basic-authentication  
 https://manage.auth0.com/
