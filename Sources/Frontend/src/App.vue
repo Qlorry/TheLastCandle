@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+import { useAuth0 } from "@auth0/auth0-vue";
+const { isLoading } = useAuth0();
 </script>
 
 <template>
@@ -17,7 +20,12 @@ import HelloWorld from './components/HelloWorld.vue'
     </div>
   </header>
 
-  <RouterView />
+  <!-- Temp thing  -->
+  <div v-if="isLoading" class="page-layout">
+    <h1> Loading Auth logic</h1>
+  </div>
+  <RouterView v-else />
+
 </template>
 
 <style scoped>

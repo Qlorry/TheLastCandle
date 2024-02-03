@@ -1,6 +1,6 @@
-# the-last-candle
+# The Last Candle
 
-This template should help get you started developing with Vue 3 in Vite.
+Frontend for THe Last Candle
 
 ## Recommended IDE Setup
 
@@ -22,10 +22,21 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
+### Install libs
 
 ```sh
 npm install
 ```
+### Create .env.local
+
+1. Create file named ___.env.local___ in project root (thelastcandle/Sources/Frontend/.env.local) 
+1. Add 2 variables:
+    > VITE_AUTH0_DOMAIN=''  
+    > VITE_AUTH0_CLIENT_ID=''
+1. Ask Kostia for values
+
+> [!CAUTION]
+> __NEVER__ commit this file! It is added to .gitignore so it will not appear in your changes
 
 ### Compile and Hot-Reload for Development
 
@@ -50,3 +61,9 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+
+## Login docs 
+https://github.com/auth0-samples/auth0-vue-samples/tree/master
+https://developer.auth0.com/resources/code-samples/spa/vue/basic-authentication
+https://manage.auth0.com/
