@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
+using TheLastCandle.Services;
+using TheLastCandle.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}/";
      options.Audience = builder.Configuration["Auth0:Audience"];
 
-     options.TokenValidationParameters = new TokenValidationParameters{};
+     options.TokenValidationParameters = new TokenValidationParameters { };
  });
 
 // Add services to the container.
@@ -46,6 +47,9 @@ builder.Services.AddSwaggerGen(c =>
     }
   });
 });
+
+// my services
+builder.Services.AddSingleton<ISessionProvider, FsSessionProvider>();
 
 var app = builder.Build();
 
