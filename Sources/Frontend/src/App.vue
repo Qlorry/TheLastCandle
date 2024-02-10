@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 
 import { useAuth0 } from "@auth0/auth0-vue";
-const { isLoading } = useAuth0();
+const autoInfo = useAuth0();
 </script>
 
 <template>
@@ -17,11 +17,13 @@ const { isLoading } = useAuth0();
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+
+      Bearer {{ autoInfo.idTokenClaims.value?.__raw }}
     </div>
   </header>
 
   <!-- Temp thing  -->
-  <div v-if="isLoading" class="page-layout">
+  <div v-if="autoInfo.isLoading" class="page-layout">
     <h1> Loading Auth logic</h1>
   </div>
   <RouterView v-else />
