@@ -1,36 +1,44 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TheLastCandle.Models;
 using TheLastCandle.Services.Interfaces;
 
 namespace TheLastCandle.Controllers
 {
-    //[Authorize]
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class SessionController : ControllerBase
     {
+        private readonly ILogger<SessionController> _logger;
         private readonly ISessionProvider _sessionProvider;
-        public SessionController(ISessionProvider sessionProvider)
+        public SessionController(ISessionProvider sessionProvider, ILogger<SessionController> logger)
         {
+            _logger = logger;
             _sessionProvider = sessionProvider;
         }
 
         // just for test, remove later
-        [HttpGet(Name = "GetAllSessions")]
+        [HttpGet]
         public IEnumerable<Session> GetAllSessions()
         {
             return _sessionProvider.GetAllSessions();
         }
 
-        // just for test, remove later
-        [HttpPost(Name = "AddSession")]
-        public void AddSession()
+        [HttpGet]
+        public Session GetSession(Guid id)
         {
-            _sessionProvider.AddSession(new Session
+            return _sessionProvider.GetSession(id);
+        }
+
+        [HttpPost]
+        public Guid AddSession(string name, string descroption)
+        {
+            return _sessionProvider.AddSession(new Session
             {
-                Id = Guid.NewGuid(),
-                Description = string.Empty,
-                Name = "test",
+                Id = Guid.Empty,
+                Description = name,
+                Name = descroption,
                 State = Session.Status.NotStarted
             });
         }

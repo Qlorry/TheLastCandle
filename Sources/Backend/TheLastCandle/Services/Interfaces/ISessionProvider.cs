@@ -9,6 +9,6 @@ namespace TheLastCandle.Services.Interfaces
         Session GetSessionForPlayer(Guid guid);
         Session GetSessionForPlayer(Player player);
 
-        void AddSession(Session session);
+        Guid AddSession(Session session);
     }
 }

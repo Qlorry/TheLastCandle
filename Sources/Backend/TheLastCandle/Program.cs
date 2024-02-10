@@ -1,13 +1,23 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TheLastCandle.ErrorHandlers;
 using TheLastCandle.Services;
 using TheLastCandle.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+// Handlers
+builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+// Auth
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
- .AddJwtBearer(options =>
+    .AddJwtBearer(options =>
  {
      options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}/";
      options.Audience = builder.Configuration["Auth0:Audience"];
@@ -15,8 +25,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      options.TokenValidationParameters = new TokenValidationParameters { };
  });
 
-// Add services to the container.
+// Add Controllers.
 builder.Services.AddControllers();
+
+// Add swagger
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -48,17 +60,21 @@ builder.Services.AddSwaggerGen(c =>
   });
 });
 
-// my services
+// My services
 builder.Services.AddSingleton<ISessionProvider, FsSessionProvider>();
+builder.Services.AddSingleton<IUserProvider, FsUserProvider>();
 
-var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+var app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler(opt => { });
 
 app.UseHttpsRedirection();
 

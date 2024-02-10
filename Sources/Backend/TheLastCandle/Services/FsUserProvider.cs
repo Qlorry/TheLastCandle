@@ -1,22 +1,23 @@
 ﻿using System.Text.Json;
 using TheLastCandle.Models;
 using TheLastCandle.Services.Interfaces;
+using static TheLastCandle.Services.Interfaces.IUserProvider;
 
 namespace TheLastCandle.Services
 {
-    public class FsSessionProvider : ISessionProvider
+    public class FsUserProvider : IUserProvider
     {
-        private const string _sessionsFile = "storage/session_storage.json";
-        private List<Session> _sessions = new List<Session>();
+        private readonly string _sessionsFile = "storage/user_storage.json";
+        private List<Player> _users = new List<Player>();
 
         private void Update()
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("Updating sessions list");
+                System.Diagnostics.Debug.WriteLine("Updating Player list");
                 using (FileStream fileStream = new FileStream(_sessionsFile, new FileStreamOptions { Mode = FileMode.Open, Access = FileAccess.Read }))
                 {
-                    _sessions = JsonSerializer.Deserialize<List<Session>>(fileStream);
+                    _users = JsonSerializer.Deserialize<List<Player>>(fileStream);
                 }
             }
             catch (JsonException ex)
@@ -37,7 +38,7 @@ namespace TheLastCandle.Services
                 System.Diagnostics.Debug.WriteLine("Saving sessions list");
                 using (FileStream fileStream = new FileStream(_sessionsFile, new FileStreamOptions { Mode = FileMode.OpenOrCreate, Access = FileAccess.Write }))
                 {
-                    var str = JsonSerializer.Serialize<List<Session>>(_sessions).ToString();
+                    var str = JsonSerializer.Serialize(_users).ToString();
                     StreamWriter writer = new StreamWriter(fileStream);
                     writer.Write(str);
                     writer.Close();
@@ -50,41 +51,51 @@ namespace TheLastCandle.Services
             }
         }
 
-        public Session GetSession(Guid guid)
+        public List<Player> GetAllUsers()
         {
             Update();
-            var sess = _sessions.Find((Session obj) => obj.Id == guid);
-            return sess ?? throw new KeyNotFoundException();
+            return _users;
         }
 
-        public Session GetSessionForPlayer(Guid guid)
+        public Player GetUser(Guid guid)
         {
             Update();
-            var sess = _sessions.Find((Session obj) =>
+            var pl = _users.Find(obj => obj.Id == guid);
+            return pl ?? throw new KeyNotFoundException();
+        }
+
+        public IEnumerable<Player> GetUsers(IEnumerable<Guid> userGuids)
+        {
+            Update();
+            List<Player> users = new List<Player>();
+            foreach (var userGuid in userGuids)
             {
-                return obj.Players.Find((Guid p) => p == guid) != Guid.Empty;
-            });
-
-            return sess ?? throw new KeyNotFoundException();
+                var pl = _users.Find(obj => obj.Id == userGuid);
+                users.Add(pl ?? throw new KeyNotFoundException());
+            }
+            return users;
         }
 
-        public Session GetSessionForPlayer(Player player)
+        public Guid AddUser(Player newUser)
         {
-            return GetSessionForPlayer(player.Id);
+            try
+            {
+                var _ = GetUser(newUser.Email);
+                throw new AlreadyExistsException("User already exists!");
+            }
+            catch (KeyNotFoundException) { }
+
+            newUser.Id = Guid.NewGuid();
+            _users.Add(newUser);
+            Write();
+            return newUser.Id;
         }
 
-        public List<Session> GetAllSessions()
+        public Player GetUser(string userEmail)
         {
             Update();
-            return _sessions;
-        }
-
-        public Guid AddSession(Session session)
-        {
-            session.Id = Guid.NewGuid();
-            _sessions.Add(session);
-            Write();
-            return session.Id;
+            var pl = _users.Find(obj => string.Equals(obj.Email, userEmail, StringComparison.InvariantCultureIgnoreCase));
+            return pl ?? throw new KeyNotFoundException();
         }
     }
 }
