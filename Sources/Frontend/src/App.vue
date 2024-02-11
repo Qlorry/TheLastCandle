@@ -16,6 +16,7 @@ const autoInfo = useAuth0();
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/board">Board</RouterLink>
       </nav>
 
       Bearer {{ autoInfo.idTokenClaims.value?.__raw }}
