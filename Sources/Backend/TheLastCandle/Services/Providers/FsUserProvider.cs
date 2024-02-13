@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
 using TheLastCandle.Models;
-using TheLastCandle.Services.Interfaces;
-using static TheLastCandle.Services.Interfaces.IUserProvider;
+using TheLastCandle.Services.Providers.Interfaces;
+using static TheLastCandle.Services.Providers.Interfaces.IUserProvider;
 
-namespace TheLastCandle.Services
+namespace TheLastCandle.Services.Providers
 {
     public class FsUserProvider : IUserProvider
     {

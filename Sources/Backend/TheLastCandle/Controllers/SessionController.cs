@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TheLastCandle.Models;
-using TheLastCandle.Services.Interfaces;
+using TheLastCandle.Services.Providers.Interfaces;
 
 namespace TheLastCandle.Controllers
 {

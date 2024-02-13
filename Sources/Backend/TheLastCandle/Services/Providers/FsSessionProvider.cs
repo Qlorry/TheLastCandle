@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using TheLastCandle.Models;
-using TheLastCandle.Services.Interfaces;
+using TheLastCandle.Services.Providers.Interfaces;
 
-namespace TheLastCandle.Services
+namespace TheLastCandle.Services.Providers
 {
     public class FsSessionProvider : ISessionProvider
     {
@@ -37,7 +37,7 @@ namespace TheLastCandle.Services
                 System.Diagnostics.Debug.WriteLine("Saving sessions list");
                 using (FileStream fileStream = new FileStream(_sessionsFile, new FileStreamOptions { Mode = FileMode.OpenOrCreate, Access = FileAccess.Write }))
                 {
-                    var str = JsonSerializer.Serialize<List<Session>>(_sessions).ToString();
+                    var str = JsonSerializer.Serialize(_sessions).ToString();
                     StreamWriter writer = new StreamWriter(fileStream);
                     writer.Write(str);
                     writer.Close();
@@ -53,16 +53,16 @@ namespace TheLastCandle.Services
         public Session GetSession(Guid guid)
         {
             Update();
-            var sess = _sessions.Find((Session obj) => obj.Id == guid);
+            var sess = _sessions.Find((obj) => obj.Id == guid);
             return sess ?? throw new KeyNotFoundException();
         }
 
         public Session GetSessionForPlayer(Guid guid)
         {
             Update();
-            var sess = _sessions.Find((Session obj) =>
+            var sess = _sessions.Find((obj) =>
             {
-                return obj.Players.Find((Guid p) => p == guid) != Guid.Empty;
+                return obj.Players.Find((p) => p == guid) != Guid.Empty;
             });
 
             return sess ?? throw new KeyNotFoundException();

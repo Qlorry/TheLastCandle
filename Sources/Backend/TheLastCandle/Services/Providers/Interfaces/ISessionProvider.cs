@@ -1,6 +1,6 @@
 ﻿using TheLastCandle.Models;
 
-namespace TheLastCandle.Services.Interfaces
+namespace TheLastCandle.Services.Providers.Interfaces
 {
     public interface ISessionProvider
     {

@@ -16,17 +16,14 @@ const autoInfo = useAuth0();
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/test_hub">About</RouterLink>
       </nav>
 
       Bearer {{ autoInfo.idTokenClaims.value?.__raw }}
     </div>
   </header>
 
-  <!-- Temp thing  -->
-  <div v-if="autoInfo.isLoading" class="page-layout">
-    <h1> Loading Auth logic</h1>
-  </div>
-  <RouterView v-else />
+  <RouterView />
 
 </template>
 
