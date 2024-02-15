@@ -23,7 +23,7 @@ const autoInfo = useAuth0();
     </div>
   </header>
 
-  <!-- Temp thing  -->
+  <RouterView />
   <div v-if="autoInfo.isLoading" class="page-layout">
     <h1> Loading Auth logic</h1>
   </div>
