@@ -7,5 +7,15 @@
         public string Email { get; set; }
         public List<string> Friends { get; set; }
 
+        public Player Copy()
+        {
+            return new Player
+            {
+                Id = this.Id,
+                Name = this.Name,
+                Email = this.Email,
+                Friends = [.. this.Friends]
+            };
+        }
     }
 }

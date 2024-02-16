@@ -10,5 +10,6 @@ namespace TheLastCandle.Services.Providers.Interfaces
         Session GetSessionForPlayer(Player player);
 
         Guid AddSession(Session session);
+        Guid AddOrUpdate(Session session);
     }
 }

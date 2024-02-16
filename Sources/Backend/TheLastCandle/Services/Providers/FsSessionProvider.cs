@@ -54,7 +54,7 @@ namespace TheLastCandle.Services.Providers
         {
             Update();
             var sess = _sessions.Find((obj) => obj.Id == guid);
-            return sess ?? throw new KeyNotFoundException();
+            return (sess ?? throw new KeyNotFoundException()).Copy();
         }
 
         public Session GetSessionForPlayer(Guid guid)
@@ -65,12 +65,12 @@ namespace TheLastCandle.Services.Providers
                 return obj.Players.Find((p) => p == guid) != Guid.Empty;
             });
 
-            return sess ?? throw new KeyNotFoundException();
+            return (sess ?? throw new KeyNotFoundException()).Copy();
         }
 
         public Session GetSessionForPlayer(Player player)
         {
-            return GetSessionForPlayer(player.Id);
+            return (GetSessionForPlayer(player.Id)).Copy();
         }
 
         public List<Session> GetAllSessions()
@@ -82,6 +82,19 @@ namespace TheLastCandle.Services.Providers
         public Guid AddSession(Session session)
         {
             session.Id = Guid.NewGuid();
+            _sessions.Add(session);
+            Write();
+            return session.Id;
+        }
+
+        public Guid AddOrUpdate(Session session)
+        {
+            Update();
+            int had = _sessions.RemoveAll(obj => obj.Id == session.Id);
+            if(had == 0)
+            {
+                session.Id = Guid.NewGuid();
+            }
             _sessions.Add(session);
             Write();
             return session.Id;

@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
 using TheLastCandle.ErrorHandlers;
 using TheLastCandle.Hubs;
+using TheLastCandle.Models;
+using TheLastCandle.Services;
+using TheLastCandle.Services.Presenters;
 using TheLastCandle.Services.Providers;
 using TheLastCandle.Services.Providers.Interfaces;
 
@@ -66,6 +70,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddSingleton<ISessionProvider, FsSessionProvider>();
 builder.Services.AddSingleton<IUserProvider, FsUserProvider>();
 
+builder.Services.AddSingleton<SessionManager, SessionManager>();
+builder.Services.AddTransient<ISessionPresenter, GameBasePresenter>();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();

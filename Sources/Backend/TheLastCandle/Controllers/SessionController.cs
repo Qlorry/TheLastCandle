@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TheLastCandle.Models;
+using TheLastCandle.Services;
+using TheLastCandle.Services.Presenters;
 using TheLastCandle.Services.Providers.Interfaces;
 
 namespace TheLastCandle.Controllers
@@ -12,10 +14,13 @@ namespace TheLastCandle.Controllers
     {
         private readonly ILogger<SessionController> _logger;
         private readonly ISessionProvider _sessionProvider;
-        public SessionController(ISessionProvider sessionProvider, ILogger<SessionController> logger)
+        private readonly SessionManager _sessionManager;
+        public SessionController( ILogger<SessionController> logger,
+            ISessionProvider sessionProvider, SessionManager manager)
         {
             _logger = logger;
             _sessionProvider = sessionProvider;
+            _sessionManager = manager;
         }
 
         // just for test, remove later
@@ -41,6 +46,44 @@ namespace TheLastCandle.Controllers
                 Name = descroption,
                 State = Session.Status.NotStarted
             });
+        }
+
+        [HttpGet]
+        public bool StartSession(Guid sessionId, [FromServices] ISessionPresenter presenter)
+        {
+            var session = _sessionProvider.GetSession(sessionId);
+            if(!_sessionManager.StartSession(sessionId, presenter))
+            {
+                return false;
+            }
+            session.State = Session.Status.InProgress;
+            try
+            {
+                _sessionProvider.AddOrUpdate(session);
+            }
+            catch
+            {
+                _sessionManager.StopSession(sessionId);
+                return false;
+            }
+            return true;
+        }
+
+        [HttpGet]
+        public bool StopSession(Guid sessionId)
+        {
+            // Most important is to actually stop it
+            try
+            {
+                _sessionManager.StopSession(sessionId);
+            }
+            catch { }
+
+            var session = _sessionProvider.GetSession(sessionId);
+            session.State = Session.Status.Stopped;
+            _sessionProvider.AddOrUpdate(session);
+
+            return true;
         }
     }
 }

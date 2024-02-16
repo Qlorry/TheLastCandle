@@ -61,7 +61,7 @@ namespace TheLastCandle.Services.Providers
         {
             Update();
             var pl = _users.Find(obj => obj.Id == guid);
-            return pl ?? throw new KeyNotFoundException();
+            return (pl ?? throw new KeyNotFoundException()).Copy();
         }
 
         public IEnumerable<Player> GetUsers(IEnumerable<Guid> userGuids)
@@ -71,7 +71,7 @@ namespace TheLastCandle.Services.Providers
             foreach (var userGuid in userGuids)
             {
                 var pl = _users.Find(obj => obj.Id == userGuid);
-                users.Add(pl ?? throw new KeyNotFoundException());
+                users.Add((pl ?? throw new KeyNotFoundException()).Copy());
             }
             return users;
         }
@@ -95,7 +95,7 @@ namespace TheLastCandle.Services.Providers
         {
             Update();
             var pl = _users.Find(obj => string.Equals(obj.Email, userEmail, StringComparison.InvariantCultureIgnoreCase));
-            return pl ?? throw new KeyNotFoundException();
+            return (pl ?? throw new KeyNotFoundException()).Copy();
         }
     }
 }
