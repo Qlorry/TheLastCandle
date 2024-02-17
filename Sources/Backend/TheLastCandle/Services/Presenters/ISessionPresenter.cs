@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using TheLastCandle.Models.Events;
+using TheLastCandle.Services.Presenters.Events;
 
 namespace TheLastCandle.Services.Presenters
 {

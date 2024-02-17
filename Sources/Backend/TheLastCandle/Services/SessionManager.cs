@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Channels;
-using TheLastCandle.Models.Events;
 using TheLastCandle.Services.Presenters;
+using TheLastCandle.Services.Presenters.Events;
 using TheLastCandle.SessionRunners;
 
 namespace TheLastCandle.Services

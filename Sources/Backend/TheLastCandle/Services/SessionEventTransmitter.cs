@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using TheLastCandle.Hubs;
-using TheLastCandle.Models.Events;
+using TheLastCandle.Services.Presenters.Events;
 
 namespace TheLastCandle.Services
 {

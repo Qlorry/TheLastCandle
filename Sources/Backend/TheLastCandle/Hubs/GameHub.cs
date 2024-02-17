@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using System.Diagnostics;
-using System.Threading.Channels;
-using TheLastCandle.Models.Events;
 using TheLastCandle.Services;
-using TheLastCandle.Services.Providers.Interfaces;
+using TheLastCandle.Services.Presenters.Events;
 
 namespace TheLastCandle.Hubs
 {
@@ -22,12 +19,7 @@ namespace TheLastCandle.Hubs
             _sessionManager = sessionManager;
         }
 
-        public ChannelReader<IServerEvent> ConnectToSession(Guid sessionId)
-        {
-            return _sessionManager.GetDownstreamReader(sessionId);
-        }
-
-        public async Task DoSomething(Guid sessionId, IClientEvent clientEvent)
+        public async Task ClientMessage(Guid sessionId, IClientEvent clientEvent)
         {
             // Process event: validate, something else?
             ProcessEvent(clientEvent);

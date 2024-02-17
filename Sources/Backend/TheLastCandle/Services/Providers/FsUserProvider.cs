@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using TheLastCandle.Models;
 using TheLastCandle.Services.Providers.Interfaces;
-using static TheLastCandle.Services.Providers.Interfaces.IUserProvider;
 
 namespace TheLastCandle.Services.Providers
 {
@@ -81,7 +80,7 @@ namespace TheLastCandle.Services.Providers
             try
             {
                 var _ = GetUser(newUser.Email);
-                throw new AlreadyExistsException("User already exists!");
+                throw new IUserProvider.AlreadyExistsException("User already exists!");
             }
             catch (KeyNotFoundException) { }
 
