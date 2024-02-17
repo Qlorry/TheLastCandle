@@ -10,7 +10,7 @@ namespace TheLastCandle.Hubs
 {
     public interface IGameClient
     {
-        Task SendMessage(string aaa);
+        void ServerMessage(IServerEvent serverEvent);
     }
 
     [Authorize]

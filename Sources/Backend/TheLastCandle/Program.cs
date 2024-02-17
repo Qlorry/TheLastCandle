@@ -72,6 +72,7 @@ builder.Services.AddSingleton<IUserProvider, FsUserProvider>();
 
 builder.Services.AddSingleton<SessionManager, SessionManager>();
 builder.Services.AddTransient<ISessionPresenter, GameBasePresenter>();
+builder.Services.AddTransient<IServerEventTransmitter, SessionEventTransmitter>();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();

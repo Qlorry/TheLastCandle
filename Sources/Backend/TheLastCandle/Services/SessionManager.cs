@@ -2,7 +2,7 @@
 using System.Threading.Channels;
 using TheLastCandle.Models.Events;
 using TheLastCandle.Services.Presenters;
-using TheLastCandle.Services.SessionRunners;
+using TheLastCandle.SessionRunners;
 
 namespace TheLastCandle.Services
 {
@@ -11,6 +11,7 @@ namespace TheLastCandle.Services
         public SessionRuner runner { get; set; }
         public Channel<IClientEvent> upstream { get; set; } // from client 
         public Channel<IServerEvent> downstream { get; set; } // to client
+        public IServerEventTransmitter transmitter { get; set; }
     }
     public class SessionManager : IDisposable
     {
@@ -32,7 +33,7 @@ namespace TheLastCandle.Services
             return _activeSessions[sessionId].downstream.Reader;
         }
 
-        public bool StartSession(Guid sessionId, ISessionPresenter presenter)
+        public bool StartSession(Guid sessionId, ISessionPresenter presenter, IServerEventTransmitter transmitter)
         {
             if (_activeSessions.ContainsKey(sessionId))
                 return false;
@@ -41,17 +42,24 @@ namespace TheLastCandle.Services
             var downstream = Channel.CreateUnbounded<IServerEvent>();
 
             presenter.SetContext(sessionId);
+            transmitter.SetContext(new TransmitterContext
+            {
+                sessionId = sessionId,
+                reader = downstream.Reader,
+            });
 
-            var comp = new SessionComposition
+            var composition = new SessionComposition
             {
                 runner = new SessionRuner(_logger, sessionId, presenter,
                     upstream.Reader, downstream.Writer),
                 upstream = upstream,
-                downstream = downstream
+                downstream = downstream,
+                transmitter = transmitter
             };
 
-            _activeSessions.Add(sessionId, comp);
-            comp.runner.Run();
+            _activeSessions.Add(sessionId, composition);
+            composition.runner.Run();
+            composition.transmitter.Run();
             return true;
         }
 

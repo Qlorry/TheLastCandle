@@ -2,14 +2,14 @@
 using TheLastCandle.Models.Events;
 using TheLastCandle.Services.Presenters;
 
-namespace TheLastCandle.Services.SessionRunners
+namespace TheLastCandle.SessionRunners
 {
     public class SessionRuner : IDisposable
     {
         private Guid _sessionId;
         private readonly ChannelReader<IClientEvent> _reader;
         private readonly ChannelWriter<IServerEvent> _writer;
-        private System.Threading.Timer _timer;
+        private Timer _timer;
         private bool _stop = false;
         private ILogger _logger;
         private ISessionPresenter _gameLogic;
@@ -29,7 +29,7 @@ namespace TheLastCandle.Services.SessionRunners
         public void Run(int ticksPerSecond = 2)
         {
             var tickTime = 1000 / ticksPerSecond;
-            _timer = new System.Threading.Timer(Tick, null, tickTime, tickTime);
+            _timer = new Timer(Tick, null, tickTime, tickTime);
         }
 
         public void Stop()

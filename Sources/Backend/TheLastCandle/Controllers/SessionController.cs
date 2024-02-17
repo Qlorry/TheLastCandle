@@ -49,10 +49,11 @@ namespace TheLastCandle.Controllers
         }
 
         [HttpGet]
-        public bool StartSession(Guid sessionId, [FromServices] ISessionPresenter presenter)
+        public bool StartSession(Guid sessionId, 
+            [FromServices] ISessionPresenter presenter, [FromServices] IServerEventTransmitter transmitter)
         {
             var session = _sessionProvider.GetSession(sessionId);
-            if(!_sessionManager.StartSession(sessionId, presenter))
+            if(!_sessionManager.StartSession(sessionId, presenter, transmitter))
             {
                 return false;
             }
