@@ -5,16 +5,19 @@
   </div>
 </template>
 
-<script setup lang="ts">
-  import { ref, onMounted } from 'vue';
-  import { GameBoard } from '../rendering/GameBoard';
+<script lang="ts">
+import { ref, onMounted } from 'vue';
+import { GameBoard } from '../rendering/GameBoard';
 
-  const threeJsContainerRef = ref(HTMLElement);
-  const tileCanvasRef = ref(HTMLCanvasElement);
+export default {
+  name: 'BoardPage',
+  mounted() {
+    const threeJsContainerRef = this.$refs.threeJsContainerRef as HTMLElement;
+    const tileCanvasRef = this.$refs.tileCanvasRef as HTMLCanvasElement;
 
-  onMounted(() => {
-    if (threeJsContainerRef.value && tileCanvasRef.value) {
-      new GameBoard(threeJsContainerRef.value, tileCanvasRef.value);
+    if (threeJsContainerRef && tileCanvasRef) {
+      new GameBoard(threeJsContainerRef, tileCanvasRef);
     }
-  });
+  },
+};
 </script>
