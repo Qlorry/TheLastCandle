@@ -1,6 +1,6 @@
 ﻿using TheLastCandle.Models;
 
-namespace TheLastCandle.Services.Interfaces
+namespace TheLastCandle.Services.Providers.Interfaces
 {
     public interface ISessionProvider
     {
@@ -10,5 +10,6 @@ namespace TheLastCandle.Services.Interfaces
         Session GetSessionForPlayer(Player player);
 
         Guid AddSession(Session session);
+        Guid AddOrUpdate(Session session);
     }
 }

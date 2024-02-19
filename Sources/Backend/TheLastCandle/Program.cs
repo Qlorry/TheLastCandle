@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TheLastCandle.ErrorHandlers;
+using TheLastCandle.Hubs;
 using TheLastCandle.Services;
-using TheLastCandle.Services.Interfaces;
+using TheLastCandle.Services.Presenters;
+using TheLastCandle.Services.Providers;
+using TheLastCandle.Services.Providers.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Add Controllers.
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 // Add swagger
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -63,7 +67,11 @@ builder.Services.AddSwaggerGen(c =>
 // My services
 builder.Services.AddSingleton<ISessionProvider, FsSessionProvider>();
 builder.Services.AddSingleton<IUserProvider, FsUserProvider>();
+builder.Services.AddSingleton<IBoardProvider, FsBoardProvider>();
 
+builder.Services.AddSingleton<SessionManager, SessionManager>();
+builder.Services.AddTransient<ISessionPresenter, GameBasePresenter>();
+builder.Services.AddTransient<IServerEventTransmitter, SessionEventTransmitter>();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
@@ -82,5 +90,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<GameHub>("api/hubs/game");
 
 app.Run();

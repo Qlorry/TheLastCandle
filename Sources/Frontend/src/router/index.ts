@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import CallbackPage from "../views/CallbackPage.vue";
 
 import { authGuard } from "@auth0/auth0-vue";
+import TestHubVue from '@/components/TestHub.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,11 @@ const router = createRouter({
       path: "/callback",
       name: "callback",
       component: CallbackPage,
+    },
+    {
+      path: "/test_hub",
+      name: "test_hub",
+      component: TestHubVue,
     },
   ]
 })
