@@ -1,9 +1,6 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
   <main>
-    <TheWelcome />
+    <RouterLink to="/board">Board</RouterLink>
+    <RouterLink to="/test_hub">Hub</RouterLink>
   </main>
 </template>
