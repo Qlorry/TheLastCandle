@@ -1,88 +1,44 @@
 import * as THREE from 'three';
+import { Game } from './game/Game'
+import { RenderSystem } from './systems/RenderSystem';
+import { GridRenderingSystem } from './systems/GridRenderingSystem';
+import type { System } from './systems/System';
+import type { Entity } from './entities/Entity';
+import { ExampleEntity } from './entities/ExampleEntity';
+import { ExampleSystem } from './systems/ExampleSystem';
+import { GridEntity } from './entities/GridEntity';
+import { WORLD_WIDTH } from './constants';
 
 export class GameBoard {
-    private scene: THREE.Scene;
-    private camera: THREE.PerspectiveCamera;
-    private renderer: THREE.WebGLRenderer;
-    private boardSize: number = 6;
-    private tileSize: number = 1;
-    private boardOffset: number = -(this.tileSize * this.boardSize) / 2 + this.tileSize / 2; // To center the board
-    private canvas: HTMLCanvasElement;
+  private canvas: HTMLCanvasElement;
+  private systems: Array<System>;
+  private entities: Array<Entity>;
 
-    constructor(container: HTMLElement, canvas: HTMLCanvasElement) {
-      this.canvas = canvas;
+  constructor(canvas: HTMLCanvasElement) {
+    this.systems = [ // Add more systems here.
+      new GridRenderingSystem(),
+    ];
 
-      this.scene = new THREE.Scene();
-      this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      this.renderer = new THREE.WebGLRenderer();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-      container.appendChild(this.renderer.domElement);
+    this.entities = [ // Add more entities here.
+      new ExampleEntity(),
+      // TODO: move to consts (6/12 is screen proportion for this element, 10 tiles width)
+      new GridEntity(6 * WORLD_WIDTH / 12, 6)
+    ];
 
-      this.initializeBoard();
-      this.setupCamera();
-      this.animate();
+    this.canvas = canvas;
+    const renderSystem = new RenderSystem(canvas);
+    const game = new Game(renderSystem.renderer, undefined);
+
+    for (const system of this.systems) {
+      game.addSystem(system);
     }
 
-    private initializeBoard(): void {
-
-      const tileTexture = this.createTileTexture(); // Call this outside your loop to reuse the texture
-
-      for (let x = 0; x < this.boardSize; x++) {
-        for (let y = 0; y < this.boardSize; y++) {
-          const geometry = new THREE.PlaneGeometry(this.tileSize, this.tileSize);
-          const material = new THREE.MeshBasicMaterial({
-            map: tileTexture,
-          });
-          const tile = new THREE.Mesh(geometry, material);
-          tile.position.set(x + this.boardOffset, y + this.boardOffset, 0);
-          this.scene.add(tile);
-        }
-      }
-
+    for (const entity of this.entities) {
+      game.addEntity(entity)
     }
 
-    private setupCamera(): void {
-      const centerOffset = this.boardSize / 2 - 0.5;
-      this.camera.position.x = centerOffset + this.boardOffset;
-      this.camera.position.y = centerOffset + this.boardOffset;
-      this.camera.position.z = 5;
-      this.camera.lookAt(centerOffset + this.boardOffset, centerOffset + this.boardOffset, 0);
-    }
+    game.addSystem(renderSystem);
 
-    private animate(): void {
-      requestAnimationFrame(() => this.animate());
-      this.renderer.render(this.scene, this.camera);
-    }
-
-    private createTileTexture(padding: number = 2): THREE.Texture {
-      // Create a canvas
-      const canvas = this.canvas;
-      const size = 256; // Size of the texture
-      const innerSize = size - padding * 2;
-      const context = canvas.getContext('2d');
-      if (!context) throw new Error("Failed to get canvas context");
-
-      // Fill background
-      context.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas for redraw
-      context.fillStyle = '#020103';
-      context.fillRect(0, 0, size, size);
-
-      // Draw blurred white stroke
-      const strokeSize = 10;
-      const blurSize = 15;
-      context.strokeStyle = '#d9d5d4';
-      context.lineWidth = strokeSize;
-      context.shadowColor = '#d9d5d4';
-      context.shadowBlur = blurSize;
-      // Adjust the rectangle drawing to include padding
-      context.strokeRect(padding + strokeSize / 2, padding + strokeSize / 2, innerSize - strokeSize, innerSize - strokeSize);
-
-
-      // Use the canvas as a texture
-      const texture = new THREE.Texture(canvas);
-      texture.needsUpdate = true; // Update the texture
-
-      return texture;
-    }
+    game.start();
   }
-  
+}
