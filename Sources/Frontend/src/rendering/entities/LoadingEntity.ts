@@ -1,8 +1,8 @@
-import { BoxGeometry, Mesh, MeshBasicMaterial} from 'three';
+import { IcosahedronGeometry, Mesh, MeshBasicMaterial} from 'three';
 import { Entity } from './Entity';
-import { ExampleComponent } from '../components/ExampleComponent'
+import { LoadingComponent } from '../components/LoadingComponent'
 
-export class ExampleEntity extends Entity {
+export class LoadingEntity extends Entity {
     public constructor() {
         super();
 
@@ -12,16 +12,16 @@ export class ExampleEntity extends Entity {
         const height = 10;
         const depth = 10;
 
-        const geometry = new BoxGeometry(width, height, depth);
-        const material = new MeshBasicMaterial({color: 0xff00ff});
+        const geometry = new IcosahedronGeometry(10, 0);
+        const material = new MeshBasicMaterial({color: 0xff00ff, wireframe: true});
 
         const mesh = new Mesh(geometry, material); // Mesh extends object3D, which is needed if it's gonna be added to the scene.
 
-        mesh.position.set(10, 10, 0);
+        mesh.position.set(15, 15, 0);
 
         this.addComponents( // Add components to adjust which systems applies to this entity.
             mesh,
-            new ExampleComponent(0.01)
+            new LoadingComponent(0.01)
         );
     }
 }

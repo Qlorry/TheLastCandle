@@ -21,13 +21,10 @@ export class GridRenderingSystem extends System {
         for (const entity of this.filteredEntities) {
             const object = entity.getComponent(THREE.Group);
             const grid = entity.getComponent(GridComponent);
-
-            object.add(grid.plane)
  
             let xStart = (WORLD_WIDTH - grid.width) / 2;
             let yStart = (WORLD_HEIGHT - grid.height) / 2;
             object.position.set(xStart, yStart, 0);
-
         }
     }
 }

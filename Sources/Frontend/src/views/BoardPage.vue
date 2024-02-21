@@ -10,8 +10,6 @@ let game: GameBoard | null = null;
 
 export default {
   name: 'BoardPage',
-  data() {
-  },
   mounted() {
     const tileCanvasRef = this.$refs.tileCanvasRef as HTMLCanvasElement;
     if (tileCanvasRef) {

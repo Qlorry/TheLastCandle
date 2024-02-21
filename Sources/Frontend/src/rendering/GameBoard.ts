@@ -4,8 +4,8 @@ import { RenderSystem } from './systems/RenderSystem';
 import { GridRenderingSystem } from './systems/GridRenderingSystem';
 import type { System } from './systems/System';
 import type { Entity } from './entities/Entity';
-import { ExampleEntity } from './entities/ExampleEntity';
-import { ExampleSystem } from './systems/ExampleSystem';
+import { LoadingEntity } from './entities/LoadingEntity';
+import { LoadingSystem } from './systems/LoadingSystem';
 import { GridEntity } from './entities/GridEntity';
 import { WORLD_WIDTH } from './constants';
 
@@ -17,10 +17,11 @@ export class GameBoard {
   constructor(canvas: HTMLCanvasElement) {
     this.systems = [ // Add more systems here.
       new GridRenderingSystem(),
+      new LoadingSystem()
     ];
 
     this.entities = [ // Add more entities here.
-      new ExampleEntity(),
+      new LoadingEntity(),
       // TODO: move to consts (6/12 is screen proportion for this element, 10 tiles width)
       new GridEntity(6 * WORLD_WIDTH / 12, 6)
     ];
