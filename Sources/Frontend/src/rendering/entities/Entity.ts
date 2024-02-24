@@ -13,6 +13,16 @@ export class Entity {
         throw 'No component available, use Entity#hasComponent to check existance first.';
     }
 
+    public getComponentOrNull<T>(type: Constructor<T>): T | null {
+        for (const component of this.components) {
+            if (component instanceof type) {
+                return component as unknown as T;
+            }
+        }
+
+        return null;
+    }
+
     public addComponent(component: object): void {
         this.components.push(component);
     }

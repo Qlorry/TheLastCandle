@@ -3,36 +3,41 @@ import { Entity } from './Entity';
 import { GridComponent } from '../components/GridComponent'
 
 export class GridEntity extends Entity {
+    private grid: GridComponent;
+
     public constructor(size: number, rows: number) {
         super();
         const group = new THREE.Group();
-        const grid = new GridComponent(rows, rows, size, size)
+        this.grid = new GridComponent(rows, rows, size, size)
 
-        let backMaterial=new THREE.MeshBasicMaterial({ color: 0xfafafa, side: THREE.DoubleSide });
-        let frontMaterial= new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
+        let backMaterial = new THREE.MeshBasicMaterial({ color: 0xfafafa, side: THREE.DoubleSide });
+        let frontMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
 
-        const main = new THREE.PlaneGeometry(grid.width, grid.height);
+        const main = new THREE.PlaneGeometry(this.grid.width, this.grid.height);
         let plane = new THREE.Mesh(main, backMaterial);
-        plane.position.x = grid.width / 2;
-        plane.position.y = grid.height / 2;
+        plane.position.x = this.grid.width / 2;
+        plane.position.y = this.grid.height / 2;
 
-        const tileGeometry = this.RoundedRectangle(grid.blockSize, grid.blockSize, 2, 10);
-        for (let row = 0; row < grid.rows; row++) {
-            for (let col = 0; col < grid.cols; col++) {
+        const tileGeometry = this.RoundedRectangle(this.grid.blockSize, this.grid.blockSize, 2, 10);
+        for (let row = 0; row < this.grid.rows; row++) {
+            for (let col = 0; col < this.grid.cols; col++) {
                 const tile = new THREE.Mesh(tileGeometry, frontMaterial);
-                tile.position.x = row * grid.blockSize + grid.lineWidth * (row + 1) - grid.width / 2 + grid.blockSize / 2;
-                tile.position.y = col * grid.blockSize + grid.lineWidth * (col + 1) - grid.height / 2 + grid.blockSize / 2;
-                plane.add(tile);
+                const pos = this.getPositionForTile(row, col);
+                tile.position.x = pos.x;
+                tile.position.y = pos.y
+                group.add(tile);
             }
         }
+
         group.add(plane);
+
         this.addComponents( // Add components to adjust which systems applies to this entity.
             group,
-            grid
+            this.grid
         );
     }
 
-    
+
     // indexed BufferGeometry
 
     RoundedRectangle(w: number, h: number, r: number, s: number) { // width, height, radius corner, smoothness
@@ -115,4 +120,12 @@ export class GridEntity extends Entity {
 
     }
 
+
+    public getPositionForTile(row: number, col: number) {
+        return new THREE.Vector3(
+            col * this.grid.blockSize + this.grid.lineWidth * (col + 1) + this.grid.blockSize / 2,
+            row * this.grid.blockSize + this.grid.lineWidth * (row + 1) + this.grid.blockSize / 2,
+            0
+        )
+    }
 }
