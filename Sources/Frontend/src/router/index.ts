@@ -32,7 +32,7 @@ const router = createRouter({
       path: "/board",
       name: "board",
       component: BoardPage,
-      beforeEnter: authGuard,
+      //beforeEnter: authGuard,
     },
     {
       path: "/test_hub",

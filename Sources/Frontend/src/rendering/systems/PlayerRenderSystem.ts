@@ -4,9 +4,10 @@ import { PlayerControllerComponent } from "../components/PlayerControllerCompone
 import { PlayerSpriteComponent } from "../components/PlayerSpriteComponent";
 import type { Entity } from "../entities/Entity";
 import type { GridEntity } from "../entities/GridEntity";
+import { PlayerMove } from "../event/actions/PlayerMove";
 import type { Game } from "../game/Game";
+import { GamePresenter } from "../services/GamePresenter";
 import { System } from "./System";
-
 
 // TODO: move grid positioning logic elsewhere
 export class PlayerRenderingSystem extends System {
@@ -36,22 +37,34 @@ export class PlayerRenderingSystem extends System {
 
             if(actions.keys.left)
             {
-                player.col--;
+                GamePresenter.get().doMove(new PlayerMove(
+                    player,
+                    [player.row, player.col-1]
+                ))
                 actions.keys.left = false;
             }
             else if(actions.keys.right)
             {
-                player.col++;
+                GamePresenter.get().doMove(new PlayerMove(
+                    player,
+                    [player.row, player.col+1]
+                ))
                 actions.keys.right = false;
             }
             else if(actions.keys.forward)
             {
-                player.row++;
+                GamePresenter.get().doMove(new PlayerMove(
+                    player,
+                    [player.row+1, player.col]
+                ))
                 actions.keys.forward = false;
             }
             else if(actions.keys.backward)
             {
-                player.row--;
+                GamePresenter.get().doMove(new PlayerMove(
+                    player,
+                    [player.row-1, player.col]
+                ))
                 actions.keys.backward = false;
             }
 

@@ -12,6 +12,7 @@ import { PlayerEntity } from './entities/PLayerEntity';
 import { GridPositionComponent } from './components/GridPosiotionComponent';
 import { PlayerRenderingSystem } from './systems/PlayerRenderSystem';
 import { GridComponent } from './components/GridComponent';
+import { GamePresenter } from './services/GamePresenter';
 
 export class GameBoard {
   private canvas: HTMLCanvasElement;
@@ -52,6 +53,7 @@ export class GameBoard {
 
     game.addEntity(new PlayerEntity(game.camera, mainGrid.getComponent(GridComponent)));
 
+    GamePresenter.get().setup();
     game.start();
   }
 }
