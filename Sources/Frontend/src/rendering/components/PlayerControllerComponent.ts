@@ -5,9 +5,8 @@ interface Controls {
     backward: boolean,
     left: boolean,
     right: boolean,
-    space: boolean,
-    shift: boolean,
-    backspace: boolean,
+    rotateLeft: boolean,
+    rotateRight: boolean,
 }
 
 class PlayerControllerComponent {
@@ -22,9 +21,6 @@ class PlayerControllerComponent {
             backward: false,
             left: false,
             right: false,
-            space: false,
-            shift: false,
-            backspace: false,
         } as Controls;
 
         this._Init();
@@ -76,7 +72,7 @@ class PlayerControllerComponent {
             return;
         }
         switch (event.key) {
-            case "w": 
+            case "w":
             case "ArrowUp":
                 this.keys.forward = true;
                 break;
@@ -84,7 +80,7 @@ class PlayerControllerComponent {
             case "ArrowLeft":
                 this.keys.left = true;
                 break;
-            case "s": 
+            case "s":
             case "ArrowDown":
                 this.keys.backward = true;
                 break;
@@ -92,12 +88,15 @@ class PlayerControllerComponent {
             case "ArrowRight":
                 this.keys.right = true;
                 break;
-            case " ": // SPACE
-                this.keys.space = true;
+            case "q":
+                this.keys.rotateLeft = true;
+                break;
+            case "e":
+                this.keys.rotateRight = true;
                 break;
         }
-        if (event.shiftKey) // SHIFT
-            this.keys.shift = true;
+        // if (event.shiftKey) // SHIFT
+        // this.keys.shift = true;
     }
 
     _onKeyUp(event: KeyboardEvent) {
@@ -105,27 +104,30 @@ class PlayerControllerComponent {
             return;
         }
         switch (event.key) {
-            case "w": 
+            case "w":
             case "ArrowUp":
                 this.keys.forward = false;
                 break;
-            case "a": 
+            case "a":
             case "ArrowLeft":
                 this.keys.left = false;
                 break;
-            case "s": 
+            case "s":
             case "ArrowDown":
                 this.keys.backward = false;
                 break;
-            case "d": 
+            case "d":
             case "ArrowRight":
                 this.keys.right = false;
                 break;
-            case " ": // SPACE
-                this.keys.space = false;
+            case "q":
+                this.keys.rotateLeft = true;
+                break;
+            case "e":
+                this.keys.rotateRight = true;
                 break;
         }
-        this.keys.shift = event.shiftKey;
+        // this.keys.shift = event.shiftKey;
     }
 }
 

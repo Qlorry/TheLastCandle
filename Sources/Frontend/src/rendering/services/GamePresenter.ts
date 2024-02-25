@@ -1,20 +1,30 @@
 import { BoardState } from "@/models/BoardState";
 import type { IAction } from "../event/actions/IAction";
 import type { Game } from "../game/Game";
+import type { EventBus } from "../event/EventBus";
+import { PlayerEntity } from "../entities/PlayerEntity";
+import { GridEntity } from "../entities/GridEntity";
+import { WORLD_WIDTH } from "../constants";
+import { GridComponent } from "../components/GridComponent";
 
-export class GamePresenter {
-    private state = new BoardState();
-    private constructor() {
+class GamePresenter {
+    private state!: BoardState;
+    private eventBus!: EventBus;
 
-    }
+    setup(game: Game) {
+        this.eventBus = game.events;
 
-    static get() {
-        var me = new GamePresenter();
-        return me;
-    }
+        const mainGrid = new GridEntity(6 * WORLD_WIDTH / 12, 6);
+        game.addEntity(mainGrid);
 
-    setup() {
+        this.state = new BoardState(mainGrid);
 
+        // init players
+        const p1 = new PlayerEntity(
+            game.camera, mainGrid.getComponent(GridComponent)
+        )
+        this.state.players.set("1", p1);
+        game.addEntity(p1);
     }
 
     validateMove(action: IAction): boolean {
@@ -35,4 +45,9 @@ export class GamePresenter {
         action.do(this.state);
         return true;
     }
+}
+
+var presenterSingleton = new GamePresenter();
+export {
+    presenterSingleton as GamePresenter
 }

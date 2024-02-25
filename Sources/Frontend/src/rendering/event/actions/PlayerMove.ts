@@ -1,22 +1,23 @@
 import { BoardState, Tile } from "@/models/BoardState";
-import type { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
+import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import type { IAction } from "./IAction";
 
-export class PlayerMove implements IAction {
-    constructor(public from: GridPositionComponent, public to: [number, number]) {
+class PlayerMove implements IAction {
+    constructor(public player: string, public to: [number, number]) { }
 
+    getFrom(state: BoardState) {
+        return state.players.get(this.player)?.getComponent(GridPositionComponent);
     }
 
     validate(state: BoardState): boolean {
-        if (this.from.row == this.to[0] && this.from.col == this.to[1])
+        const from = this.getFrom(state);
+        if (!from)
+            return false;
+        if (from.row == this.to[0] && from.col == this.to[1])
             return false;
         if (state.height <= this.to[0] || this.to[0] < 0)
             return false;
         if (state.width <= this.to[1] || this.to[1] < 0)
-            return false;
-        if (Math.abs(this.from.row - this.to[0]) > 1)
-            return false;
-        if (Math.abs(this.from.col - this.to[1]) > 1)
             return false;
 
         if (state.map[this.to[0]][this.to[1]] != Tile.None)
@@ -26,10 +27,29 @@ export class PlayerMove implements IAction {
     }
 
     do(state: BoardState): boolean {
-        this.from.col = this.to[1];
-        this.from.row = this.to[0];
+        const from = this.getFrom(state);
+        if (!from)
+            return false;
+
+        from.col = this.to[1];
+        from.row = this.to[0];
 
         return true;
     }
 
+}
+
+class ThisPlayerMove extends PlayerMove {
+    constructor(player: string, public from: GridPositionComponent, to: [number, number]) {
+        super(player, to);
+    }
+
+    override getFrom(state: BoardState) {
+        return this.from;
+    }
+}
+
+export {
+    PlayerMove,
+    ThisPlayerMove
 }
