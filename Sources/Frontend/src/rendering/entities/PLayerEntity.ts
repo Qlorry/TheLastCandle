@@ -14,8 +14,6 @@ export class PlayerEntity extends Entity {
         const icon = new PlayerSpriteComponent();
         const group = new THREE.Group();
         group.add(icon.sprite);
-        group.position.x = 30;
-        group.position.y = 30;
 
         this.addComponents(
             new GridPositionComponent(0,0, grid),

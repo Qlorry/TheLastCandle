@@ -1,4 +1,3 @@
-import * as THREE from 'three';
 import { Game } from './game/Game'
 import { RenderSystem } from './systems/RenderSystem';
 import { GridRenderingSystem } from './systems/GridRenderingSystem';
@@ -13,6 +12,7 @@ import { GridPositionComponent } from './components/GridPosiotionComponent';
 import { PlayerRenderingSystem } from './systems/PlayerRenderSystem';
 import { GridComponent } from './components/GridComponent';
 import { GamePresenter } from './services/GamePresenter';
+import { TileRenderingSystem } from './systems/TileRenderSystem';
 
 export class GameBoard {
   private canvas: HTMLCanvasElement;
@@ -22,6 +22,7 @@ export class GameBoard {
   constructor(canvas: HTMLCanvasElement) {    
     this.systems = [ // Add more systems here.
       new GridRenderingSystem(),
+      new TileRenderingSystem(),
       new PlayerRenderingSystem(),
       new LoadingSystem()
     ];

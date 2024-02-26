@@ -1,6 +1,7 @@
 import { PlayerComponent } from "@/rendering/components/PlayerComponent";
 import type { GridEntity } from "@/rendering/entities/GridEntity";
 import type { PlayerEntity } from "@/rendering/entities/PlayerEntity";
+import type { PassageEntity } from "../entities/PassageEntity";
 
 enum Tile {
     None,
@@ -8,7 +9,7 @@ enum Tile {
 }
 
 class BoardState {
-    public map: Array<Array<Tile>>;
+    public map: Array<Array<PassageEntity | undefined>>;
     public players = new Map<string, PlayerEntity>();
     public readonly width = 6;  
     public readonly height = 6;  
@@ -18,7 +19,11 @@ class BoardState {
         //TODO change to constants
         this.map = []
         for (let i = 0; i < 6; i++) {
-            this.map.push([Tile.None, Tile.None, Tile.None, Tile.None, Tile.None, Tile.None]);
+            this.map.push([]);
+            for(let j = 0; j < 6; j++)
+            {
+                this.map[i].push(undefined);
+            }
         }
     }
 }

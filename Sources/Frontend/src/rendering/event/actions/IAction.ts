@@ -1,4 +1,4 @@
-import type { BoardState } from "@/models/BoardState";
+import type { BoardState } from "@/rendering/util/BoardState";
 
 export interface IAction{
     validate(state: BoardState): boolean;
