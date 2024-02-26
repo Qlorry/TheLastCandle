@@ -1,6 +1,6 @@
 import type { GridEntity } from "@/rendering/entities/GridEntity";
 import type { PassageEntity } from "@/rendering/entities/PassageEntity";
-import type { BasePlayerEntity } from "../entities/BaseBasePlayerEntity";
+import type { PlayerEntity } from "../entities/PlayerEntity";
 
 enum Tile {
     None,
@@ -9,7 +9,7 @@ enum Tile {
 
 class BoardState {
     public map: Array<Array<PassageEntity | undefined>>;
-    public players = new Map<string, BasePlayerEntity>();
+    public players = new Map<string, PlayerEntity>();
     public readonly width = 6;  
     public readonly height = 6;  
     constructor(
