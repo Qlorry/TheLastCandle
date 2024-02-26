@@ -1,5 +1,5 @@
 import { Direction } from "../util/Direction";
-import {PassageType} from '@/models/PassageType.ts'
+import {PassageType} from '@/models/PassageType'
 
 export class PassageComponent {
     public rotation = 0;

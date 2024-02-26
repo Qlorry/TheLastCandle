@@ -2,7 +2,6 @@ import { BoardState } from "@/rendering/util/BoardState";
 import type { IAction } from "../event/actions/IAction";
 import type { Game } from "../game/Game";
 import type { EventBus } from "../event/EventBus";
-import { PlayerEntity } from "../entities/PlayerEntity";
 import { PassageEntity } from "../entities/PassageEntity";
 import { GridEntity } from "../entities/GridEntity";
 import { WORLD_WIDTH } from "../constants";
@@ -10,12 +9,13 @@ import { GridComponent } from "../components/GridComponent";
 import { PassageComponent } from "../components/PassageComponent";
 import { GridPositionComponent } from "../components/GridPosiotionComponent";
 import { PassageType } from "@/models/PassageType";
+import { PlayerEntity } from "../entities/PlayerEntity";
 
-class GamePresenter {
-    private state!: BoardState;
-    private eventBus!: EventBus;
+export class GamePresenter {
+    private static state: BoardState;
+    private static eventBus: EventBus;
 
-    setup(game: Game) {
+    static setup(game: Game) {
         this.eventBus = game.events;
 
         const mainGrid = new GridEntity(6 * WORLD_WIDTH / 12, 6);
@@ -45,26 +45,21 @@ class GamePresenter {
         this.state.map[0][1] = pass3;
     }
 
-    validateMove(action: IAction): boolean {
+    static validateMove(action: IAction): boolean {
         return action.validate(this.state);
     }
 
-    doMove(action: IAction) {
+    static doMove(action: IAction) {
         if (!this.validateMove(action)) {
             return false;
         }
 
         // send to backend
-        if (false) {
-            return false;
-        }
+        // if (false) {
+        //     return false;
+        // }
 
         action.do(this.state);
         return true;
     }
-}
-
-var presenterSingleton = new GamePresenter();
-export {
-    presenterSingleton as GamePresenter
 }

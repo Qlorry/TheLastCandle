@@ -5,7 +5,6 @@ import {
     VSMShadowMap,
 } from 'three';
 import { Entity } from '../entities/Entity';    
-import { EntityRemoved } from '../event/EntityRemoved';
 import { Game } from '../game/Game';
 import { System } from './System';
 

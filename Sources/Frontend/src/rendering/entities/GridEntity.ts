@@ -10,11 +10,11 @@ export class GridEntity extends Entity {
         const group = new THREE.Group();
         this.grid = new GridComponent(rows, rows, size, size)
 
-        let backMaterial = new THREE.MeshBasicMaterial({ color: 0xfafafa, side: THREE.DoubleSide });
-        let frontMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
+        const backMaterial = new THREE.MeshBasicMaterial({ color: 0xfafafa, side: THREE.DoubleSide });
+        const frontMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
 
         const main = new THREE.PlaneGeometry(this.grid.width, this.grid.height);
-        let plane = new THREE.Mesh(main, backMaterial);
+        const plane = new THREE.Mesh(main, backMaterial);
         plane.position.x = this.grid.width / 2;
         plane.position.y = this.grid.height / 2;
 
@@ -45,26 +45,24 @@ export class GridEntity extends Entity {
         // helper const's
         const wi = w / 2 - r;		// inner width
         const hi = h / 2 - r;		// inner height
-        const w2 = w / 2;			// half width
-        const h2 = h / 2;			// half height
         const ul = r / w;			// u left
         const ur = (w - r) / w;	// u right
         const vl = r / h;			// v low
         const vh = (h - r) / h;	// v high	
 
-        let positions = [
+        const positions = [
 
             wi, hi, 0, -wi, hi, 0, -wi, -hi, 0, wi, -hi, 0
 
         ];
 
-        let uvs = [
+        const uvs = [
 
             ur, vh, ul, vh, ul, vl, ur, vl
 
         ];
 
-        let n = [
+        const n = [
 
             3 * (s + 1) + 3, 3 * (s + 1) + 4, s + 4, s + 5,
             2 * (s + 1) + 4, 2, 1, 2 * (s + 1) + 3,
@@ -72,7 +70,7 @@ export class GridEntity extends Entity {
 
         ];
 
-        let indices = [
+        const indices = [
 
             n[0], n[1], n[2], n[0], n[2], n[3],
             n[4], n[5], n[6], n[4], n[6], n[7],

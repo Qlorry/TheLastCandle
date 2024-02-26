@@ -1,7 +1,6 @@
-import { PlayerComponent } from "@/rendering/components/PlayerComponent";
 import type { GridEntity } from "@/rendering/entities/GridEntity";
-import type { PlayerEntity } from "@/rendering/entities/PlayerEntity";
 import type { PassageEntity } from "../entities/PassageEntity";
+import type { PlayerEntity } from "../entities/PlayerEntity";
 
 enum Tile {
     None,

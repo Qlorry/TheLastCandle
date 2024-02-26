@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { Entity } from '../entities/Entity';
-import { EntityRemoved } from '../event/EntityRemoved';
 import { Game } from '../game/Game';
 import { System } from './System';
 import { GridComponent } from '../components/GridComponent';
@@ -26,8 +25,8 @@ export class GridRenderingSystem extends System {
             
             const grid = gridPos ? gridPos.parentGrid : entity.getComponent(GridComponent);
  
-            let xStart = (WORLD_WIDTH - grid.width) / 2;
-            let yStart = (WORLD_HEIGHT - grid.height) / 2;
+            const xStart = (WORLD_WIDTH - grid.width) / 2;
+            const yStart = (WORLD_HEIGHT - grid.height) / 2;
             object.position.set(xStart, yStart, 0);
         }
     }

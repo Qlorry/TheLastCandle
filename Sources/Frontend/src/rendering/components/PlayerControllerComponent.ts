@@ -68,7 +68,7 @@ class PlayerControllerComponent {
     // }
 
     _onKeyDown(event: KeyboardEvent) {
-        if (!event || !event.currentTarget || event.currentTarget.activeElement != document.body) {
+        if (!event || !event.currentTarget || (event.currentTarget as any).activeElement != document.body) {
             return;
         }
         switch (event.key) {
@@ -100,7 +100,7 @@ class PlayerControllerComponent {
     }
 
     _onKeyUp(event: KeyboardEvent) {
-        if (!event || !event.currentTarget || event.currentTarget.activeElement != document.body) {
+        if (!event || !event.currentTarget || (event.currentTarget as any).activeElement != document.body) {
             return;
         }
         switch (event.key) {

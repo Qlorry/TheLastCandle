@@ -39,7 +39,6 @@ class PlayerMove implements IAction {
     }
 
     validate(state: BoardState): boolean {
-        debugger
         const from = this.getFrom(state);
         if (!from)
             return false;

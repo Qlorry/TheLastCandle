@@ -5,12 +5,7 @@ import type { System } from './systems/System';
 import type { Entity } from './entities/Entity';
 import { LoadingEntity } from './entities/LoadingEntity';
 import { LoadingSystem } from './systems/LoadingSystem';
-import { GridEntity } from './entities/GridEntity';
-import { WORLD_WIDTH } from './constants';
-import { PlayerEntity } from './entities/PlayerEntity';
-import { GridPositionComponent } from './components/GridPosiotionComponent';
 import { PlayerRenderingSystem } from './systems/PlayerRenderSystem';
-import { GridComponent } from './components/GridComponent';
 import { GamePresenter } from './services/GamePresenter';
 import { TileRenderingSystem } from './systems/TileRenderSystem';
 
