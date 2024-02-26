@@ -10,7 +10,7 @@ import { GridComponent } from "@/rendering/components/GridComponent";
 import { PassageComponent } from "@/rendering/components/PassageComponent";
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import { PassageType } from "@/models/PassageType";
-import { PlayerEntity } from "@/rendering/entities/PlayerEntity";
+import { PlayerEntity } from "../entities/PlayerEntity";
 
 export class GamePresenter {
     private static state: BoardState;
