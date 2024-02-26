@@ -1,15 +1,16 @@
+import { WORLD_WIDTH } from "@/rendering/constants";
+import type { IAction } from "@/rendering/event/actions/IAction";
+import type { Game } from "@/rendering/game/Game";
+import type { EventBus } from "@/rendering/event/EventBus";
+
 import { BoardState } from "@/rendering/util/BoardState";
-import type { IAction } from "../event/actions/IAction";
-import type { Game } from "../game/Game";
-import type { EventBus } from "../event/EventBus";
-import { PassageEntity } from "../entities/PassageEntity";
-import { GridEntity } from "../entities/GridEntity";
-import { WORLD_WIDTH } from "../constants";
-import { GridComponent } from "../components/GridComponent";
-import { PassageComponent } from "../components/PassageComponent";
-import { GridPositionComponent } from "../components/GridPosiotionComponent";
+import { PassageEntity } from "@/rendering/entities/PassageEntity";
+import { GridEntity } from "@/rendering/entities/GridEntity";
+import { GridComponent } from "@/rendering/components/GridComponent";
+import { PassageComponent } from "@/rendering/components/PassageComponent";
+import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import { PassageType } from "@/models/PassageType";
-import { PlayerEntity } from "../entities/PlayerEntity";
+import { PlayerEntity } from "@/rendering/entities/PlayerEntity";
 
 export class GamePresenter {
     private static state: BoardState;

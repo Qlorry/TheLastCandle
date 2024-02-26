@@ -1,6 +1,6 @@
 import type { GridEntity } from "@/rendering/entities/GridEntity";
-import type { PassageEntity } from "../entities/PassageEntity";
-import type { PlayerEntity } from "../entities/PlayerEntity";
+import type { PassageEntity } from "@/rendering/entities/PassageEntity";
+import type { PlayerEntity } from "@/rendering/entities/PlayerEntity";
 
 enum Tile {
     None,

@@ -1,19 +1,17 @@
-import { GridComponent } from "../components/GridComponent";
-import { GridPositionComponent } from "../components/GridPosiotionComponent";
-import { PassageComponent } from "../components/PassageComponent";
-import { PassageSpriteComponent } from "../components/PassageSpriteComponent";
-import { PlayerComponent } from "../components/PlayerComponent";
-import { PlayerControllerComponent } from "../components/PlayerControllerComponent";
-import { PlayerSpriteComponent } from "../components/PlayerSpriteComponent";
-import { TILE_LEVEL } from "../constants";
-import type { Entity } from "../entities/Entity";
-import type { GridEntity } from "../entities/GridEntity";
-import { PlayerMove, ThisPlayerMove } from "../event/actions/PlayerMove";
-import type { Game } from "../game/Game";
-import { GamePresenter } from "../services/GamePresenter";
-import { Direction } from "../util/Direction";
-import { System } from "./System";
 import * as THREE from 'three';
+
+import { TILE_LEVEL } from "@/rendering/constants";
+
+import type { Entity } from "@/rendering/entities/Entity";
+import type { Game } from "@/rendering/game/Game";
+import { System } from "./System";
+
+import { GridComponent } from "@/rendering/components/GridComponent";
+import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
+import { PassageComponent } from "@/rendering/components/PassageComponent";
+import { PassageSpriteComponent } from "@/rendering/components/PassageSpriteComponent";
+import type { GridEntity } from "@/rendering/entities/GridEntity";
+
 
 export class TileRenderingSystem extends System {
     private _grid: GridEntity | undefined;

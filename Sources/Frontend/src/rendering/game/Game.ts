@@ -1,11 +1,14 @@
 import * as THREE from 'three';
-import { Entity } from '../entities/Entity';
-import { EntityAdded } from '../event/EntityAdded';
-import { EntityRemoved } from '../event/EntityRemoved';
-import { EventBus } from '../event/EventBus';
-import { System } from '../systems/System';
-import * as CONST from '../constants';
-import * as PROPORTIONS from '../util/proportions';
+
+import * as CONST from '@/rendering/constants';
+import * as PROPORTIONS from '@/rendering/util/proportions';
+
+import { Entity } from '@/rendering/entities/Entity';
+import { EntityAdded } from '@/rendering/event/EntityAdded';
+import { EntityRemoved } from '@/rendering/event/EntityRemoved';
+import { EventBus } from '@/rendering/event/EventBus';
+import { System } from '@/rendering/systems/System';
+
 
 export class Game {
     private static readonly TIME_STEP = 1 / 144;

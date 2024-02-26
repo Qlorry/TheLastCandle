@@ -1,6 +1,8 @@
 import { IcosahedronGeometry, Mesh, MeshBasicMaterial} from 'three';
+
 import { Entity } from './Entity';
-import { LoadingComponent } from '../components/LoadingComponent'
+
+import { LoadingComponent } from '@/rendering/components/LoadingComponent'
 
 export class LoadingEntity extends Entity {
     public constructor() {

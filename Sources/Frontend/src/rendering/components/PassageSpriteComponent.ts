@@ -1,6 +1,6 @@
-import { PassageType } from '@/models/PassageType';
 import * as THREE from 'three';
 
+import { PassageType } from '@/models/PassageType';
 
 export class PassageSpriteComponent {
     public sprite: THREE.Sprite

@@ -1,8 +1,10 @@
-import { System } from './System';
-import { Entity } from '../entities/Entity';
-import { Game } from '../game/Game';
-import { LoadingComponent } from '../components/LoadingComponent';
 import { Object3D } from 'three';
+
+import { System } from './System';
+import { Entity } from '@/rendering/entities/Entity';
+import { Game } from '@/rendering/game/Game';
+
+import { LoadingComponent } from '@/rendering/components/LoadingComponent';
 
 export class LoadingSystem extends System {
     public constructor() {

@@ -1,5 +1,5 @@
-import { Entity } from '../entities/Entity';
-import { Game } from '../game/Game';
+import { Entity } from '@/rendering/entities/Entity';
+import { Game } from '@/rendering/game/Game';
 
 export class System {
     protected readonly filteredEntities: Entity[] = []

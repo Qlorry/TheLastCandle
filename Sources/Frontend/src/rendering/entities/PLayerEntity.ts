@@ -1,13 +1,15 @@
-import { PlayerComponent } from '../components/PlayerComponent';
-import { Entity } from './Entity';
-import { PlayerControllerComponent } from '../components/PlayerControllerComponent';
-import { GridPositionComponent } from '../components/GridPosiotionComponent';
-import { PlayerSpriteComponent } from '../components/PlayerSpriteComponent';
 import * as THREE from 'three';
-import type { GridComponent } from '../components/GridComponent';
+
+import { Entity } from './Entity';
+
+import { PlayerComponent } from '@/rendering/components/PlayerComponent';
+import { PlayerControllerComponent } from '@/rendering/components/PlayerControllerComponent';
+import { GridPositionComponent } from '@/rendering/components/GridPosiotionComponent';
+import { PlayerSpriteComponent } from '@/rendering/components/PlayerSpriteComponent';
+import type { GridComponent } from '@/rendering/components/GridComponent';
 
 export class PlayerEntity extends Entity {
-    public constructor(camera: THREE.Camera, 
+    public constructor(camera: THREE.Camera,
         grid: GridComponent) {
         super();
 
@@ -16,9 +18,9 @@ export class PlayerEntity extends Entity {
         group.add(icon.sprite);
 
         this.addComponents(
-            new GridPositionComponent(0,0, grid),
+            new GridPositionComponent(0, 0, grid),
             new PlayerComponent("1"),
-            new PlayerControllerComponent({camera}),
+            new PlayerControllerComponent({ camera }),
             icon,
             group
         );

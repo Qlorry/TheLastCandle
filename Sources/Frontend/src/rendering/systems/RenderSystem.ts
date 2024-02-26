@@ -4,8 +4,9 @@ import {
     WebGLRenderer,
     VSMShadowMap,
 } from 'three';
-import { Entity } from '../entities/Entity';    
-import { Game } from '../game/Game';
+
+import { Entity } from '@/rendering/entities/Entity';    
+import { Game } from '@/rendering/game/Game';
 import { System } from './System';
 
 export class RenderSystem extends System {

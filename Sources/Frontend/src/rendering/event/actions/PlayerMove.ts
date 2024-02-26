@@ -1,6 +1,8 @@
-import { BoardState, Tile } from "@/rendering/util/BoardState";
-import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import type { IAction } from "./IAction";
+
+import { BoardState } from "@/rendering/util/BoardState";
+
+import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import { Direction, getOpositDirection } from "@/rendering/util/Direction";
 import { PassageComponent } from "@/rendering/components/PassageComponent";
 

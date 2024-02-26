@@ -1,8 +1,9 @@
 import { Game } from './game/Game'
-import { RenderSystem } from './systems/RenderSystem';
-import { GridRenderingSystem } from './systems/GridRenderingSystem';
 import type { System } from './systems/System';
 import type { Entity } from './entities/Entity';
+
+import { RenderSystem } from './systems/RenderSystem';
+import { GridRenderingSystem } from './systems/GridRenderingSystem';
 import { LoadingEntity } from './entities/LoadingEntity';
 import { LoadingSystem } from './systems/LoadingSystem';
 import { PlayerRenderingSystem } from './systems/PlayerRenderSystem';

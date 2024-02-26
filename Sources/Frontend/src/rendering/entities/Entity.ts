@@ -1,4 +1,4 @@
-import type { Constructor } from '../util/Type';
+import type { Constructor } from '@/rendering/util/Type';
 
 export class Entity {
     private readonly components: object[] = [];

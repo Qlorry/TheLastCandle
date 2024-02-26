@@ -1,6 +1,8 @@
 import * as THREE from 'three';
+
 import { Entity } from './Entity';
-import { GridComponent } from '../components/GridComponent'
+
+import { GridComponent } from '@/rendering/components/GridComponent'
 
 export class GridEntity extends Entity {
     private grid: GridComponent;

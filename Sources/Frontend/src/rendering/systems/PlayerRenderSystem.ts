@@ -1,16 +1,18 @@
-import { GridComponent } from "../components/GridComponent";
-import { GridPositionComponent } from "../components/GridPosiotionComponent";
-import { PlayerComponent } from "../components/PlayerComponent";
-import { PlayerControllerComponent } from "../components/PlayerControllerComponent";
-import { PlayerSpriteComponent } from "../components/PlayerSpriteComponent";
-import { PLAYER_LEVEL } from "../constants";
-import type { Entity } from "../entities/Entity";
-import type { GridEntity } from "../entities/GridEntity";
-import { PlayerMove, ThisPlayerMove } from "../event/actions/PlayerMove";
-import type { Game } from "../game/Game";
-import { GamePresenter } from "../services/GamePresenter";
-import { Direction } from "../util/Direction";
 import { System } from "./System";
+import type { Entity } from "@/rendering/entities/Entity";
+import type { Game } from "@/rendering/game/Game";
+
+import { PLAYER_LEVEL } from "@/rendering/constants";
+import { Direction } from "@/rendering/util/Direction";
+
+import { GridComponent } from "@/rendering/components/GridComponent";
+import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
+import { PlayerComponent } from "@/rendering/components/PlayerComponent";
+import { PlayerControllerComponent } from "@/rendering/components/PlayerControllerComponent";
+import { PlayerSpriteComponent } from "@/rendering/components/PlayerSpriteComponent";
+import type { GridEntity } from "@/rendering/entities/GridEntity";
+import { ThisPlayerMove } from "@/rendering/event/actions/PlayerMove";
+import { GamePresenter } from "@/rendering/services/GamePresenter";
 
 export class PlayerRenderingSystem extends System {
     private _grid: GridEntity | undefined;

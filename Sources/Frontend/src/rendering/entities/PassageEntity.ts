@@ -1,10 +1,12 @@
 import * as THREE from 'three';
-import type { GridComponent } from '../components/GridComponent';
+
 import { Entity } from './Entity';
-import { GridPositionComponent } from '../components/GridPosiotionComponent';
+
+import type { GridComponent } from '@/rendering/components/GridComponent';
+import { GridPositionComponent } from '@/rendering/components/GridPosiotionComponent';
 import { PassageType } from '@/models/PassageType';
-import { PassageSpriteComponent } from '../components/PassageSpriteComponent';
-import { PassageComponent } from '../components/PassageComponent';
+import { PassageSpriteComponent } from '@/rendering/components/PassageSpriteComponent';
+import { PassageComponent } from '@/rendering/components/PassageComponent';
 
 export class PassageEntity extends Entity {
     public constructor(grid: GridComponent, type: PassageType) {
@@ -15,7 +17,7 @@ export class PassageEntity extends Entity {
         group.add(icon.sprite);
 
         this.addComponents(
-            new GridPositionComponent(0,0, grid),
+            new GridPositionComponent(0, 0, grid),
             new PassageComponent(type),
             icon,
             group

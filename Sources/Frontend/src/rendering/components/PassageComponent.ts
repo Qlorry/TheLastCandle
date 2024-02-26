@@ -1,4 +1,4 @@
-import { Direction } from "../util/Direction";
+import { Direction } from "@/rendering/util/Direction";
 import {PassageType} from '@/models/PassageType'
 
 export class PassageComponent {
