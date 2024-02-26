@@ -10,7 +10,7 @@ import { GridComponent } from "@/rendering/components/GridComponent";
 import { PassageComponent } from "@/rendering/components/PassageComponent";
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import { PassageType } from "@/models/PassageType";
-import { PlayerEntity } from "../entities/PlayerEntity";
+import { BasePlayerEntity } from "../entities/BaseBasePlayerEntity";
 
 export class GamePresenter {
     private static state: BoardState;
@@ -25,7 +25,7 @@ export class GamePresenter {
         this.state = new BoardState(mainGrid);
 
         // init players
-        const p1 = new PlayerEntity(
+        const p1 = new BasePlayerEntity(
             game.camera, mainGrid.getComponent(GridComponent)
         )
         this.state.players.set("1", p1);

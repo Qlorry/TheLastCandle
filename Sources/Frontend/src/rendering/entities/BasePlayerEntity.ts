@@ -8,7 +8,7 @@ import { GridPositionComponent } from '@/rendering/components/GridPosiotionCompo
 import { PlayerSpriteComponent } from '@/rendering/components/PlayerSpriteComponent';
 import type { GridComponent } from '@/rendering/components/GridComponent';
 
-export class PlayerEntity extends Entity {
+export class BasePlayerEntity extends Entity {
     public constructor(camera: THREE.Camera,
         grid: GridComponent) {
         super();
