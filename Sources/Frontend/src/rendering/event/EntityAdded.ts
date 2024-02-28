@@ -1,4 +1,4 @@
-import { Entity } from '../entities/Entity';
+import { Entity } from '@/rendering/entities/Entity';
 
 export class EntityAdded {
     public constructor(

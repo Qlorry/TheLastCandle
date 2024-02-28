@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts">
-import { ref, onMounted } from 'vue';
 import { GameBoard } from '../rendering/GameBoard'
 
 let game: GameBoard | null = null;

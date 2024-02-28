@@ -1,4 +1,4 @@
-import type { Constructor } from '../util/Type';
+import type { Constructor } from '@/rendering/util/Type';
 
 export class Entity {
     private readonly components: object[] = [];
@@ -11,6 +11,16 @@ export class Entity {
         }
 
         throw 'No component available, use Entity#hasComponent to check existance first.';
+    }
+
+    public getComponentOrNull<T>(type: Constructor<T>): T | null {
+        for (const component of this.components) {
+            if (component instanceof type) {
+                return component as unknown as T;
+            }
+        }
+
+        return null;
     }
 
     public addComponent(component: object): void {

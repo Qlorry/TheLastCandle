@@ -1,16 +1,14 @@
 import { IcosahedronGeometry, Mesh, MeshBasicMaterial} from 'three';
+
 import { Entity } from './Entity';
-import { LoadingComponent } from '../components/LoadingComponent'
+
+import { LoadingComponent } from '@/rendering/components/LoadingComponent'
 
 export class LoadingEntity extends Entity {
     public constructor() {
         super();
 
         // Creating an object with three.js.
-
-        const width = 10;
-        const height = 10;
-        const depth = 10;
 
         const geometry = new IcosahedronGeometry(10, 0);
         const material = new MeshBasicMaterial({color: 0xff00ff, wireframe: true});
@@ -21,7 +19,7 @@ export class LoadingEntity extends Entity {
 
         this.addComponents( // Add components to adjust which systems applies to this entity.
             mesh,
-            new LoadingComponent(0.01)
+            new LoadingComponent(0.007)
         );
     }
 }

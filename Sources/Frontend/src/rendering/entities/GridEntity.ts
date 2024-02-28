@@ -1,38 +1,45 @@
 import * as THREE from 'three';
+
 import { Entity } from './Entity';
-import { GridComponent } from '../components/GridComponent'
+
+import { GridComponent } from '@/rendering/components/GridComponent'
 
 export class GridEntity extends Entity {
+    private grid: GridComponent;
+
     public constructor(size: number, rows: number) {
         super();
         const group = new THREE.Group();
-        const grid = new GridComponent(rows, rows, size, size)
+        this.grid = new GridComponent(rows, rows, size, size)
 
-        let backMaterial=new THREE.MeshBasicMaterial({ color: 0xfafafa, side: THREE.DoubleSide });
-        let frontMaterial= new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
+        const backMaterial = new THREE.MeshBasicMaterial({ color: 0xfafafa, side: THREE.DoubleSide });
+        const frontMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
 
-        const main = new THREE.PlaneGeometry(grid.width, grid.height);
-        let plane = new THREE.Mesh(main, backMaterial);
-        plane.position.x = grid.width / 2;
-        plane.position.y = grid.height / 2;
+        const main = new THREE.PlaneGeometry(this.grid.width, this.grid.height);
+        const plane = new THREE.Mesh(main, backMaterial);
+        plane.position.x = this.grid.width / 2;
+        plane.position.y = this.grid.height / 2;
 
-        const tileGeometry = this.RoundedRectangle(grid.blockSize, grid.blockSize, 2, 10);
-        for (let row = 0; row < grid.rows; row++) {
-            for (let col = 0; col < grid.cols; col++) {
+        const tileGeometry = this.RoundedRectangle(this.grid.blockSize, this.grid.blockSize, 2, 10);
+        for (let row = 0; row < this.grid.rows; row++) {
+            for (let col = 0; col < this.grid.cols; col++) {
                 const tile = new THREE.Mesh(tileGeometry, frontMaterial);
-                tile.position.x = row * grid.blockSize + grid.lineWidth * (row + 1) - grid.width / 2 + grid.blockSize / 2;
-                tile.position.y = col * grid.blockSize + grid.lineWidth * (col + 1) - grid.height / 2 + grid.blockSize / 2;
-                plane.add(tile);
+                const pos = this.getPositionForTile(row, col);
+                tile.position.x = pos.x;
+                tile.position.y = pos.y
+                group.add(tile);
             }
         }
+
         group.add(plane);
+
         this.addComponents( // Add components to adjust which systems applies to this entity.
             group,
-            grid
+            this.grid
         );
     }
 
-    
+
     // indexed BufferGeometry
 
     RoundedRectangle(w: number, h: number, r: number, s: number) { // width, height, radius corner, smoothness
@@ -40,26 +47,24 @@ export class GridEntity extends Entity {
         // helper const's
         const wi = w / 2 - r;		// inner width
         const hi = h / 2 - r;		// inner height
-        const w2 = w / 2;			// half width
-        const h2 = h / 2;			// half height
         const ul = r / w;			// u left
         const ur = (w - r) / w;	// u right
         const vl = r / h;			// v low
         const vh = (h - r) / h;	// v high	
 
-        let positions = [
+        const positions = [
 
             wi, hi, 0, -wi, hi, 0, -wi, -hi, 0, wi, -hi, 0
 
         ];
 
-        let uvs = [
+        const uvs = [
 
             ur, vh, ul, vh, ul, vl, ur, vl
 
         ];
 
-        let n = [
+        const n = [
 
             3 * (s + 1) + 3, 3 * (s + 1) + 4, s + 4, s + 5,
             2 * (s + 1) + 4, 2, 1, 2 * (s + 1) + 3,
@@ -67,7 +72,7 @@ export class GridEntity extends Entity {
 
         ];
 
-        let indices = [
+        const indices = [
 
             n[0], n[1], n[2], n[0], n[2], n[3],
             n[4], n[5], n[6], n[4], n[6], n[7],
@@ -115,4 +120,12 @@ export class GridEntity extends Entity {
 
     }
 
+
+    public getPositionForTile(row: number, col: number) {
+        return new THREE.Vector3(
+            col * this.grid.blockSize + this.grid.lineWidth * (col + 1) + this.grid.blockSize / 2,
+            row * this.grid.blockSize + this.grid.lineWidth * (row + 1) + this.grid.blockSize / 2,
+            0
+        )
+    }
 }
