@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Channels;
+﻿using System.Threading.Channels;
 using TheLastCandle.Services.Presenters;
 using TheLastCandle.Services.Presenters.Events;
 using TheLastCandle.SessionRunners;
@@ -9,26 +8,25 @@ namespace TheLastCandle.Services
     internal struct SessionComposition
     {
         public SessionRuner runner { get; set; }
-        public Channel<IClientEvent> upstream { get; set; } // from client 
-        public Channel<IServerEvent> downstream { get; set; } // to client
+        public Channel<IClientCommand> upstream { get; set; } // from client 
+        public Channel<IServerCommand> downstream { get; set; } // to client
         public IServerEventTransmitter transmitter { get; set; }
     }
     public class SessionManager : IDisposable
     {
         private readonly ILogger<SessionManager> _logger;
+        private Dictionary<Guid, SessionComposition> _activeSessions = [];
+
         public SessionManager(ILogger<SessionManager> logger)
         {
             _logger = logger;
         }
-
-        private Dictionary<Guid, SessionComposition> _activeSessions = [];
-
-        public ChannelWriter<IClientEvent> GetUpstreamWriter(Guid sessionId)
+        public ChannelWriter<IClientCommand> GetUpstreamWriter(Guid sessionId)
         {
             return _activeSessions[sessionId].upstream.Writer;
         }
 
-        public ChannelReader<IServerEvent> GetDownstreamReader(Guid sessionId)
+        public ChannelReader<IServerCommand> GetDownstreamReader(Guid sessionId)
         {
             return _activeSessions[sessionId].downstream.Reader;
         }
@@ -38,8 +36,8 @@ namespace TheLastCandle.Services
             if (_activeSessions.ContainsKey(sessionId))
                 return false;
 
-            var upstream = Channel.CreateUnbounded<IClientEvent>();
-            var downstream = Channel.CreateUnbounded<IServerEvent>();
+            var upstream = Channel.CreateUnbounded<IClientCommand>();
+            var downstream = Channel.CreateUnbounded<IServerCommand>();
 
             presenter.SetContext(sessionId);
             transmitter.SetContext(new TransmitterContext

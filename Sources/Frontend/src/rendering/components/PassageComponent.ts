@@ -1,14 +1,25 @@
-import { Direction } from "@/rendering/util/Direction";
-import {PassageType} from '@/models/PassageType'
+import { Direction } from "./models/Direction";
+import { PassageType } from "./models/PassageType";
 
 export class PassageComponent {
-    public rotation = 0;
+    public type: PassageType
     public connections: Array<Direction>;
+    public rotation: number = 0;
 
-    public constructor(public type: PassageType) {
+    public constructor(type: PassageType, rotation: number) {
+        this.type = type;
+        this.rotation = rotation;
         this.connections = this.getConnections();
     }
 
+    public static From(other: PassageComponent) {
+        return new PassageComponent(
+            other.type,
+            other.rotation
+        );
+    }
+
+    // Move to action, maybe with connections array
     public rotateLeft() {
         this.rotation += 90;
         this.rotation = this.rotation % 360;

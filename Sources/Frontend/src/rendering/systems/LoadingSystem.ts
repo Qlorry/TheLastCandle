@@ -15,7 +15,7 @@ export class LoadingSystem extends System {
         return entity.hasComponents(LoadingComponent); // Checks if entity has a component of type ExampleComponent.
     }
 
-    public update(dt: number, game: Game): void { // Runs every update of the game.
+    public override async update(dt: number, game: Game) { // Runs every update of the game.
         for (const entity of this.filteredEntities) { // Loops through all entities that system applies to.
 
             // DO STUFF

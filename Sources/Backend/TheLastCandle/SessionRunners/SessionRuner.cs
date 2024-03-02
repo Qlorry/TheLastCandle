@@ -7,8 +7,8 @@ namespace TheLastCandle.SessionRunners
     public class SessionRuner : IDisposable
     {
         private Guid _sessionId;
-        private readonly ChannelReader<IClientEvent> _reader;
-        private readonly ChannelWriter<IServerEvent> _writer;
+        private readonly ChannelReader<IClientCommand> _reader;
+        private readonly ChannelWriter<IServerCommand> _writer;
         private Timer _timer;
         private bool _stop = false;
         private ILogger _logger;
@@ -17,7 +17,7 @@ namespace TheLastCandle.SessionRunners
         private object syncObject = new object();
         public SessionRuner(ILogger logger,
             Guid sessionId, ISessionPresenter gamePresenter,
-            ChannelReader<IClientEvent> reader, ChannelWriter<IServerEvent> writer)
+            ChannelReader<IClientCommand> reader, ChannelWriter<IServerCommand> writer)
         {
             _gameLogic = gamePresenter;
             _reader = reader;
@@ -65,8 +65,8 @@ namespace TheLastCandle.SessionRunners
                     return;
                 }
 
-                IClientEvent e;
-                List<IClientEvent> newEvents = [];
+                IClientCommand e;
+                List<IClientCommand> newEvents = [];
                 for (var i = 0; i < tasksToProcess; i++)
                 {
                     if (!_reader.TryRead(out e))

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using TheLastCandle.Services.Presenters.Events;
+﻿using TheLastCandle.Services.Presenters.Events;
 
 namespace TheLastCandle.Services.Presenters
 {
@@ -7,6 +6,6 @@ namespace TheLastCandle.Services.Presenters
     {
         //May be updated to something more complecated, and request this class once per tick(sounds inefficient)
         void SetContext(Guid sessionId);
-        IAsyncEnumerable<IServerEvent> ProcessAsync(IEnumerable<IClientEvent> clientEvents);
+        IAsyncEnumerable<IServerCommand> ProcessAsync(IEnumerable<IClientCommand> clientEvents);
     }
 }

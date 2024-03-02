@@ -42,7 +42,7 @@ export class TileRenderingSystem extends System {
             || entity.hasComponent(GridComponent);
     }
 
-    public update(dt: number, game: Game): void {
+    public override async update(dt: number, game: Game) {
         if (!this._grid) return;
         // Select for rendering
         for (const entity of this.filteredEntities) {

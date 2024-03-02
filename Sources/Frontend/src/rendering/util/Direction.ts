@@ -1,9 +1,4 @@
-enum Direction {
-    left,
-    right,
-    forward,
-    back
-}
+import { Direction } from "@/rendering/components/models/Direction";
 
 function getOpositDirection(dir: Direction)
 {
@@ -21,6 +16,5 @@ function getOpositDirection(dir: Direction)
 }
 
 export {
-    Direction,
     getOpositDirection
 }

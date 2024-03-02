@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TheLastCandle.Models;
+using TheLastCandle.Models.Components;
 using TheLastCandle.Services.Providers.Interfaces;
 
 namespace TheLastCandle.Controllers
@@ -38,9 +38,9 @@ namespace TheLastCandle.Controllers
         {
             _userProvider.AddUser(new Player
             {
-                Id = Guid.Empty,
-                Name = name,
-                Email = email
+                id = Guid.Empty,
+                name = name,
+                email = email
             });
         }
     }

@@ -14,7 +14,7 @@ class PlayerControllerComponent {
     public readonly keys: Controls;
 
     constructor(
-        public params: { camera: THREE.Camera, }
+        public params: { camera?: THREE.Camera, }
     ) {
         this.keys = {
             forward: false,
@@ -68,6 +68,7 @@ class PlayerControllerComponent {
     // }
 
     _onKeyDown(event: KeyboardEvent) {
+        debugger
         if (!event || !event.currentTarget || (event.currentTarget as any).activeElement != document.body) {
             return;
         }

@@ -101,7 +101,7 @@ export class Game {
         this.running = false;
     }
 
-    public update(currentTimestamp: number): void {
+    public async update(currentTimestamp: number) {
         if (Game.FPS_CAP > 0 && currentTimestamp < this.lastTimestamp + 1 / Game.FPS_CAP * 1000) {
             this.animationFrameId = requestAnimationFrame(this.update.bind(this));
             return;
@@ -124,11 +124,11 @@ export class Game {
         }
 
         this.fps = Game.FPS_DECAY * (1 / dt) + (1 - Game.FPS_DECAY) * this.fps;
-
+        
         while (this.running && dt >= Game.TIME_STEP) {
 
             for (const system of this.systems) {
-                system.update(Game.TIME_STEP, this);
+                await system.update(Game.TIME_STEP, this);
             }
 
             dt -= Game.TIME_STEP;
@@ -158,23 +158,20 @@ export class Game {
         // hours spent: 2
         const displayProportionateHeight = PROPORTIONS.getProportionateHeight(innerWidth, innerHeight, CONST.WORLD_WIDTH);
         const heightDiff = displayProportionateHeight - CONST.WORLD_HEIGHT;
-        
-        if (heightDiff == 0)
-        {
+
+        if (heightDiff == 0) {
             this.camera.top = CONST.WORLD_HEIGHT;
             this.camera.right = CONST.WORLD_WIDTH;
             this.camera.left = 0;
             this.camera.bottom = 0;
         }
-        else if(heightDiff > 0)
-        {
+        else if (heightDiff > 0) {
             this.camera.top = CONST.WORLD_HEIGHT + heightDiff / 2;
             this.camera.bottom = -heightDiff / 2;
             this.camera.right = CONST.WORLD_WIDTH;
             this.camera.left = 0;
         }
-        else if(heightDiff < 0)
-        {
+        else if (heightDiff < 0) {
             const widthDiff = PROPORTIONS.getProportionateWidth(16, 9, -heightDiff);
 
             this.camera.right = CONST.WORLD_WIDTH + widthDiff / 2;

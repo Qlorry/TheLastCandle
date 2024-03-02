@@ -21,7 +21,7 @@ export class System {
         // Intentionally left empty
     }
 
-    public update(dt: number, game: Game): void {
+    public async update(dt: number, game: Game): Promise<void> {
         throw new Error('Not implemented');
     }
 }

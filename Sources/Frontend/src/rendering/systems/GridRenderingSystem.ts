@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { WORLD_HEIGHT, WORLD_WIDTH } from '@/rendering/constants';
+import { GRID_HEIGHT, WORLD_HEIGHT, WORLD_WIDTH } from '@/rendering/constants';
 
 import { Entity } from '@/rendering/entities/Entity';
 import { Game } from '@/rendering/game/Game';
@@ -8,9 +8,10 @@ import { System } from './System';
 
 import { GridComponent } from '@/rendering/components/GridComponent';
 import { GridPositionComponent } from '@/rendering/components/GridPosiotionComponent';
+import type { GridEntity } from '../entities/GridEntity';
 
 export class GridRenderingSystem extends System {
-
+    mainGrid?: GridEntity;
     public constructor() {
         super();
     }
@@ -20,16 +21,22 @@ export class GridRenderingSystem extends System {
             && entity.hasComponent(THREE.Group);
     }
 
-    public update(dt: number, game: Game): void {
+    public override addEntity(entity: Entity): void {
+        if (entity.hasComponent(GridComponent))
+            this.mainGrid = entity as GridEntity;
+        super.addEntity(entity);
+    }
+
+    public override async update(dt: number, game: Game) {
+        if(!this.mainGrid) return;
+
+        const gridProps = this.mainGrid.getComponent(GridComponent);
         // Select for rendering
         for (const entity of this.filteredEntities) {
             const object = entity.getComponent(THREE.Group);
-            const gridPos = entity.getComponentOrNull(GridPositionComponent);
 
-            const grid = gridPos ? gridPos.parentGrid : entity.getComponent(GridComponent);
-
-            const xStart = (WORLD_WIDTH - grid.width) / 2;
-            const yStart = (WORLD_HEIGHT - grid.height) / 2;
+            const xStart = (WORLD_WIDTH - gridProps.width) / 2;
+            const yStart = (WORLD_HEIGHT - gridProps.height) / 2;
             object.position.set(xStart, yStart, 0);
         }
     }

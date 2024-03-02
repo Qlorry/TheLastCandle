@@ -15,7 +15,7 @@ export default defineComponent({
     return {
       message: "",
       connection: new signalR.HubConnectionBuilder()
-        .withUrl("api/test")
+        .withUrl("api/hubs/game")
         .configureLogging(signalR.LogLevel.Debug)
         .build()
     }

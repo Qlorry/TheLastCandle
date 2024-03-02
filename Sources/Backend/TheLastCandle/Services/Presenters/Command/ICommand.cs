@@ -1,8 +1,8 @@
 ﻿namespace TheLastCandle.Services.Presenters.Events
 {
-    public interface IEvent
+    public interface ICommand
     {
         Guid GetGuid();
-        Guid GetSessionGuid();
+        void SetGuid(Guid guid);
     }
 }

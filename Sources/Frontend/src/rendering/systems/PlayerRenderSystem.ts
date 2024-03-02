@@ -3,7 +3,6 @@ import type { Entity } from "@/rendering/entities/Entity";
 import type { Game } from "@/rendering/game/Game";
 
 import { PLAYER_LEVEL } from "@/rendering/constants";
-import { Direction } from "@/rendering/util/Direction";
 
 import { GridComponent } from "@/rendering/components/GridComponent";
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
@@ -11,8 +10,9 @@ import { PlayerComponent } from "@/rendering/components/PlayerComponent";
 import { PlayerControllerComponent } from "@/rendering/components/PlayerControllerComponent";
 import { PlayerSpriteComponent } from "@/rendering/components/PlayerSpriteComponent";
 import type { GridEntity } from "@/rendering/entities/GridEntity";
-import { ThisPlayerMove } from "@/rendering/event/actions/PlayerMove";
 import { GamePresenter } from "@/rendering/services/GamePresenter";
+import { PlayerMove } from "../event/actions/PlayerMove";
+import { Direction } from "../components/models/Direction";
 
 export class PlayerRenderingSystem extends System {
     private _grid: GridEntity | undefined;
@@ -44,7 +44,7 @@ export class PlayerRenderingSystem extends System {
             || entity.hasComponent(GridComponent);
     }
 
-    public update(dt: number, game: Game): void {
+    public override async update(dt: number, game: Game) {
         if (!this._grid) return;
 
         // Select for rendering
@@ -55,33 +55,29 @@ export class PlayerRenderingSystem extends System {
             const player = entity.getComponent(PlayerComponent);
 
             if (actions.keys.left) {
-                GamePresenter.doMove(new ThisPlayerMove(
-                    player.uuid,
-                    playerPos,
+                GamePresenter.get().doAction(new PlayerMove(
+                    player,
                     Direction.left
                 ))
                 actions.keys.left = false;
             }
             else if (actions.keys.right) {
-                GamePresenter.doMove(new ThisPlayerMove(
-                    player.uuid,
-                    playerPos,
+                GamePresenter.get().doAction(new PlayerMove(
+                    player,
                     Direction.right
                 ))
                 actions.keys.right = false;
             }
             else if (actions.keys.forward) {
-                GamePresenter.doMove(new ThisPlayerMove(
-                    player.uuid,
-                    playerPos,
+                GamePresenter.get().doAction(new PlayerMove(
+                    player,
                     Direction.forward
                 ))
                 actions.keys.forward = false;
             }
             else if (actions.keys.backward) {
-                GamePresenter.doMove(new ThisPlayerMove(
-                    player.uuid,
-                    playerPos,
+                GamePresenter.get().doAction(new PlayerMove(
+                    player,
                     Direction.back
                 ))
                 actions.keys.backward = false;

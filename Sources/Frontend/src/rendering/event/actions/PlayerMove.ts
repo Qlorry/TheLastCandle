@@ -3,14 +3,30 @@ import type { IAction } from "./IAction";
 import { BoardState } from "@/rendering/util/BoardState";
 
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
-import { Direction, getOpositDirection } from "@/rendering/util/Direction";
+import { getOpositDirection } from "@/rendering/util/Direction";
 import { PassageComponent } from "@/rendering/components/PassageComponent";
+import type { PlayerComponent } from "@/rendering/components/PlayerComponent";
+import { PlayerMoveData } from "@/rendering/components/models/ActionData/PlayerMove";
+import { Direction } from "@/rendering/components/models/Direction";
+import type { IActionData } from "@/rendering/components/models/ActionData/IActionData";
 
-class PlayerMove implements IAction {
-    constructor(public player: string, public direction: Direction) { }
+export class PlayerMove implements IAction {
+    private data?: PlayerMoveData;
+    constructor(public player: PlayerComponent, public direction: Direction) { }
+    
 
-    getFrom(state: BoardState) {
-        return state.players.get(this.player)?.getComponent(GridPositionComponent);
+    setSessionId(id: string): void {
+        if (this.data)
+            this.data.sessionId = id;
+    }
+
+    getData(): IActionData {
+        if (!this.data) throw new Error("Data was not set!");
+        return this.data;
+    }
+
+    getPositionObject(state: BoardState) {
+        return state.players.get(this.player.id)?.getComponent(GridPositionComponent);
     }
 
     getNewPosition(state: BoardState, current: GridPositionComponent) {
@@ -41,55 +57,55 @@ class PlayerMove implements IAction {
     }
 
     validate(state: BoardState): boolean {
-        const from = this.getFrom(state);
+        const from = this.getPositionObject(state);
         if (!from)
             return false;
 
         const srcTile = state.map[from.row][from.col];
-        if (!srcTile)
+        if (!srcTile.passage)
             return false;
 
-        if (!srcTile.getComponent(PassageComponent).connections.includes(this.direction))
+        if (!srcTile.passage.getComponent(PassageComponent).connections.includes(this.direction))
             return false;
 
         const pos = this.getNewPosition(state, from);
         const destTile = state.map[pos[0]][pos[1]];
-        if (!destTile)
+        if (!destTile.passage)
             return false;
 
-        if (!destTile.getComponent(PassageComponent).connections.includes(
+        if (!destTile.passage.getComponent(PassageComponent).connections.includes(
             getOpositDirection(this.direction)))
             return false;
+
+        this.data = new PlayerMoveData(
+            new GridPositionComponent(from.row, from.col),
+            new GridPositionComponent(pos[0], pos[1]),
+            this.player.id
+        )
 
         return true;
     }
 
     do(state: BoardState): boolean {
-        const from = this.getFrom(state);
-        if (!from)
+        const from = this.getPositionObject(state);
+        if (!from || !this.data)
             return false;
 
-        const to = this.getNewPosition(state, from);
-
-        from.col = to[1];
-        from.row = to[0];
+        from.col = this.data.to.col;
+        from.row = this.data.to.row;
 
         return true;
     }
 
-}
+    undo(state: BoardState, firstTime: boolean): boolean {
+        const from = this.getPositionObject(state);
+        if (!from || !this.data)
+            return false;
 
-class ThisPlayerMove extends PlayerMove {
-    constructor(player: string, public from: GridPositionComponent, to: Direction) {
-        super(player, to);
+        from.col = this.data.from.col;
+        from.row = this.data.from.row;
+
+        return true;
     }
 
-    override getFrom(state: BoardState) {
-        return this.from;
-    }
-}
-
-export {
-    PlayerMove,
-    ThisPlayerMove
 }

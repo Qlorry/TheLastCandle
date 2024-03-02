@@ -9,20 +9,14 @@ import { LoadingSystem } from './systems/LoadingSystem';
 import { PlayerRenderingSystem } from './systems/PlayerRenderSystem';
 import { GamePresenter } from './services/GamePresenter';
 import { TileRenderingSystem } from './systems/TileRenderSystem';
+import { PendingActionsSystem } from './systems/PendingActionsSystem';
 
 export class GameBoard {
   private canvas: HTMLCanvasElement;
   private systems: Array<System>;
   private entities: Array<Entity>;
 
-  constructor(canvas: HTMLCanvasElement) {    
-    this.systems = [ // Add more systems here.
-      new GridRenderingSystem(),
-      new TileRenderingSystem(),
-      new PlayerRenderingSystem(),
-      new LoadingSystem()
-    ];
-
+  constructor(canvas: HTMLCanvasElement) {
     this.entities = [ // Add more entities here.
       new LoadingEntity(),
     ];
@@ -30,6 +24,16 @@ export class GameBoard {
     this.canvas = canvas;
     const renderSystem = new RenderSystem(canvas);
     const game = new Game(renderSystem.renderer, undefined);
+
+    this.systems = [ // Add more systems here.
+      new PendingActionsSystem(true),
+      new GridRenderingSystem(),
+      new TileRenderingSystem(),
+      new PlayerRenderingSystem(),
+      new LoadingSystem(),
+      renderSystem,
+      new PendingActionsSystem(false)
+    ];
 
     for (const system of this.systems) {
       game.addSystem(system);
@@ -39,9 +43,8 @@ export class GameBoard {
       game.addEntity(entity)
     }
 
-    game.addSystem(renderSystem);
+    (async () => { await GamePresenter.get().setup(game, "a8ba1aa6-5307-44a0-b3bb-74670aaea08b"); })();
 
-    GamePresenter.setup(game);
     game.start();
   }
 }
