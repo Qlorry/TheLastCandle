@@ -68,7 +68,6 @@ class PlayerControllerComponent {
     // }
 
     _onKeyDown(event: KeyboardEvent) {
-        debugger
         if (!event || !event.currentTarget || (event.currentTarget as any).activeElement != document.body) {
             return;
         }

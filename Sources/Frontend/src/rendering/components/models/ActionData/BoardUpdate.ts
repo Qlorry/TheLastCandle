@@ -24,7 +24,6 @@ export class BoardUpdate {
                 //current.getComponent(PlayerComponent);
             }
             else {
-                debugger
                 const pl = new PlayerEntity(value);
                 eventBus.emit(new EntityAdded(pl));
                 state.players.set(key, pl);

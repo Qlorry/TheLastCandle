@@ -61,7 +61,6 @@ export class ServerConnector {
         const BoardUpdat = new BoardUpdate();
         BoardUpdat.board = action;
 
-        debugger
         this.events.emit(BoardUpdat);
     }
 
@@ -78,7 +77,6 @@ export class ServerConnector {
     }
 
     public static async sendMessage(action: IAction) {
-        debugger
         const actionData = action.getData();
         actionData.sessionId = this.sessionId;
         try {
