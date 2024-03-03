@@ -12,6 +12,7 @@ namespace TheLastCandle.Hubs
     {
         Task BoardUpdate(BoardData serverEvent, EventStatus result);
         Task PlayerMove(PlayerMoveData serverEvent, EventStatus result);
+        Task Reject(IActionData serverEvent, EventStatus result);
     }
 
     //[Authorize]

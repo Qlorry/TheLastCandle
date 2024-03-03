@@ -61,15 +61,18 @@ export class PendingActionsSystem extends System {
                 presenter.repeatAction(action);
             }
         }
-
         pending.doLastTime = [];
-        for (let action of pending.pendingActions) {
-            if (this.apply) {
+
+        if (this.apply) {
+            for (let action of pending.pendingActions) {
                 presenter.repeatAction(action);
             }
-            else {
+        }
+        else {
+            for (let action of pending.pendingActions.reverse()) {
                 presenter.undoAction(action);
             }
+            pending.pendingActions.reverse()
         }
     }
 }

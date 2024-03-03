@@ -27,7 +27,7 @@ export class ServerConnector {
 
         this.connection.on("BoardUpdate", (action: BoardData, result: EventStatus) => ServerConnector.onBoardUpdate(action, result));
         this.connection.on("PlayerMove", (action: PlayerMoveData, result: EventStatus) => ServerConnector.onPlayerMove(action, result));
-        this.connection.on("ServerMessage", ServerConnector.onBoardUpdate);
+        this.connection.on("Reject", (action: PlayerMoveData, result: EventStatus) => PendingActionsSystem.Remove(action.id ?? "", result));
 
         await this.connection.start();
 
@@ -49,7 +49,7 @@ export class ServerConnector {
     private static onBoardUpdate(action: BoardData, result: EventStatus) {
         if (action.id)
             PendingActionsSystem.Remove(action.id, result)
-    // DO actions
+        // DO actions
 
         // Black magic because C# converts Dictionary like a dumbass
         const temp: any = action.players;

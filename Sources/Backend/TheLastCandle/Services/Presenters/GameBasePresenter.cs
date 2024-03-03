@@ -1,4 +1,5 @@
 ﻿using TheLastCandle.Models;
+using TheLastCandle.Services.Presenters.Command.Server;
 using TheLastCandle.Services.Presenters.Events;
 using TheLastCandle.Services.Presenters.Events.Server;
 using TheLastCandle.Services.Providers.Interfaces;
@@ -34,15 +35,16 @@ namespace TheLastCandle.Services.Presenters
                 List<IServerCommand> results = new List<IServerCommand>();
                 try
                 {
+                    Thread.Sleep(1000);
                     if (e.Validate(_boardState))
                         results = e.Apply(_boardState);
-                    //else // reject Action
-                    //    results.Add(new IServerActionData());
+                    else // reject Action
+                        results.Add(new Reject(e.GetGuid()));
                 }
                 catch
                 {
                     // add rejection Action
-                    // results.Add()
+                    results.Add(new Reject(e.GetGuid()));
                 }
                 foreach (var result in results)
                 {

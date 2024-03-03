@@ -9,11 +9,13 @@ namespace TheLastCandle.Services
     public class SessionEventTransmitter : IServerEventTransmitter
     {
         private readonly IHubContext<GameHub, IGameClient> _hubContext;
+        private readonly ILogger<SessionEventTransmitter> _logger;
         private Task _backgroundTask;
         private CancellationTokenSource _cancellationToken = new CancellationTokenSource();
-        public SessionEventTransmitter(IHubContext<GameHub, IGameClient> hubContext)
+        public SessionEventTransmitter(IHubContext<GameHub, IGameClient> hubContext, ILogger<SessionEventTransmitter> logger)
         {
             _hubContext = hubContext;
+            _logger = logger;
         }
         private TransmitterContext _ctx;
 
@@ -70,6 +72,14 @@ namespace TheLastCandle.Services
             else if (type == typeof(SPlayerMove))
             {
                 await recepients.PlayerMove(((SPlayerMove)e).GetData(), e.GetStatus());
+            }
+            else if (type == typeof(Reject))
+            {
+                await recepients.Reject(((Reject)e).GetData(), e.GetStatus());
+            }
+            else
+            {
+                _logger.LogError($"Could not send event because no logic were provided! ({e.GetType().Name})");
             }
         }
     }
