@@ -53,6 +53,10 @@ export class GamePresenter {
         return true;
     }
 
+    public async doServerAction(action: IAction) {
+        action.do(this.state, true);
+    }
+
     public async repeatAction(action: IAction)
     {
         action.do(this.state, false);

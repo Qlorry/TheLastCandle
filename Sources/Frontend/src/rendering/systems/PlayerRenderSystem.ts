@@ -56,28 +56,28 @@ export class PlayerRenderingSystem extends System {
 
             if (actions.keys.left) {
                 GamePresenter.get().doAction(new PlayerMove(
-                    player,
+                    player.id,
                     Direction.left
                 ))
                 actions.keys.left = false;
             }
             else if (actions.keys.right) {
                 GamePresenter.get().doAction(new PlayerMove(
-                    player,
+                    player.id,
                     Direction.right
                 ))
                 actions.keys.right = false;
             }
             else if (actions.keys.forward) {
                 GamePresenter.get().doAction(new PlayerMove(
-                    player,
+                    player.id,
                     Direction.forward
                 ))
                 actions.keys.forward = false;
             }
             else if (actions.keys.backward) {
                 GamePresenter.get().doAction(new PlayerMove(
-                    player,
+                    player.id,
                     Direction.back
                 ))
                 actions.keys.backward = false;

@@ -9,6 +9,8 @@ import { PlayerMoveData } from "../components/models/ActionData/PlayerMove";
 import { ConnectionAction } from "../event/actions/ConnectionAction";
 import type { IAction } from "../event/actions/IAction";
 import { PendingActionsSystem } from "../systems/PendingActionsSystem";
+import { GamePresenter } from "./GamePresenter";
+import { PlayerMove } from "../event/actions/PlayerMove";
 
 export class ServerConnector {
     private static connection: signalR.HubConnection;
@@ -68,6 +70,7 @@ export class ServerConnector {
         if (action.id && PendingActionsSystem.Remove(action.id, result))
             return;
         // DO actions
+        GamePresenter.get().doServerAction(PlayerMove.From(action));
     }
 
     private static getEndpoint(action: IActionData) {

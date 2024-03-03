@@ -26,7 +26,7 @@ namespace TheLastCandle.SessionRunners
             _logger = logger;
         }
 
-        public void Run(int ticksPerSecond = 2)
+        public void Run(int ticksPerSecond = 5)
         {
             var tickTime = 1000 / ticksPerSecond;
             _timer = new Timer(Tick, null, tickTime, tickTime);

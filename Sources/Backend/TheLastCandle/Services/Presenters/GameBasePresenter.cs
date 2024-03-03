@@ -35,7 +35,6 @@ namespace TheLastCandle.Services.Presenters
                 List<IServerCommand> results = new List<IServerCommand>();
                 try
                 {
-                    Thread.Sleep(1000);
                     if (e.Validate(_boardState))
                         results = e.Apply(_boardState);
                     else // reject Action
@@ -123,6 +122,7 @@ namespace TheLastCandle.Services.Presenters
             catch
             {
                 _boardState = new BoardData();
+                _boardState.sessionId = sessionId;
                 _boardProvider.AddOrUpdate(_boardState);
             }
             return;

@@ -5,15 +5,25 @@ import { BoardState } from "@/rendering/util/BoardState";
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import { getOpositDirection } from "@/rendering/util/Direction";
 import { PassageComponent } from "@/rendering/components/PassageComponent";
-import type { PlayerComponent } from "@/rendering/components/PlayerComponent";
+import { PlayerComponent } from "@/rendering/components/PlayerComponent";
 import { PlayerMoveData } from "@/rendering/components/models/ActionData/PlayerMove";
 import { Direction } from "@/rendering/components/models/Direction";
 import type { IActionData } from "@/rendering/components/models/ActionData/IActionData";
 
 export class PlayerMove implements IAction {
     private data?: PlayerMoveData;
-    constructor(public player: PlayerComponent, public direction: Direction) { }
+    constructor(public playerId: string, public direction: Direction) { }
     
+    static From(data: PlayerMoveData)
+    {
+        //TODO: Set actual direction?
+        const action = new PlayerMove(
+            data.playerId,
+            Direction.forward
+        );
+        action.data = data;
+        return action;
+    }
 
     setSessionId(id: string): void {
         if (this.data)
@@ -26,7 +36,7 @@ export class PlayerMove implements IAction {
     }
 
     getPositionObject(state: BoardState) {
-        return state.players.get(this.player.id)?.getComponent(GridPositionComponent);
+        return state.players.get(this.playerId)?.getComponent(GridPositionComponent);
     }
 
     getNewPosition(state: BoardState, current: GridPositionComponent) {
@@ -80,7 +90,7 @@ export class PlayerMove implements IAction {
         this.data = new PlayerMoveData(
             new GridPositionComponent(from.row, from.col),
             new GridPositionComponent(pos[0], pos[1]),
-            this.player.id
+            this.playerId
         )
 
         return true;
