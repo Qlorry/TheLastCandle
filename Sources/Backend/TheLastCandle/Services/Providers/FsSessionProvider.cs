@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using TheLastCandle.Models;
+using TheLastCandle.Models.Components;
 using TheLastCandle.Services.Providers.Interfaces;
 
 namespace TheLastCandle.Services.Providers
@@ -70,7 +71,7 @@ namespace TheLastCandle.Services.Providers
 
         public Session GetSessionForPlayer(Player player)
         {
-            return (GetSessionForPlayer(player.Id)).Copy();
+            return (GetSessionForPlayer(player.id)).Copy();
         }
 
         public List<Session> GetAllSessions()
@@ -91,7 +92,7 @@ namespace TheLastCandle.Services.Providers
         {
             Update();
             int had = _sessions.RemoveAll(obj => obj.Id == session.Id);
-            if(had == 0)
+            if (had == 0)
             {
                 session.Id = Guid.NewGuid();
             }

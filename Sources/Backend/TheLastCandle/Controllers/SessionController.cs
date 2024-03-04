@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TheLastCandle.Models;
 using TheLastCandle.Services;
 using TheLastCandle.Services.Presenters;
@@ -7,7 +6,7 @@ using TheLastCandle.Services.Providers.Interfaces;
 
 namespace TheLastCandle.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class SessionController : ControllerBase
@@ -15,7 +14,7 @@ namespace TheLastCandle.Controllers
         private readonly ILogger<SessionController> _logger;
         private readonly ISessionProvider _sessionProvider;
         private readonly SessionManager _sessionManager;
-        public SessionController( ILogger<SessionController> logger,
+        public SessionController(ILogger<SessionController> logger,
             ISessionProvider sessionProvider, SessionManager manager)
         {
             _logger = logger;
@@ -49,11 +48,11 @@ namespace TheLastCandle.Controllers
         }
 
         [HttpGet]
-        public bool StartSession(Guid sessionId, 
+        public bool StartSession(Guid sessionId,
             [FromServices] ISessionPresenter presenter, [FromServices] IServerEventTransmitter transmitter)
         {
             var session = _sessionProvider.GetSession(sessionId);
-            if(!_sessionManager.StartSession(sessionId, presenter, transmitter))
+            if (!_sessionManager.StartSession(sessionId, presenter, transmitter))
             {
                 return false;
             }

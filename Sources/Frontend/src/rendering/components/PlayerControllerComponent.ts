@@ -14,7 +14,7 @@ class PlayerControllerComponent {
     public readonly keys: Controls;
 
     constructor(
-        public params: { camera: THREE.Camera, }
+        public params: { camera?: THREE.Camera, }
     ) {
         this.keys = {
             forward: false,

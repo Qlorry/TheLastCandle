@@ -1,6 +1,6 @@
 ﻿namespace TheLastCandle.Models
 {
-    public class Session
+    public class Session : ICopyable<Session>
     {
         public enum Status
         {

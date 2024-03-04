@@ -1,4 +1,5 @@
 ﻿using TheLastCandle.Models;
+using TheLastCandle.Models.Components;
 
 namespace TheLastCandle.Services.Providers.Interfaces
 {

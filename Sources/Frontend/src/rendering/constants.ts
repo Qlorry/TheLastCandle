@@ -7,6 +7,9 @@ const WORLD_HEIGHT = getProportionateHeight(WIDTH_RATIO, HEIGHT_RATIO, WORLD_WID
 const PLAYER_LEVEL = 2;
 const TILE_LEVEL = 1;
 
+const GRID_WIDTH = 6;
+const GRID_HEIGHT = 6;
+
 export {
     WIDTH_RATIO,
     HEIGHT_RATIO,
@@ -15,4 +18,7 @@ export {
 
     PLAYER_LEVEL,
     TILE_LEVEL,
+
+    GRID_WIDTH,
+    GRID_HEIGHT,
 }

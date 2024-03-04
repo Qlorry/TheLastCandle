@@ -42,7 +42,7 @@ export class RenderSystem extends System {
         this.scene.remove(object);
     }
 
-    public update(dt: number, game: Game): void {
+    public override async update(dt: number, game: Game) {
         // Select for rendering
         for (const entity of this.filteredEntities) {
             const object = entity.getComponent(Object3D);

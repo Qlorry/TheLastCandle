@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using TheLastCandle.Models;
+using TheLastCandle.Models.Components;
 using TheLastCandle.Services.Providers.Interfaces;
 
 namespace TheLastCandle.Services.Providers
@@ -59,7 +59,7 @@ namespace TheLastCandle.Services.Providers
         public Player GetUser(Guid guid)
         {
             Update();
-            var pl = _users.Find(obj => obj.Id == guid);
+            var pl = _users.Find(obj => obj.id == guid);
             return (pl ?? throw new KeyNotFoundException()).Copy();
         }
 
@@ -69,7 +69,7 @@ namespace TheLastCandle.Services.Providers
             List<Player> users = new List<Player>();
             foreach (var userGuid in userGuids)
             {
-                var pl = _users.Find(obj => obj.Id == userGuid);
+                var pl = _users.Find(obj => obj.id == userGuid);
                 users.Add((pl ?? throw new KeyNotFoundException()).Copy());
             }
             return users;
@@ -79,21 +79,21 @@ namespace TheLastCandle.Services.Providers
         {
             try
             {
-                var _ = GetUser(newUser.Email);
+                var _ = GetUser(newUser.email);
                 throw new IUserProvider.AlreadyExistsException("User already exists!");
             }
             catch (KeyNotFoundException) { }
 
-            newUser.Id = Guid.NewGuid();
+            newUser.id = Guid.NewGuid();
             _users.Add(newUser);
             Write();
-            return newUser.Id;
+            return newUser.id;
         }
 
         public Player GetUser(string userEmail)
         {
             Update();
-            var pl = _users.Find(obj => string.Equals(obj.Email, userEmail, StringComparison.InvariantCultureIgnoreCase));
+            var pl = _users.Find(obj => string.Equals(obj.email, userEmail, StringComparison.InvariantCultureIgnoreCase));
             return (pl ?? throw new KeyNotFoundException()).Copy();
         }
     }

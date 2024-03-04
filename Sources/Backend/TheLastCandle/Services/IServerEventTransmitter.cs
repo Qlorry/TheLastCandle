@@ -6,7 +6,7 @@ namespace TheLastCandle.Services
     public struct TransmitterContext
     {
         public Guid sessionId { get; set; }
-        public ChannelReader<IServerEvent> reader { get; set; }
+        public ChannelReader<IServerCommand> reader { get; set; }
     }
 
     public interface IServerEventTransmitter

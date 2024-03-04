@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Middleware\" />
-    <Folder Include="Services\Presenters\Events\Client\" />
   </ItemGroup>
 
 </Project>
