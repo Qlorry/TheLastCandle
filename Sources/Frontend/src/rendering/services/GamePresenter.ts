@@ -22,7 +22,7 @@ export class GamePresenter {
     }
 
     private state!: BoardState;
-    private eventBus!: EventBus;
+    public eventBus!: EventBus;
     private sessionId!: string;
 
     public async setup(game: Game, sessionId: string) {
