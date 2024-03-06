@@ -13,6 +13,8 @@ export class BoardState {
     public players = new Map<string, PlayerEntity>();
     public readonly width = 6;
     public readonly height = 6;
+    public tempTile?: PassageEntity;
+
     constructor(
         public grid: GridEntity
     ) {

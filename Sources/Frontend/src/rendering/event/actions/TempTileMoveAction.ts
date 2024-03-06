@@ -3,27 +3,13 @@ import type { IAction } from "./IAction";
 import { BoardState } from "@/rendering/util/BoardState";
 
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
-import { getOpositDirection } from "@/rendering/util/Direction";
-import { PassageComponent } from "@/rendering/components/PassageComponent";
-import { PlayerComponent } from "@/rendering/components/PlayerComponent";
-import { PlayerMoveData } from "@/rendering/components/models/ActionData/PlayerMove";
 import { Direction } from "@/rendering/components/models/Direction";
 import type { IActionData } from "@/rendering/components/models/ActionData/IActionData";
+import { TempTileMoveData } from "@/rendering/components/models/ActionData/TempTileMoveData";
 
-export class PlayerMove implements IAction {
-    private data?: PlayerMoveData;
+export class TempTileMoveAction implements IAction {
+    private data?: TempTileMoveData;
     constructor(public playerId: string, public direction: Direction) { }
-    
-    static From(data: PlayerMoveData)
-    {
-        //TODO: Set actual direction?
-        const action = new PlayerMove(
-            data.playerId,
-            Direction.forward
-        );
-        action.data = data;
-        return action;
-    }
 
     setSessionId(id: string): void {
         if (this.data)
@@ -71,35 +57,24 @@ export class PlayerMove implements IAction {
         if (!from)
             return false;
 
-        const srcTile = state.map[from.row][from.col];
-        if (!srcTile.passage)
-            return false;
-
-        if (!srcTile.passage.getComponent(PassageComponent).connections.includes(this.direction))
-            return false;
-
         const pos = this.getNewPosition(state, from);
         const destTile = state.map[pos[0]][pos[1]];
-        if (!destTile.passage)
+        if (destTile.passage)
             return false;
 
-        if (!destTile.passage.getComponent(PassageComponent).connections.includes(
-            getOpositDirection(this.direction)))
-            return false;
-
-        this.data = new PlayerMoveData(
-            new GridPositionComponent(from.row, from.col),
+        this.data = new TempTileMoveData(
             new GridPositionComponent(pos[0], pos[1]),
             this.playerId
-        )
+        );
 
         return true;
     }
 
     do(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
-        const from = this.getPositionObject(state);
-        if (!from || !this.data)
+        if (!state.tempTile || !this.data)
             return false;
+
+        const from = state.tempTile.getComponent(GridPositionComponent);
 
         from.col = this.data.to.col;
         from.row = this.data.to.row;
@@ -107,15 +82,9 @@ export class PlayerMove implements IAction {
         return true;
     }
 
+    // will not be called
     undo(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
-        const from = this.getPositionObject(state);
-        if (!from || !this.data)
-            return false;
-
-        from.col = this.data.from.col;
-        from.row = this.data.from.row;
-
-        return true;
+        throw new Error("Undo should not be called on this action!");
     }
 
 }

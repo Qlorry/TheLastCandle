@@ -6,6 +6,7 @@ import { PlayerComponent } from '@/rendering/components/PlayerComponent';
 import { PlayerControllerComponent } from '@/rendering/components/PlayerControllerComponent';
 import { GridPositionComponent } from '@/rendering/components/GridPosiotionComponent';
 import { PlayerSpriteComponent } from '@/rendering/components/PlayerSpriteComponent';
+import { PlayerState, PlayerStateComponent } from '../components/PlayerStateComponent';
 
 export class PlayerEntity extends Entity {
     public constructor(player: PlayerComponent) {
@@ -20,7 +21,8 @@ export class PlayerEntity extends Entity {
             PlayerComponent.From(player),
             new PlayerControllerComponent({ }),
             icon,
-            group
+            group,
+            new PlayerStateComponent(PlayerState.PlaceTile)
         );
     }
 }

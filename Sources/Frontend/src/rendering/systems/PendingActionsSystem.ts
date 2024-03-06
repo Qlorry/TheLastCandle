@@ -9,7 +9,7 @@ import { EventStatus } from '../components/models/ActionData/IActionData';
 class Storage {
     private static instance: Storage;
     public pendingActions: Array<IAction> = []
-    public doLastTime: Array<IAction> = []
+    public doLastTime: Array<{action: IAction, status: EventStatus}> = []
 
     static get() {
         if (!Storage.instance) {
@@ -44,7 +44,7 @@ export class PendingActionsSystem extends System {
         if (status == EventStatus.Rejected) return true;
 
         if (status == EventStatus.Commited) {
-            pending.doLastTime.push(...selected);
+            pending.doLastTime.push(...selected.map(el => {return {action: el, status: status};}));
         }
         return true;
     }
@@ -56,23 +56,33 @@ export class PendingActionsSystem extends System {
     public override async update(dt: number, game: Game) {
         const pending = Storage.get();
         const presenter = GamePresenter.get();
-        if (this.apply) {
-            for (let action of pending.doLastTime) {
-                presenter.repeatAction(action);
+
+        // Last time -- validated by server 
+        for (let action of pending.doLastTime) {
+            // Runs in aplly mode and event was Commited => can repeat last time(no undo)
+            if (this.apply && action.status == EventStatus.Commited) {
+                presenter.repeatAction(action.action, true);
+            }
+            // Runs in undo mode and event was Rejected => must undo last time(clean up)
+            else if (!this.apply && action.status == EventStatus.Rejected){
+                presenter.undoAction(action.action, true);
             }
         }
-        pending.doLastTime = [];
 
+        // Runs in undo mode => all last apply and undo were done by now
+        if(!this.apply) pending.doLastTime = [];
+  
+        // Aplly or undo other actions
         if (this.apply) {
             for (let action of pending.pendingActions) {
-                presenter.repeatAction(action);
+                presenter.repeatAction(action, false);
             }
         }
         else {
             for (let action of pending.pendingActions.reverse()) {
-                presenter.undoAction(action);
+                presenter.undoAction(action, false);
             }
-            pending.pendingActions.reverse()
+            pending.pendingActions.reverse();
         }
     }
 }

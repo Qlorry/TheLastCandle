@@ -8,7 +8,8 @@ export class TilePlacementData extends IActionData {
       public to: GridPositionComponent,
       public rotation: number,
       player: string
-   ) { super(); 
+   ) {
+      super();
       this.playerId = player;
    }
 

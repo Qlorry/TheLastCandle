@@ -8,6 +8,10 @@ import { BoardState } from "@/rendering/util/BoardState";
 import { GridEntity } from "@/rendering/entities/GridEntity";
 import { ServerConnector } from "./ServerConnector";
 import { BoardUpdate } from "../components/models/ActionData/BoardUpdate";
+import { PassageEntity } from "../entities/PassageEntity";
+import { PassageComponent } from "../components/PassageComponent";
+import { PassageType } from "../components/models/PassageType";
+import { EntityAdded } from "../event/EntityAdded";
 
 export class GamePresenter {
     private static instance: GamePresenter;
@@ -35,36 +39,35 @@ export class GamePresenter {
 
         this.eventBus.register(BoardUpdate, GamePresenter.onBoardUpdate)
 
+        this.state.tempTile = new PassageEntity(new PassageComponent(PassageType.FourWay, 0));
         await ServerConnector.setup(game, "", sessionId);
     }
 
-    public async doAction(action: IAction) {
+    public async doAction(action: IAction, mustValidateOnServer = true) {
         if (!this.validateMove(action)) {
             return false;
         }
 
         action.setSessionId(this.sessionId);
 
-        if (!await ServerConnector.sendMessage(action)) {
+        if (mustValidateOnServer && !await ServerConnector.sendMessage(action)) {
             return false;
         }
 
-        action.do(this.state, true);
+        action.do(this.state, true, false);
         return true;
     }
 
     public async doServerAction(action: IAction) {
-        action.do(this.state, true);
+        action.do(this.state, true, true);
     }
 
-    public async repeatAction(action: IAction)
-    {
-        action.do(this.state, false);
+    public async repeatAction(action: IAction, lastTime: boolean) {
+        action.do(this.state, false, lastTime);
     }
 
-    public async undoAction(action: IAction)
-    {
-        action.undo(this.state, false);
+    public async undoAction(action: IAction, lastTime: boolean) {
+        action.undo(this.state, false, lastTime);
     }
 
     validateMove(action: IAction): boolean {
@@ -74,5 +77,7 @@ export class GamePresenter {
     private static onBoardUpdate(update: BoardUpdate) {
         const instance = GamePresenter.get();
         update.do(instance.state, instance.eventBus);
+        if(instance.state.tempTile)
+        instance.eventBus.emit(new EntityAdded(instance.state.tempTile));
     }
 }
