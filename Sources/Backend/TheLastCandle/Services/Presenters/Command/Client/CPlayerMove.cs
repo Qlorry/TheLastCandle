@@ -1,5 +1,6 @@
 ﻿using TheLastCandle.Models;
 using TheLastCandle.Models.Events.Net;
+using TheLastCandle.Services.Presenters.Command;
 using TheLastCandle.Services.Presenters.Command.Server;
 
 namespace TheLastCandle.Services.Presenters.Events.Client
@@ -17,7 +18,10 @@ namespace TheLastCandle.Services.Presenters.Events.Client
             var pl = board.map[_data.from.row][_data.from.col].player;
             board.map[_data.from.row][_data.from.col].player = null;
             board.map[_data.to.row][_data.to.col].player = _data.playerId;
-            return [new SPlayerMove(_data, EventStatus.Commited)];
+
+            var cmd = new TurnProgressionCommand(true);
+
+            return [new SPlayerMove(_data, EventStatus.Commited), .. cmd.Apply(board)];
         }
 
         public Guid GetSessionGuid()

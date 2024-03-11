@@ -13,8 +13,11 @@ import type { GridEntity } from "@/rendering/entities/GridEntity";
 import { GamePresenter } from "@/rendering/services/GamePresenter";
 import { PlayerMove } from "../event/actions/PlayerMove";
 import { Direction } from "../components/models/Direction";
-import { PlayerState, PlayerStateComponent } from "../components/PlayerStateComponent";
 import { TempTileMoveAction } from "../event/actions/TempTileMoveAction";
+import { PlayerState } from "../components/models/PlayerState";
+import { TilePlacementAction } from "../event/actions/TilePlacementAction";
+import { TilePlacementData } from "../components/models/ActionData/TilePlacementData";
+import { PassageType } from "../components/models/PassageType";
 
 export class PlayerRenderingSystem extends System {
     private _grid: GridEntity | undefined;
@@ -42,8 +45,7 @@ export class PlayerRenderingSystem extends System {
             GridPositionComponent,
             PlayerControllerComponent,
             PlayerSpriteComponent,
-            PlayerComponent,
-            PlayerStateComponent)
+            PlayerComponent)
             || entity.hasComponent(GridComponent);
     }
 
@@ -56,9 +58,8 @@ export class PlayerRenderingSystem extends System {
             const actions = entity.getComponent(PlayerControllerComponent);
             const sprite = entity.getComponent(PlayerSpriteComponent);
             const player = entity.getComponent(PlayerComponent);
-            const state = entity.getComponent(PlayerStateComponent).state;
 
-            switch (state) {
+            switch (player.state) {
                 case PlayerState.Await:
                     break;
                 case PlayerState.Move:
@@ -98,8 +99,8 @@ export class PlayerRenderingSystem extends System {
             actions.keys.backward = false;
         }
 
-        if(!createAction) return;
-    
+        if (!createAction) return;
+
         GamePresenter.get().doAction(new PlayerMove(
             player.id,
             direction
@@ -131,8 +132,15 @@ export class PlayerRenderingSystem extends System {
             actions.keys.backward = false;
         }
 
-        if(!createAction) return;
-    
+        if (actions.keys.enter) {
+            actions.keys.enter = false;
+
+            GamePresenter.get().doAction(
+                new TilePlacementAction( new TilePlacementData(player.id)));
+            return;
+        }
+        if (!createAction) return;
+
         GamePresenter.get().doAction(new TempTileMoveAction(
             player.id,
             direction

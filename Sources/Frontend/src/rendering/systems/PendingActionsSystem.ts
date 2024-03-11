@@ -41,8 +41,6 @@ export class PendingActionsSystem extends System {
 
         const selected = pending.pendingActions.splice(result, 1);
 
-        if (status == EventStatus.Rejected) return true;
-
         if (status == EventStatus.Commited) {
             pending.doLastTime.push(...selected.map(el => {return {action: el, status: status};}));
         }

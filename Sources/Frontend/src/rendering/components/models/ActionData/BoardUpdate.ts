@@ -38,9 +38,16 @@ export class BoardUpdate {
                     let gridPos: GridPositionComponent | undefined = undefined;
                     if (thisPassage) {
                         const comp = thisPassage.getComponent(PassageComponent);
-                        comp.connections = newPassage.connections;
+                        if(comp.type != newPassage.type)
+                        {
+                            eventBus.emit(new EntityRemoved(thisPassage))
+
+                            const passage = new PassageEntity(newPassage);
+                            state.map[i][j].passage = passage;
+                            eventBus.emit(new EntityAdded(passage))
+                            gridPos = passage.getComponent(GridPositionComponent);
+                        }
                         comp.rotation = newPassage.rotation;
-                        comp.type = newPassage.type;
                         gridPos = thisPassage.getComponent(GridPositionComponent);
                     }
                     else {
@@ -60,12 +67,17 @@ export class BoardUpdate {
 
                 const player = this.board.map[i][j].player;
                 if (player) {
+                    state.map[i][j].player = player;
                     const current = state.players.get(player);
                     const pos = current?.getComponent(GridPositionComponent);
                     if (pos) {
                         pos.col = j;
                         pos.row = i;
                     }
+                }
+                else
+                {
+                    state.map[i][j].player = undefined;
                 }
             }
         }

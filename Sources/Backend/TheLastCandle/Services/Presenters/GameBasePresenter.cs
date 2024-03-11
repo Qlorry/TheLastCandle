@@ -1,4 +1,5 @@
 ﻿using TheLastCandle.Models;
+using TheLastCandle.Models.Components;
 using TheLastCandle.Services.Presenters.Command.Server;
 using TheLastCandle.Services.Presenters.Events;
 using TheLastCandle.Services.Presenters.Events.Server;
@@ -52,57 +53,6 @@ namespace TheLastCandle.Services.Presenters
                 }
             }
 
-            //{
-            //    var pl = new Player()
-            //    {
-            //        id = Guid.NewGuid(),
-            //        name = "Test",
-            //        email = "Test",
-            //        friends = new List<string>()
-            //    };
-            //    _boardState.players.Clear();
-            //    _boardState.players.Add(pl.id, pl);
-
-            //    _boardState.map[0][0].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][0].player = pl.id;
-
-            //    _boardState.map[0][1].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][2].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][3].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][4].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][5].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //}
-
             if (boardChanged)
             {
                 yield return new BoardUpdate(_sessionId, _boardState);
@@ -123,6 +73,55 @@ namespace TheLastCandle.Services.Presenters
             {
                 _boardState = new BoardData();
                 _boardState.sessionId = sessionId;
+                {
+                    var pl = new Player()
+                    {
+                        id = Guid.NewGuid(),
+                        name = "Test",
+                        email = "Test",
+                    };
+                    _boardState.players.Clear();
+                    _boardState.AddPlayer(pl);
+
+                    _boardState.map[0][0].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][0].player = pl.id;
+
+                    _boardState.map[0][1].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][2].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][3].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][4].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][5].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                }
                 _boardProvider.AddOrUpdate(_boardState);
             }
             return;

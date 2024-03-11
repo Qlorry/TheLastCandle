@@ -15,6 +15,9 @@ namespace TheLastCandle.Models
     {
         public List<List<BoardCell>> map { get; set; }
         public Dictionary<Guid, Player> players { get; set; }
+
+        public List<Guid> playerOrder { get; set; }
+
         public readonly int width = 6;
         public readonly int height = 6;
 
@@ -30,6 +33,27 @@ namespace TheLastCandle.Models
                 }
             }
             players = new Dictionary<Guid, Player>();
+            playerOrder = new List<Guid>();
+        }
+
+        public Guid GetActivePlayer()
+        {
+            Guid activePlayer = playerOrder[0];
+            foreach (var pair in players)
+            {
+                if (pair.Value.state != PlayerState.Await)
+                {
+                    activePlayer = pair.Key;
+                    break;
+                }
+            }
+            return activePlayer;
+        }
+
+        public void AddPlayer(Player player)
+        {
+            playerOrder.Add(player.id);
+            players.Add(player.id, player);
         }
 
         public BoardData Copy()
@@ -52,6 +76,7 @@ namespace TheLastCandle.Models
                 newData.players.Add(item.Key, item.Value.Copy());
             }
 
+            newData.playerOrder = [.. playerOrder];
             return newData;
         }
     }

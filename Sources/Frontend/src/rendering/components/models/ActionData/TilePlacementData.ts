@@ -1,17 +1,15 @@
-import type { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
+import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import { IActionData } from "./IActionData";
-import type { PassageType } from "../PassageType";
+import { PassageType } from "../PassageType";
 
 export class TilePlacementData extends IActionData {
    constructor(
-      public type: PassageType,
-      public to: GridPositionComponent,
-      public rotation: number,
-      player: string
+      player: string,
+      public type: PassageType = PassageType.FourWay,
+      public to: GridPositionComponent = new GridPositionComponent(0,0),
+      public rotation: number = 0
    ) {
       super();
       this.playerId = player;
    }
-
 }
-

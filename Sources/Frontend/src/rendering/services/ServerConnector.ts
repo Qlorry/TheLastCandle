@@ -11,6 +11,10 @@ import type { IAction } from "../event/actions/IAction";
 import { PendingActionsSystem } from "../systems/PendingActionsSystem";
 import { GamePresenter } from "./GamePresenter";
 import { PlayerMove } from "../event/actions/PlayerMove";
+import type { PlayerUpdateData } from "../components/models/ActionData/PlayerUpdateData";
+import { TilePlacementData } from "../components/models/ActionData/TilePlacementData";
+import { PlayerUpdateAction } from "../event/actions/PLayerUpdateAction";
+import { TilePlacementAction } from "../event/actions/TilePlacementAction";
 
 export class ServerConnector {
     private static connection: signalR.HubConnection;
@@ -28,8 +32,10 @@ export class ServerConnector {
             .build()
 
         this.connection.on("BoardUpdate", (action: BoardData, result: EventStatus) => ServerConnector.onBoardUpdate(action, result));
+        this.connection.on("PlayerUpdate", (action: PlayerUpdateData, result: EventStatus) => ServerConnector.onPlayerUpdate(action, result));
         this.connection.on("PlayerMove", (action: PlayerMoveData, result: EventStatus) => ServerConnector.onPlayerMove(action, result));
         this.connection.on("Reject", (action: PlayerMoveData, result: EventStatus) => PendingActionsSystem.Remove(action.id ?? "", result));
+        this.connection.on("TilePlacement", (action: TilePlacementData, result: EventStatus) => ServerConnector.onTilePlacement(action, result));
 
         await this.connection.start();
 
@@ -73,9 +79,25 @@ export class ServerConnector {
         GamePresenter.get().doServerAction(PlayerMove.From(action));
     }
 
+    private static onPlayerUpdate(action: PlayerUpdateData, result: EventStatus) {
+        if (action.id && PendingActionsSystem.Remove(action.id, result))
+            return;
+        // DO actions
+        GamePresenter.get().doServerAction(new PlayerUpdateAction(action));
+    }
+    
+    private static onTilePlacement(action: TilePlacementData, result: EventStatus) {
+        if (action.id && PendingActionsSystem.Remove(action.id, result))
+            return;
+        // DO actions
+        GamePresenter.get().doServerAction(new TilePlacementAction(action));
+    }
+
     private static getEndpoint(action: IActionData) {
         if (action instanceof PlayerMoveData)
             return "Move";
+        if (action instanceof TilePlacementData)
+            return "PlaceTile";
         return "";
     }
 
