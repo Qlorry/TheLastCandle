@@ -56,7 +56,7 @@ export class PendingActionsSystem extends System {
         const presenter = GamePresenter.get();
 
         // Last time -- validated by server 
-        for (let action of pending.doLastTime) {
+        for (const action of pending.doLastTime) {
             // Runs in aplly mode and event was Commited => can repeat last time(no undo)
             if (this.apply && action.status == EventStatus.Commited) {
                 presenter.repeatAction(action.action, true);
@@ -72,12 +72,12 @@ export class PendingActionsSystem extends System {
   
         // Aplly or undo other actions
         if (this.apply) {
-            for (let action of pending.pendingActions) {
+            for (const action of pending.pendingActions) {
                 presenter.repeatAction(action, false);
             }
         }
         else {
-            for (let action of pending.pendingActions.reverse()) {
+            for (const action of pending.pendingActions.reverse()) {
                 presenter.undoAction(action, false);
             }
             pending.pendingActions.reverse();

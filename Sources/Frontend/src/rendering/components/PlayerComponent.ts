@@ -17,7 +17,7 @@ export class PlayerComponent {
         );
     }
     public Swap(other: PlayerComponent) {
-        let temp = PlayerComponent.From(this);
+        const temp = PlayerComponent.From(this);
 
         this.id = other.id;
         this.name = other.name;

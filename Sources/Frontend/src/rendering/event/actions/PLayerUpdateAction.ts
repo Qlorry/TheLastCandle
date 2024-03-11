@@ -12,7 +12,7 @@ export class PlayerUpdateAction implements IAction {
         throw new Error("Method not implemented.");
     }
     do(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
-        let player = state.players.get(this.data.player.id);
+        const player = state.players.get(this.data.player.id);
         if (!player)
             return false;
 
@@ -24,7 +24,7 @@ export class PlayerUpdateAction implements IAction {
         if (!this.prev)
             return false;
 
-        let player = state.players.get(this.data.player.id);
+        const player = state.players.get(this.data.player.id);
         if (!player)
             return false;
 

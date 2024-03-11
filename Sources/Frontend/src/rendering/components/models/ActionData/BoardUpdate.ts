@@ -32,7 +32,7 @@ export class BoardUpdate {
 
         for (let i = 0; i < 6; i++) {
             for (let j = 0; j < 6; j++) {
-                let thisPassage = state.map[i][j].passage;
+                const thisPassage = state.map[i][j].passage;
                 const newPassage = this.board.map[i][j].passage;
                 if (newPassage) {
                     let gridPos: GridPositionComponent | undefined = undefined;

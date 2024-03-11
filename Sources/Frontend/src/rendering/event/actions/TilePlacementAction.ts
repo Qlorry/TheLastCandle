@@ -16,8 +16,8 @@ export class TilePlacementAction implements IAction {
 
     validate(state: BoardState): boolean {
         if (!state.tempTile) return false;
-        let newPos = state.tempTile.getComponent(GridPositionComponent);
-        let model = state.tempTile.getComponent(PassageComponent);
+        const newPos = state.tempTile.getComponent(GridPositionComponent);
+        const model = state.tempTile.getComponent(PassageComponent);
 
         const playerPos = this.getPlayerPosition(state);
         if (!playerPos)
