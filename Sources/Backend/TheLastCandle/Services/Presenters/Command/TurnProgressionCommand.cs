@@ -32,7 +32,15 @@ namespace TheLastCandle.Services.Presenters.Command
             {
                 board.players[active].state = PlayerState.PlaceTile;
                 update.player = board.players[active];
-                return [new UpdatePlayer(update)];
+
+                // TODO: see if tile can be placed, get correct tile, based on user position, and available space select default position
+                var nextTile = new TilePlacementData
+                {
+                    type = Models.Components.PassageType.FourWay,
+                    rotation = 0,
+                    to = new Models.Components.GridPosition() { col = 0, row = 0 }
+                };
+                return [new NextTileSelection(nextTile), new UpdatePlayer(update)];
             }
             if (_afterPlace)
             {

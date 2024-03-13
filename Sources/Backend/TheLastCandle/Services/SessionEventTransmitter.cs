@@ -85,6 +85,10 @@ namespace TheLastCandle.Services
             {
                 await recepients.TilePlacement(((STilePlacement)e).GetData(), e.GetStatus());
             }
+            else if (type == typeof(NextTileSelection))
+            {
+                await recepients.NextTileSelection(((NextTileSelection)e).GetData(), e.GetStatus());
+            }
             else
             {
                 _logger.LogError($"Could not send event because no logic were provided! ({e.GetType().Name})");

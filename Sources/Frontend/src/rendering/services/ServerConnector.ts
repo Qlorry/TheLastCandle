@@ -13,8 +13,9 @@ import { GamePresenter } from "./GamePresenter";
 import { PlayerMove } from "../event/actions/PlayerMove";
 import type { PlayerUpdateData } from "../components/models/ActionData/PlayerUpdateData";
 import { TilePlacementData } from "../components/models/ActionData/TilePlacementData";
-import { PlayerUpdateAction } from "../event/actions/PLayerUpdateAction";
+import { PlayerUpdateAction } from "../event/actions/PlayerUpdateAction";
 import { TilePlacementAction } from "../event/actions/TilePlacementAction";
+import { NextTileSelection } from "../event/actions/NextTileSelection";
 
 export class ServerConnector {
     private static connection: signalR.HubConnection;
@@ -36,6 +37,7 @@ export class ServerConnector {
         this.connection.on("PlayerMove", (action: PlayerMoveData, result: EventStatus) => ServerConnector.onPlayerMove(action, result));
         this.connection.on("Reject", (action: PlayerMoveData, result: EventStatus) => PendingActionsSystem.Remove(action.id ?? "", result));
         this.connection.on("TilePlacement", (action: TilePlacementData, result: EventStatus) => ServerConnector.onTilePlacement(action, result));
+        this.connection.on("NextTileSelection", (action: TilePlacementData, result: EventStatus) => ServerConnector.onNextTileSelection(action, result));
 
         await this.connection.start();
 
@@ -91,6 +93,10 @@ export class ServerConnector {
             return;
         // DO actions
         GamePresenter.get().doServerAction(new TilePlacementAction(action));
+    }
+
+    private static onNextTileSelection(action: TilePlacementData, result: EventStatus) {
+        GamePresenter.get().doServerAction(new NextTileSelection(action));
     }
 
     private static getEndpoint(action: IActionData) {

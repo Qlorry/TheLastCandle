@@ -39,7 +39,6 @@ export class GamePresenter {
 
         this.eventBus.register(BoardUpdate, GamePresenter.onBoardUpdate)
 
-        this.state.tempTile = new PassageEntity(new PassageComponent(PassageType.FourWay, 0));
         await ServerConnector.setup(game, "", sessionId);
     }
 
