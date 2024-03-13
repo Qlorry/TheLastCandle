@@ -8,6 +8,7 @@ import { PassageComponent } from "@/rendering/components/PassageComponent";
 import { Object3D } from "three";
 import { GamePresenter } from "@/rendering/services/GamePresenter";
 import { EntityRemoved } from "../EntityRemoved";
+import { EntityAdded } from "../EntityAdded";
 
 export class TilePlacementAction implements IAction {
     private passage?: PassageEntity;
@@ -39,6 +40,7 @@ export class TilePlacementAction implements IAction {
             this.passage = new PassageEntity(
                 new PassageComponent(this.data.type, this.data.rotation));
             this.passage.getComponent(Object3D).userData = { shouldDisplay: true };
+            GamePresenter.get().eventBus.emit(new EntityAdded(this.passage));
         }
 
         this.tempPassage = state.tempTile;
@@ -59,6 +61,7 @@ export class TilePlacementAction implements IAction {
             const pos = this.passage.getComponent(GridPositionComponent);
             pos.col = this.data.to.col;
             pos.row = this.data.to.row;
+            state.map[this.data.to.row][this.data.to.col].passage = this.passage;
         }
         else {
             return false;
@@ -79,6 +82,7 @@ export class TilePlacementAction implements IAction {
             this.tempPassage.getComponent(Object3D).userData.shouldDisplay = true;
         if (this.passage) {
             this.passage.getComponent(Object3D).userData.shouldDisplay = false;
+            state.map[this.data.to.row][this.data.to.col].passage = undefined;
         }
 
         return true;

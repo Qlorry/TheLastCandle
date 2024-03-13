@@ -29,6 +29,7 @@ namespace TheLastCandle.Services.Presenters.Command
             activePlayer = FindNextPlayer(activePlayer, board);
 
             board.players[activePlayer].state = PlayerState.Move;
+            board.currentGameState = PlayerState.Move;
             resCommands.Add(new UpdatePlayer(
                 new PlayerUpdateData { player = board.players[activePlayer].Copy() }));
 

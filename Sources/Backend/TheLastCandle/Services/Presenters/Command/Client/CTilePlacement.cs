@@ -13,7 +13,7 @@ namespace TheLastCandle.Services.Presenters.Command.Client
             _data = placementData;
         }
 
-        public List<IServerCommand> Apply(BoardData board)
+        public List<IServerCommand> Apply(BoardData board, PresenterConfig configurtion)
         {
             board.map[_data.to.row][_data.to.col].passage =
                 new Models.Components.Passage()
@@ -26,7 +26,7 @@ namespace TheLastCandle.Services.Presenters.Command.Client
             var reaction = new STilePlacement(_data);
             var cmd = new TurnProgressionCommand(false, true);
 
-            return [reaction, .. cmd.Apply(board)];
+            return [reaction, .. cmd.Apply(board, configurtion)];
         }
 
         public Guid GetSessionGuid()

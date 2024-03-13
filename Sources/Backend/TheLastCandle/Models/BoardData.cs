@@ -18,6 +18,11 @@ namespace TheLastCandle.Models
 
         public List<Guid> playerOrder { get; set; }
 
+        public List<Passage> nextPassages { get; set; }
+        public List<Passage> usedPassages { get; set; }
+
+        public PlayerState currentGameState {  get; set; }
+
         public readonly int width = 6;
         public readonly int height = 6;
 
@@ -34,6 +39,9 @@ namespace TheLastCandle.Models
             }
             players = new Dictionary<Guid, Player>();
             playerOrder = new List<Guid>();
+            nextPassages = new List<Passage>();
+            usedPassages = new List<Passage>();
+            currentGameState = PlayerState.Await;
         }
 
         public Guid GetActivePlayer()
@@ -77,6 +85,9 @@ namespace TheLastCandle.Models
             }
 
             newData.playerOrder = [.. playerOrder];
+            newData.usedPassages = [.. usedPassages];
+            newData.nextPassages = [.. nextPassages];
+            newData.currentGameState = currentGameState;
             return newData;
         }
     }

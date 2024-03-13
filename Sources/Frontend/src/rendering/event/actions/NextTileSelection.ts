@@ -7,6 +7,8 @@ import { PassageComponent } from "@/rendering/components/PassageComponent";
 import type { TilePlacementData } from "@/rendering/components/models/ActionData/TilePlacementData";
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import { Object3D } from "three";
+import { GamePresenter } from "@/rendering/services/GamePresenter";
+import { EntityAdded } from "../EntityAdded";
 
 export class NextTileSelection implements IAction {
     constructor(private data: TilePlacementData) { }
@@ -20,6 +22,7 @@ export class NextTileSelection implements IAction {
         state.tempTile.getComponent(Object3D).userData = { shouldDisplay: false };
         pos.col = this.data.to.col;
         pos.row = this.data.to.row;
+        GamePresenter.get().eventBus.emit(new EntityAdded(state.tempTile))
         return true;
     }
     undo(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {

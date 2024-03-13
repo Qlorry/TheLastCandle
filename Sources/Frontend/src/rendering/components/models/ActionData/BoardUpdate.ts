@@ -9,6 +9,8 @@ import { PassageEntity } from "@/rendering/entities/PassageEntity";
 import { PlayerEntity } from "@/rendering/entities/PlayerEntity";
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import type { PlayerComponent } from "@/rendering/components/PlayerComponent";
+import { PlayerState } from "../PlayerState";
+import { Object3D } from "three";
 
 export class BoardUpdate {
     public id!: string;
@@ -30,6 +32,17 @@ export class BoardUpdate {
             }
         });
 
+        state.currentGameState = this.board.currentGameState;
+        state.nextPassages = this.board.nextPassages;
+        state.usedPassages = this.board.usedPassages;
+        if (this.board.currentGameState == PlayerState.PlaceTile && state.tempTile === undefined) {
+            state.tempTile = new PassageEntity(
+                this.board.nextPassages[0]
+            );
+            state.tempTile.getComponent(Object3D).userData = { shouldDisplay: false };
+            eventBus.emit(new EntityAdded(state.tempTile));
+        }
+
         for (let i = 0; i < 6; i++) {
             for (let j = 0; j < 6; j++) {
                 const thisPassage = state.map[i][j].passage;
@@ -38,8 +51,7 @@ export class BoardUpdate {
                     let gridPos: GridPositionComponent | undefined = undefined;
                     if (thisPassage) {
                         const comp = thisPassage.getComponent(PassageComponent);
-                        if(comp.type != newPassage.type)
-                        {
+                        if (comp.type != newPassage.type) {
                             eventBus.emit(new EntityRemoved(thisPassage))
 
                             const passage = new PassageEntity(newPassage);
@@ -75,8 +87,7 @@ export class BoardUpdate {
                         pos.row = i;
                     }
                 }
-                else
-                {
+                else {
                     state.map[i][j].player = undefined;
                 }
             }

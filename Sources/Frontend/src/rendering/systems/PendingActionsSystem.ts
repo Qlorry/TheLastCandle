@@ -11,6 +11,8 @@ class Storage {
     public pendingActions: Array<IAction> = []
     public doLastTime: Array<{action: IAction, status: EventStatus}> = []
 
+    public pendingActionInProgress = false;
+
     static get() {
         if (!Storage.instance) {
             Storage.instance = new Storage();

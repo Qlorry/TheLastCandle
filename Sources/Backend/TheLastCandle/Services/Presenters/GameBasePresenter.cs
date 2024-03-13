@@ -1,4 +1,5 @@
-﻿using TheLastCandle.Models;
+﻿using Microsoft.Extensions.Options;
+using TheLastCandle.Models;
 using TheLastCandle.Models.Components;
 using TheLastCandle.Services.Presenters.Command.Server;
 using TheLastCandle.Services.Presenters.Events;
@@ -13,16 +14,18 @@ namespace TheLastCandle.Services.Presenters
         private readonly ISessionProvider _sessionProvider;
         private readonly IUserProvider _userProvider;
         private readonly IBoardProvider _boardProvider;
+        private readonly PresenterConfig _configurtion;
         private Guid _sessionId = Guid.Empty;
         private BoardData _boardState = new BoardData();
 
-        public GameBasePresenter(ILogger<GameBasePresenter> logger,
+        public GameBasePresenter(ILogger<GameBasePresenter> logger, IOptions<PresenterConfig> config,
             ISessionProvider sessionProvider, IUserProvider userProvider, IBoardProvider boardProvider)
         {
             _logger = logger;
             _sessionProvider = sessionProvider;
             _userProvider = userProvider;
             _boardProvider = boardProvider;
+            _configurtion = config.Value;
         }
 
         async public IAsyncEnumerable<IServerCommand> ProcessAsync(IEnumerable<IClientCommand> clientEvents)
@@ -37,7 +40,7 @@ namespace TheLastCandle.Services.Presenters
                 try
                 {
                     if (e.Validate(_boardState))
-                        results = e.Apply(_boardState);
+                        results = e.Apply(_boardState, _configurtion);
                     else // reject Action
                         results.Add(new Reject(e.GetGuid()));
                 }
@@ -55,7 +58,7 @@ namespace TheLastCandle.Services.Presenters
 
             if (boardChanged)
             {
-                yield return new BoardUpdate(_sessionId, _boardState);
+                //yield return new BoardUpdate(_sessionId, _boardState);
                 _boardProvider.AddOrUpdate(_boardState);
             }
         }
@@ -121,6 +124,8 @@ namespace TheLastCandle.Services.Presenters
                         rotation = 0,
                         connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
                     };
+                    _boardState.nextPassages = [new Passage() { connections = [], rotation = 0, type = PassageType.FourWay },
+                        new Passage() { connections = [], rotation = 0, type = PassageType.FourWay }];
                 }
                 _boardProvider.AddOrUpdate(_boardState);
             }

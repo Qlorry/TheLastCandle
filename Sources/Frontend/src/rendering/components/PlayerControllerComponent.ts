@@ -125,13 +125,13 @@ class PlayerControllerComponent {
                 this.keys.right = false;
                 break;
             case "q":
-                this.keys.rotateLeft = true;
+                this.keys.rotateLeft = false;
                 break;
             case "e":
-                this.keys.rotateRight = true;
+                this.keys.rotateRight = false;
                 break;
             case "Enter":
-                this.keys.enter = true;
+                this.keys.enter = false;
                 break;
         }
         // this.keys.shift = event.shiftKey;

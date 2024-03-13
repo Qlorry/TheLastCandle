@@ -133,6 +133,7 @@ export class PlayerRenderingSystem extends System {
         }
 
         if (actions.keys.enter) {
+            console.log("Triggering place tile");
             actions.keys.enter = false;
 
             GamePresenter.get().doAction(

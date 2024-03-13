@@ -76,22 +76,27 @@ export class ServerConnector {
 
     private static onPlayerMove(action: PlayerMoveData, result: EventStatus) {
         if (action.id && PendingActionsSystem.Remove(action.id, result))
-            return;
+            console.log("Removed onPlayerMove ", action.id);
+
+        //return;
         // DO actions
         GamePresenter.get().doServerAction(PlayerMove.From(action));
     }
 
     private static onPlayerUpdate(action: PlayerUpdateData, result: EventStatus) {
         if (action.id && PendingActionsSystem.Remove(action.id, result))
-            return;
+            console.log("Removed onPlayerUpdate ", action.id);
+        //return;
         // DO actions
-        console.log("User state update: ", action.player.state)
+        //console.log("User state update: ", action.player.state)
         GamePresenter.get().doServerAction(new PlayerUpdateAction(action));
     }
-    
+
     private static onTilePlacement(action: TilePlacementData, result: EventStatus) {
         if (action.id && PendingActionsSystem.Remove(action.id, result))
-            return;
+            console.log("Removed onTilePlacement ", action.id);
+
+        //return;
         // DO actions
         GamePresenter.get().doServerAction(new TilePlacementAction(action));
     }
@@ -114,6 +119,7 @@ export class ServerConnector {
         try {
             actionData.id = await this.connection.invoke(this.getEndpoint(actionData), actionData);
             PendingActionsSystem.Add(action);
+            console.log("Added", this.getEndpoint(actionData), actionData.id);
         } catch (err) {
             console.error(err);
             return false;

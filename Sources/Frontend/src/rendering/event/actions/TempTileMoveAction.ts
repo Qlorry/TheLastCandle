@@ -6,6 +6,7 @@ import { GridPositionComponent } from "@/rendering/components/GridPosiotionCompo
 import { Direction } from "@/rendering/components/models/Direction";
 import type { IActionData } from "@/rendering/components/models/ActionData/IActionData";
 import { TempTileMoveData } from "@/rendering/components/models/ActionData/TempTileMoveData";
+import { Object3D } from "three";
 
 export class TempTileMoveAction implements IAction {
     private data?: TempTileMoveData;
@@ -78,6 +79,7 @@ export class TempTileMoveAction implements IAction {
 
         from.col = this.data.to.col;
         from.row = this.data.to.row;
+        state.tempTile.getComponent(Object3D).userData.shouldDisplay = true;
 
         return true;
     }
