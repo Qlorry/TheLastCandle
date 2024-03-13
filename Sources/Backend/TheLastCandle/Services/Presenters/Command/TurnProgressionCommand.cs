@@ -25,13 +25,13 @@ namespace TheLastCandle.Services.Presenters.Command
 
         public List<IServerCommand> Apply(BoardData board)
         {
-            var active = board.GetActivePlayer();
-            var update = new PlayerUpdateData();
 
             if (_afterMove)
             {
+                var active = board.GetActivePlayer();
+                var update = new PlayerUpdateData();
                 board.players[active].state = PlayerState.PlaceTile;
-                update.player = board.players[active];
+                update.player = board.players[active].Copy();
 
                 // TODO: see if tile can be placed, get correct tile, based on user position, and available space select default position
                 var nextTile = new TilePlacementData
@@ -45,11 +45,7 @@ namespace TheLastCandle.Services.Presenters.Command
             if (_afterPlace)
             {
                 var changeTurn = new NextTurnCommand();
-                update.player = board.players[active];
-
-                return [new UpdatePlayer(update),
-                    .. changeTurn.Apply(board)
-                    ];
+                return changeTurn.Apply(board);
             }
 
             return [];

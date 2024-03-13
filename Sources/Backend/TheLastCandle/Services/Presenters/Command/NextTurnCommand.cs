@@ -24,13 +24,13 @@ namespace TheLastCandle.Services.Presenters.Command
             List<IServerCommand> resCommands = new List<IServerCommand>();
             board.players[activePlayer].state = PlayerState.Await;
             resCommands.Add(new UpdatePlayer(
-                new PlayerUpdateData { player = board.players[activePlayer] }));
+                new PlayerUpdateData { player = board.players[activePlayer].Copy() }));
 
             activePlayer = FindNextPlayer(activePlayer, board);
 
             board.players[activePlayer].state = PlayerState.Move;
             resCommands.Add(new UpdatePlayer(
-                new PlayerUpdateData { player = board.players[activePlayer] }));
+                new PlayerUpdateData { player = board.players[activePlayer].Copy() }));
 
             return resCommands;
         }

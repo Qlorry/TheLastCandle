@@ -15,8 +15,9 @@ namespace TheLastCandle.Services.Presenters.Events.Client
 
         public List<IServerCommand> Apply(BoardData board)
         {
-            var pl = board.map[_data.from.row][_data.from.col].player;
             board.map[_data.from.row][_data.from.col].player = null;
+            board.map[_data.from.row][_data.from.col].passage = null;
+
             board.map[_data.to.row][_data.to.col].player = _data.playerId;
 
             var cmd = new TurnProgressionCommand(true);

@@ -6,6 +6,7 @@ import { PassageEntity } from "@/rendering/entities/PassageEntity";
 import { PassageComponent } from "@/rendering/components/PassageComponent";
 import type { TilePlacementData } from "@/rendering/components/models/ActionData/TilePlacementData";
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
+import { Object3D } from "three";
 
 export class NextTileSelection implements IAction {
     constructor(private data: TilePlacementData) { }
@@ -16,6 +17,7 @@ export class NextTileSelection implements IAction {
     do(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
         state.tempTile = new PassageEntity(new PassageComponent(this.data.type, this.data.rotation));
         let pos = state.tempTile.getComponent(GridPositionComponent);
+        state.tempTile.getComponent(Object3D).userData = { shouldDisplay: false };
         pos.col = this.data.to.col;
         pos.row = this.data.to.row;
         return true;

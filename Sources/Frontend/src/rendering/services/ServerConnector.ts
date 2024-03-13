@@ -85,6 +85,7 @@ export class ServerConnector {
         if (action.id && PendingActionsSystem.Remove(action.id, result))
             return;
         // DO actions
+        console.log("User state update: ", action.player.state)
         GamePresenter.get().doServerAction(new PlayerUpdateAction(action));
     }
     
