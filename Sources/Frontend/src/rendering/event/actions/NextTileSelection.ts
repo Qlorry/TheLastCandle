@@ -18,7 +18,7 @@ export class NextTileSelection implements IAction {
     }
     do(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
         state.tempTile = new PassageEntity(new PassageComponent(this.data.type, this.data.rotation));
-        let pos = state.tempTile.getComponent(GridPositionComponent);
+        const pos = state.tempTile.getComponent(GridPositionComponent);
         state.tempTile.getComponent(Object3D).userData = { shouldDisplay: false };
         pos.col = this.data.to.col;
         pos.row = this.data.to.row;

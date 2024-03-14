@@ -19,8 +19,8 @@ export class MapUpdateAction implements IAction {
     do(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
         for (let row = 0; row < this.data.map.length; row++) {
             for (let col = 0; col < this.data.map[row].length; col++) {
-                let cell = this.data.map[row][col];
-                let currentCell = state.map[row][col];
+                const cell = this.data.map[row][col];
+                const currentCell = state.map[row][col];
                 if (!cell.passage) {
                     this.removePassage(currentCell);
                 }
@@ -47,7 +47,7 @@ export class MapUpdateAction implements IAction {
     }
     private createNewPassage(passageModel: PassageComponent, row: number, col: number, cell: GridCell) {
         const passage = new PassageEntity(passageModel);
-        let gridPos = passage.getComponent(GridPositionComponent);
+        const gridPos = passage.getComponent(GridPositionComponent);
         gridPos.row = row;
         gridPos.col = col;
 
@@ -59,7 +59,7 @@ export class MapUpdateAction implements IAction {
             this.createNewPassage(passageModel, row, col, cell);
         }
         else {
-            let currentModel = cell.passage.getComponent(PassageComponent);
+            const currentModel = cell.passage.getComponent(PassageComponent);
             if (currentModel.type != passageModel.type) {
                 this.removePassage(cell);
                 this.createNewPassage(passageModel, row, col, cell);
