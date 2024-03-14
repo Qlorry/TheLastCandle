@@ -15,6 +15,7 @@ namespace TheLastCandle.Hubs
         Task BoardUpdate(BoardData serverEvent, EventStatus result);
         Task PlayerUpdate(PlayerUpdateData serverEvent, EventStatus result);
         Task PlayerMove(PlayerMoveData serverEvent, EventStatus result);
+        Task MapUpdate(MapUpdateData serverEvent, EventStatus result);
         Task Reject(IActionData serverEvent, EventStatus result);
         Task TilePlacement(TilePlacementData serverEvent, EventStatus result);
         Task NextTileSelection(TilePlacementData serverEvent, EventStatus result);

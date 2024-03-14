@@ -16,11 +16,12 @@ namespace TheLastCandle.Services.Presenters.Events.Client
         public List<IServerCommand> Apply(BoardData board, PresenterConfig configurtion)
         {
             board.map[_data.from.row][_data.from.col].player = null;
-          //  board.map[_data.from.row][_data.from.col].passage = null;
+            board.map[_data.from.row][_data.from.col].passage = null;
 
             board.map[_data.to.row][_data.to.col].player = _data.playerId;
 
             var cmd = new TurnProgressionCommand(true);
+            var mapUpdate = new MapUpdateCommand(new Models.ActionData.MapUpdateData(board));
 
             return [new SPlayerMove(_data, EventStatus.Commited), .. cmd.Apply(board, configurtion)];
         }
