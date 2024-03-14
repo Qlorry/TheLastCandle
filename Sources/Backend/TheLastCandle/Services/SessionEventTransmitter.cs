@@ -77,7 +77,6 @@ namespace TheLastCandle.Services
             {
                 await recepients.MapUpdate(((MapUpdateCommand)e).GetData(), e.GetStatus());
             }
-
             else if (type == typeof(Reject))
             {
                 await recepients.Reject(((Reject)e).GetData(), e.GetStatus());
