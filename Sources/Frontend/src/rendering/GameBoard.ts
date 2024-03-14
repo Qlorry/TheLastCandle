@@ -43,7 +43,7 @@ export class GameBoard {
       game.addEntity(entity)
     }
 
-    (async () => { await GamePresenter.get().setup(game, "b4c3ec3f-56b9-47a1-9000-3d43ae80615e"); })();
+    (async () => { await GamePresenter.get().setup(game, "15eb8472-02ba-42af-babf-7b3e6a594ed8"); })();
 
     game.start();
   }

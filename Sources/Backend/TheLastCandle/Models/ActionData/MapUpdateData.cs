@@ -4,7 +4,7 @@ namespace TheLastCandle.Models.ActionData
 {
     public class MapUpdateData : IActionData
     {
-        public List<List<BoardCell>> map;
+        public List<List<BoardCell>> map { get; set; }
         public MapUpdateData(BoardData board)
         {
             map = new List<List<BoardCell>>();
@@ -14,10 +14,14 @@ namespace TheLastCandle.Models.ActionData
 
                 foreach (BoardCell cell in row)
                 {
-                    map.Last().Add(cell);
+                    map.Last().Add(new BoardCell()
+                    {
+                        hasKey = cell.hasKey,
+                        passage = cell.passage?.Copy(),
+                        player = cell.player,
+                    });
                 }
             };
         }
-
     }
 }

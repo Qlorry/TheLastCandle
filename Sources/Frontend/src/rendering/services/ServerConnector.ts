@@ -16,6 +16,8 @@ import { TilePlacementData } from "../components/models/ActionData/TilePlacement
 import { PlayerUpdateAction } from "../event/actions/PlayerUpdateAction";
 import { TilePlacementAction } from "../event/actions/TilePlacementAction";
 import { NextTileSelection } from "../event/actions/NextTileSelection";
+import { MapUpdateAction } from "../event/actions/MapUpdateAction";
+import type { MapUpdateData } from "../components/models/ActionData/MapUpdateData";
 
 export class ServerConnector {
     private static connection: signalR.HubConnection;
@@ -35,7 +37,7 @@ export class ServerConnector {
         this.connection.on("BoardUpdate", (action: BoardData, result: EventStatus) => ServerConnector.onBoardUpdate(action, result));
         this.connection.on("PlayerUpdate", (action: PlayerUpdateData, result: EventStatus) => ServerConnector.onPlayerUpdate(action, result));
         this.connection.on("PlayerMove", (action: PlayerMoveData, result: EventStatus) => ServerConnector.onPlayerMove(action, result));
-        this.connection.on("MapUpdateCommand", (action: MapUpdateData, result: EventStatus) => ServerConnector.onMapUpdate(action, result));
+        this.connection.on("MapUpdate", (action: MapUpdateData, result: EventStatus) => ServerConnector.onMapUpdate(action, result));
         this.connection.on("Reject", (action: PlayerMoveData, result: EventStatus) => PendingActionsSystem.Remove(action.id ?? "", result));
         this.connection.on("TilePlacement", (action: TilePlacementData, result: EventStatus) => ServerConnector.onTilePlacement(action, result));
         this.connection.on("NextTileSelection", (action: TilePlacementData, result: EventStatus) => ServerConnector.onNextTileSelection(action, result));
@@ -76,8 +78,10 @@ export class ServerConnector {
     }
 
     private static onPlayerMove(action: PlayerMoveData, result: EventStatus) {
-        if (action.id && PendingActionsSystem.Remove(action.id, result))
+        if (action.id && PendingActionsSystem.Remove(action.id, result)) {
             console.log("Removed onPlayerMove ", action.id);
+            return;
+        }
 
         //return;
         // DO actions
@@ -85,28 +89,30 @@ export class ServerConnector {
     }
 
     private static onMapUpdate(action: MapUpdateData, result: EventStatus) {
-        if (action.id && PendingActionsSystem.Remove(action.id, result))
+        if (action.id && PendingActionsSystem.Remove(action.id, result)) {
             console.log("Removed onMapUpdate ", action.id);
-        //return;
+            return;
+        }
         // DO actions
         //console.log("User state update: ", action.player.state)
         GamePresenter.get().doServerAction(new MapUpdateAction(action));
     }
 
     private static onPlayerUpdate(action: PlayerUpdateData, result: EventStatus) {
-        if (action.id && PendingActionsSystem.Remove(action.id, result))
+        if (action.id && PendingActionsSystem.Remove(action.id, result)) {
             console.log("Removed onPlayerUpdate ", action.id);
-        //return;
+            return;
+        }
         // DO actions
         //console.log("User state update: ", action.player.state)
         GamePresenter.get().doServerAction(new PlayerUpdateAction(action));
     }
 
     private static onTilePlacement(action: TilePlacementData, result: EventStatus) {
-        if (action.id && PendingActionsSystem.Remove(action.id, result))
+        if (action.id && PendingActionsSystem.Remove(action.id, result)) {
             console.log("Removed onTilePlacement ", action.id);
-
-        //return;
+            return;
+        }
         // DO actions
         GamePresenter.get().doServerAction(new TilePlacementAction(action));
     }

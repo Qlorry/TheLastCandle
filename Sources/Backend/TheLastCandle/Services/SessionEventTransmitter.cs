@@ -73,6 +73,11 @@ namespace TheLastCandle.Services
             {
                 await recepients.PlayerMove(((SPlayerMove)e).GetData(), e.GetStatus());
             }
+            else if (type == typeof(MapUpdateCommand))
+            {
+                await recepients.MapUpdate(((MapUpdateCommand)e).GetData(), e.GetStatus());
+            }
+
             else if (type == typeof(Reject))
             {
                 await recepients.Reject(((Reject)e).GetData(), e.GetStatus());
@@ -89,6 +94,7 @@ namespace TheLastCandle.Services
             {
                 await recepients.NextTileSelection(((NextTileSelection)e).GetData(), e.GetStatus());
             }
+
             else
             {
                 _logger.LogError($"Could not send event because no logic were provided! ({e.GetType().Name})");

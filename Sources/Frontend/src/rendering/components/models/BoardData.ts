@@ -3,7 +3,7 @@ import type { PassageComponent } from "../PassageComponent";
 import type { IActionData } from "./ActionData/IActionData";
 import type { PlayerState } from "./PlayerState";
 
-export interface BoardCell {
+export interface BoardCellModel {
     passage?: PassageComponent;
     player?: string;
     hasKey: boolean;
@@ -11,7 +11,7 @@ export interface BoardCell {
 }
 
 export interface BoardData extends IActionData {
-    map: Array<Array<BoardCell>>;
+    map: Array<Array<BoardCellModel>>;
     players: Map<string, PlayerComponent>;
     width: number;
     height: number;

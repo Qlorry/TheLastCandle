@@ -23,7 +23,7 @@ namespace TheLastCandle.Services.Presenters.Events.Client
             var cmd = new TurnProgressionCommand(true);
             var mapUpdate = new MapUpdateCommand(new Models.ActionData.MapUpdateData(board));
 
-            return [new SPlayerMove(_data, EventStatus.Commited), .. cmd.Apply(board, configurtion)];
+            return [new SPlayerMove(_data, EventStatus.Commited), mapUpdate, .. cmd.Apply(board, configurtion)];
         }
 
         public Guid GetSessionGuid()
