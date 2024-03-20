@@ -13,7 +13,7 @@ import { GamePresenter } from "./GamePresenter";
 import { PlayerMove } from "../event/actions/PlayerMoveAction";
 import type { PlayerUpdateData } from "../components/models/ActionData/PlayerUpdateData";
 import { TilePlacementData } from "../components/models/ActionData/TilePlacementData";
-import { PlayerUpdateAction } from "../event/actions/PlayerUpdate";
+import { PlayerUpdateAction } from "../event/actions/PlayerUpdateAction";
 import { TilePlacementAction } from "../event/actions/TilePlacementAction";
 import { NextTileSelection } from "../event/actions/NextTileSelection";
 import { MapUpdateAction } from "../event/actions/MapUpdateAction";
