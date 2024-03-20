@@ -20,7 +20,7 @@ export class PlayerEntity extends Entity {
             PlayerComponent.From(player),
             new PlayerControllerComponent({ }),
             icon,
-            group
+            group,
         );
     }
 }

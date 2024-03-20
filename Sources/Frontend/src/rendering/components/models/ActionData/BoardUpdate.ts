@@ -9,6 +9,10 @@ import { PassageEntity } from "@/rendering/entities/PassageEntity";
 import { PlayerEntity } from "@/rendering/entities/PlayerEntity";
 import { GridPositionComponent } from "@/rendering/components/GridPosiotionComponent";
 import type { PlayerComponent } from "@/rendering/components/PlayerComponent";
+import { PlayerState } from "../PlayerState";
+import { Object3D } from "three";
+import { MapUpdateAction } from "@/rendering/event/actions/MapUpdateAction";
+import { MapUpdateData } from "./MapUpdateData";
 
 export class BoardUpdate {
     public id!: string;
@@ -30,36 +34,24 @@ export class BoardUpdate {
             }
         });
 
+        state.currentGameState = this.board.currentGameState;
+        state.nextPassages = this.board.nextPassages;
+        state.usedPassages = this.board.usedPassages;
+        if (this.board.currentGameState == PlayerState.PlaceTile && state.tempTile === undefined) {
+            state.tempTile = new PassageEntity(
+                this.board.nextPassages[0]
+            );
+            state.tempTile.getComponent(Object3D).userData = { shouldDisplay: false };
+            eventBus.emit(new EntityAdded(state.tempTile));
+        }
+
+        new MapUpdateAction(new MapUpdateData(this.board.map)).do(state, true, true);
+
         for (let i = 0; i < 6; i++) {
             for (let j = 0; j < 6; j++) {
-                let thisPassage = state.map[i][j].passage;
-                const newPassage = this.board.map[i][j].passage;
-                if (newPassage) {
-                    let gridPos: GridPositionComponent | undefined = undefined;
-                    if (thisPassage) {
-                        const comp = thisPassage.getComponent(PassageComponent);
-                        comp.connections = newPassage.connections;
-                        comp.rotation = newPassage.rotation;
-                        comp.type = newPassage.type;
-                        gridPos = thisPassage.getComponent(GridPositionComponent);
-                    }
-                    else {
-                        const passage = new PassageEntity(newPassage);
-                        state.map[i][j].passage = passage;
-                        eventBus.emit(new EntityAdded(passage))
-                        gridPos = passage.getComponent(GridPositionComponent);
-                    }
-                    if (gridPos) {
-                        gridPos.col = j;
-                        gridPos.row = i;
-                    }
-                }
-                else if (thisPassage) {
-                    eventBus.emit(new EntityRemoved(thisPassage));
-                }
-
                 const player = this.board.map[i][j].player;
                 if (player) {
+                    state.map[i][j].player = player;
                     const current = state.players.get(player);
                     const pos = current?.getComponent(GridPositionComponent);
                     if (pos) {
@@ -67,10 +59,11 @@ export class BoardUpdate {
                         pos.row = i;
                     }
                 }
+                else {
+                    state.map[i][j].player = undefined;
+                }
             }
         }
-
-
     }
 }
 

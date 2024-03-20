@@ -7,6 +7,7 @@ interface Controls {
     right: boolean,
     rotateLeft: boolean,
     rotateRight: boolean,
+    enter: boolean,
 }
 
 class PlayerControllerComponent {
@@ -94,6 +95,9 @@ class PlayerControllerComponent {
             case "e":
                 this.keys.rotateRight = true;
                 break;
+            case "Enter":
+                this.keys.enter = true;
+                break;
         }
         // if (event.shiftKey) // SHIFT
         // this.keys.shift = true;
@@ -121,10 +125,13 @@ class PlayerControllerComponent {
                 this.keys.right = false;
                 break;
             case "q":
-                this.keys.rotateLeft = true;
+                this.keys.rotateLeft = false;
                 break;
             case "e":
-                this.keys.rotateRight = true;
+                this.keys.rotateRight = false;
+                break;
+            case "Enter":
+                this.keys.enter = false;
                 break;
         }
         // this.keys.shift = event.shiftKey;

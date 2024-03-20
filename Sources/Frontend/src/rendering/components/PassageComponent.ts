@@ -34,7 +34,6 @@ export class PassageComponent {
         return this;
     }
 
-
     private getConnections() {
         let rotationCase = Math.abs(this.rotation);
         switch (this.type) {

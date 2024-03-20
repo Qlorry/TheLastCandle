@@ -10,11 +10,11 @@ export class ConnectionAction implements IAction {
         return true;
     }
 
-    do(state: BoardState, firstTime: boolean): boolean {
+    do(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
         return true;
     }
 
-    undo(state: BoardState, firstTime: boolean): boolean {
+    undo(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
         return true;
     }
     

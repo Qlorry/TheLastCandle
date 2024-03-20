@@ -3,8 +3,8 @@ import type { BoardState } from "@/rendering/util/BoardState";
 
 export interface IAction {
     validate(state: BoardState): boolean;
-    do(state: BoardState, firstTime: boolean): boolean;
-    undo(state: BoardState, firstTime: boolean): boolean;
+    do(state: BoardState, firstTime: boolean, lastTime: boolean): boolean;
+    undo(state: BoardState, firstTime: boolean, lastTime: boolean): boolean;
     getData(): IActionData;
 
     setSessionId(id: string): void;

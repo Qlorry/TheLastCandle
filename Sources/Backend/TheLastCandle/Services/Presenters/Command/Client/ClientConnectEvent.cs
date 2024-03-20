@@ -12,7 +12,7 @@ namespace TheLastCandle.Services.Presenters.Events.Client
             _moveModel = moveModel;
         }
 
-        public List<IServerCommand> Apply(BoardData board)
+        public List<IServerCommand> Apply(BoardData board, PresenterConfig configurtion)
         {
             return new List<IServerCommand> { new BoardUpdate(_moveModel.id ?? Guid.NewGuid(), board) };
         }

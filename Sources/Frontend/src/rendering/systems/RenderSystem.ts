@@ -47,7 +47,17 @@ export class RenderSystem extends System {
         for (const entity of this.filteredEntities) {
             const object = entity.getComponent(Object3D);
 
-            this.scene.add(object);
+            if(object.userData.shouldDisplay !== undefined)
+            {
+                if(object.userData.shouldDisplay)
+                {
+                    this.scene.add(object);
+                }
+                else
+                this.scene.remove(object);
+            }
+            else
+                this.scene.add(object);
         }
         // render
         this.renderer.render(this.scene, game.camera);

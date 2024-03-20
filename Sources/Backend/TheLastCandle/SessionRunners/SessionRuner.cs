@@ -78,6 +78,8 @@ namespace TheLastCandle.SessionRunners
                 List<ValueTask> writeTasks = [];
                 await foreach (var response in _gameLogic.ProcessAsync(newEvents))
                 {
+                    if (response.GetGuid() == Guid.Empty)
+                        response.SetGuid(Guid.NewGuid());
                     // Send right now for faster processing
                     writeTasks.Add(_writer.WriteAsync(response));
                 }

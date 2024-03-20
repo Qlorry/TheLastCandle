@@ -1,6 +1,8 @@
 import type { GridEntity } from "@/rendering/entities/GridEntity";
 import type { PassageEntity } from "@/rendering/entities/PassageEntity";
 import type { PlayerEntity } from "../entities/PlayerEntity";
+import { PlayerState } from "../components/models/PlayerState";
+import type { PassageComponent } from "../components/PassageComponent";
 
 export interface GridCell {
     passage?: PassageEntity;
@@ -13,6 +15,11 @@ export class BoardState {
     public players = new Map<string, PlayerEntity>();
     public readonly width = 6;
     public readonly height = 6;
+    public tempTile?: PassageEntity;
+    public currentGameState: PlayerState = PlayerState.Await;
+    public nextPassages = new Array<PassageComponent>();
+    public usedPassages = new Array<PassageComponent>();
+
     constructor(
         public grid: GridEntity
     ) {

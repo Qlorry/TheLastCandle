@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TheLastCandle.ErrorHandlers;
@@ -60,11 +61,14 @@ builder.Services.AddSwaggerGen(c =>
        }
       },
       new string[] { }
-    }
+        }
   });
 });
 
 // My services
+var section = builder.Configuration.GetSection("PresenterConfig");
+builder.Services.Configure<PresenterConfig>(section);
+
 builder.Services.AddSingleton<ISessionProvider, FsSessionProvider>();
 builder.Services.AddSingleton<IUserProvider, FsUserProvider>();
 builder.Services.AddSingleton<IBoardProvider, FsBoardProvider>();

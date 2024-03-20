@@ -6,7 +6,8 @@ export class PlayerMoveData extends IActionData {
       public from: GridPositionComponent,
       public to: GridPositionComponent,
       player: string
-   ) { super(); 
+   ) {
+      super();
       this.playerId = player;
    }
 

@@ -1,4 +1,6 @@
-﻿using TheLastCandle.Models;
+﻿using Microsoft.Extensions.Options;
+using TheLastCandle.Models;
+using TheLastCandle.Models.Components;
 using TheLastCandle.Services.Presenters.Command.Server;
 using TheLastCandle.Services.Presenters.Events;
 using TheLastCandle.Services.Presenters.Events.Server;
@@ -12,16 +14,18 @@ namespace TheLastCandle.Services.Presenters
         private readonly ISessionProvider _sessionProvider;
         private readonly IUserProvider _userProvider;
         private readonly IBoardProvider _boardProvider;
+        private readonly PresenterConfig _configurtion;
         private Guid _sessionId = Guid.Empty;
         private BoardData _boardState = new BoardData();
 
-        public GameBasePresenter(ILogger<GameBasePresenter> logger,
+        public GameBasePresenter(ILogger<GameBasePresenter> logger, IOptions<PresenterConfig> config,
             ISessionProvider sessionProvider, IUserProvider userProvider, IBoardProvider boardProvider)
         {
             _logger = logger;
             _sessionProvider = sessionProvider;
             _userProvider = userProvider;
             _boardProvider = boardProvider;
+            _configurtion = config.Value;
         }
 
         async public IAsyncEnumerable<IServerCommand> ProcessAsync(IEnumerable<IClientCommand> clientEvents)
@@ -36,7 +40,7 @@ namespace TheLastCandle.Services.Presenters
                 try
                 {
                     if (e.Validate(_boardState))
-                        results = e.Apply(_boardState);
+                        results = e.Apply(_boardState, _configurtion);
                     else // reject Action
                         results.Add(new Reject(e.GetGuid()));
                 }
@@ -52,60 +56,9 @@ namespace TheLastCandle.Services.Presenters
                 }
             }
 
-            //{
-            //    var pl = new Player()
-            //    {
-            //        id = Guid.NewGuid(),
-            //        name = "Test",
-            //        email = "Test",
-            //        friends = new List<string>()
-            //    };
-            //    _boardState.players.Clear();
-            //    _boardState.players.Add(pl.id, pl);
-
-            //    _boardState.map[0][0].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][0].player = pl.id;
-
-            //    _boardState.map[0][1].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][2].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][3].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][4].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //    _boardState.map[0][5].passage = new Passage()
-            //    {
-            //        type = PassageType.FourWay,
-            //        rotation = 0,
-            //        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
-            //    };
-            //}
-
             if (boardChanged)
             {
-                yield return new BoardUpdate(_sessionId, _boardState);
+                //yield return new BoardUpdate(_sessionId, _boardState);
                 _boardProvider.AddOrUpdate(_boardState);
             }
         }
@@ -123,6 +76,57 @@ namespace TheLastCandle.Services.Presenters
             {
                 _boardState = new BoardData();
                 _boardState.sessionId = sessionId;
+                {
+                    var pl = new Player()
+                    {
+                        id = Guid.NewGuid(),
+                        name = "Test",
+                        email = "Test",
+                    };
+                    _boardState.players.Clear();
+                    _boardState.AddPlayer(pl);
+
+                    _boardState.map[0][0].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][0].player = pl.id;
+
+                    _boardState.map[0][1].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][2].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][3].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][4].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.map[0][5].passage = new Passage()
+                    {
+                        type = PassageType.FourWay,
+                        rotation = 0,
+                        connections = new List<Direction> { Direction.left, Direction.right, Direction.forward, Direction.back }
+                    };
+                    _boardState.nextPassages = [new Passage() { connections = [], rotation = 0, type = PassageType.FourWay },
+                        new Passage() { connections = [], rotation = 0, type = PassageType.FourWay }];
+                }
                 _boardProvider.AddOrUpdate(_boardState);
             }
             return;

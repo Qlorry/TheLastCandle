@@ -1,0 +1,88 @@
+{
+    "configurations": [
+        {
+            "name": "Launch Frontend Dev Server",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "cwd": "${workspaceFolder}/Sources/Frontend",
+        },
+        // {
+        //     "type": "node",
+        //     "name": "Launch Frontend Dev Server",
+        //     "request": "launch",
+        //     "runtimeExecutable": "npm",
+        //     "runtimeArgs": [
+        //         "run-script",
+        //         "dev"
+        //     ],
+        //     "cwd": "${workspaceFolder}/Sources/Frontend",
+        //     "restart": true,
+        //     "console": "integratedTerminal",
+        //     "internalConsoleOptions": "neverOpen",
+        //     "skipFiles": [
+        //         "<node_internals>/**"
+        //     ]
+        // },
+        {
+            "type": "pwa-msedge",
+            "name": "Launch Microsoft Edge",
+            "request": "launch",
+            "runtimeArgs": [
+                "--remote-debugging-port=9222"
+            ],
+            "webRoot": "${workspaceFolder}/Sources/Frontend/",
+            "url": "http://localhost:5173/", // Provide your project's url to finish configuring
+            "presentation": {
+                "hidden": true
+            }
+        },
+        {
+            "type": "pwa-msedge",
+            "name": "Launch Microsoft Edge in headless mode",
+            "request": "launch",
+            "runtimeArgs": [
+                "--headless",
+                "--remote-debugging-port=9222"
+            ],            
+            "webRoot": "${workspaceFolder}/Sources/Frontend/",
+            "url": "http://localhost:5173/", // Provide your project's url to finish configuring
+            "presentation": {
+                "hidden": true
+            }
+        },
+        {
+            "type": "vscode-edge-devtools.debug",
+            "name": "Open Edge DevTools",
+            "request": "attach",
+            "webRoot": "${workspaceFolder}/Sources/Frontend/",
+            "url": "http://localhost:5173/board", // Provide your project's url to finish configuring
+            "presentation": {
+                "hidden": true
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch Edge Headless and attach DevTools",
+            "configurations": [
+                "Launch Microsoft Edge in headless mode",
+                "Open Edge DevTools"
+            ]
+        },
+        {
+            "name": "Launch Edge and attach DevTools",
+            "configurations": [
+                "Launch Microsoft Edge",
+                "Open Edge DevTools"
+            ]
+        }
+    ]
+}

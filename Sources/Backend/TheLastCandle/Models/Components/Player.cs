@@ -5,7 +5,7 @@
         public Guid id { get; set; }
         public string name { get; set; }
         public string email { get; set; }
-        public List<string> friends { get; set; }
+        public PlayerState state { get; set; }
 
         public Player Copy()
         {
@@ -14,7 +14,7 @@
                 id = id,
                 name = name,
                 email = email,
-                friends = [.. friends]
+                state = state
             };
         }
     }

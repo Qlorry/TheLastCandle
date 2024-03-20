@@ -96,7 +96,7 @@ export class PlayerMove implements IAction {
         return true;
     }
 
-    do(state: BoardState): boolean {
+    do(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
         const from = this.getPositionObject(state);
         if (!from || !this.data)
             return false;
@@ -107,7 +107,7 @@ export class PlayerMove implements IAction {
         return true;
     }
 
-    undo(state: BoardState, firstTime: boolean): boolean {
+    undo(state: BoardState, firstTime: boolean, lastTime: boolean): boolean {
         const from = this.getPositionObject(state);
         if (!from || !this.data)
             return false;

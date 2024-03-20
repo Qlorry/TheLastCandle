@@ -24,7 +24,7 @@ namespace TheLastCandle.Services.Presenters.Events
         // Originator will continue as is
         // Others will same play animation
         // May be rejected, we can send only to originator, others do not care.
-        List<IServerCommand> Apply(BoardData board);
+        List<IServerCommand> Apply(BoardData board, PresenterConfig configurtion);
 
         bool Validate(BoardData board);
     }
