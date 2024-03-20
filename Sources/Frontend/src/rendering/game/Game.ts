@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 
-import * as CONST from '@/rendering/constants';
 import * as PROPORTIONS from '@/rendering/util/proportions';
 
 import { Entity } from '@/rendering/entities/Entity';
@@ -8,6 +7,7 @@ import { EntityAdded } from '@/rendering/event/EntityAdded';
 import { EntityRemoved } from '@/rendering/event/EntityRemoved';
 import { EventBus } from '@/rendering/event/EventBus';
 import { System } from '@/rendering/systems/System';
+import { WORLD } from '../constants';
 
 
 export class Game {
@@ -28,9 +28,10 @@ export class Game {
 
     public constructor(
         private readonly renderer: THREE.WebGLRenderer,
-        public readonly io: any
+        public readonly io: any,
+        private sizer: HTMLElement
     ) {
-        const camera = new THREE.OrthographicCamera(0, CONST.WORLD_WIDTH, CONST.WORLD_HEIGHT, 0, 1, 1000);
+        const camera = new THREE.OrthographicCamera(0, WORLD.WIDTH, WORLD.HEIGHT, 0, 1, 1000);
         camera.position.z = 100
 
         addEventListener('visibilitychange', this.onVisibilityChange.bind(this));
@@ -124,12 +125,16 @@ export class Game {
         }
 
         this.fps = Game.FPS_DECAY * (1 / dt) + (1 - Game.FPS_DECAY) * this.fps;
-        
-        while (this.running && dt >= Game.TIME_STEP) {
 
+        while (this.running && dt >= Game.TIME_STEP) {
+            let string = "";
             for (const system of this.systems) {
+                var startTime = performance.now()
                 await system.update(Game.TIME_STEP, this);
+                var endTime = performance.now()
+                string += `Update of ${system.constructor.name} took ${endTime - startTime} milliseconds\n`;
             }
+            //console.trace(string)
 
             dt -= Game.TIME_STEP;
             updates++;
@@ -149,34 +154,34 @@ export class Game {
     }
 
     private onResize(): void {
-        const { innerHeight, innerWidth } = window;
+        const box = this.sizer.getBoundingClientRect();
+        this.renderer.setSize(box.width, box.height);
 
-        this.renderer.setSize(innerWidth, innerHeight);
         // lets use 16:9 ratio as default and scale of WORLD_WIDTH (it is const)
         // this logic should allways display WORLD_WIDTH and WORLD_HEIGHT 
         // AAAND it is not really working)))))
         // hours spent: 2
-        const displayProportionateHeight = PROPORTIONS.getProportionateHeight(innerWidth, innerHeight, CONST.WORLD_WIDTH);
-        const heightDiff = displayProportionateHeight - CONST.WORLD_HEIGHT;
+        const displayProportionateHeight = PROPORTIONS.getProportionateHeight(box.width, box.height, WORLD.WIDTH);
+        const heightDiff = displayProportionateHeight - WORLD.HEIGHT;
 
         if (heightDiff == 0) {
-            this.camera.top = CONST.WORLD_HEIGHT;
-            this.camera.right = CONST.WORLD_WIDTH;
+            this.camera.top = WORLD.HEIGHT;
+            this.camera.right = WORLD.WIDTH;
             this.camera.left = 0;
             this.camera.bottom = 0;
         }
         else if (heightDiff > 0) {
-            this.camera.top = CONST.WORLD_HEIGHT + heightDiff / 2;
+            this.camera.top = WORLD.HEIGHT + heightDiff / 2;
             this.camera.bottom = -heightDiff / 2;
-            this.camera.right = CONST.WORLD_WIDTH;
+            this.camera.right = WORLD.WIDTH;
             this.camera.left = 0;
         }
         else if (heightDiff < 0) {
             const widthDiff = PROPORTIONS.getProportionateWidth(16, 9, -heightDiff);
 
-            this.camera.right = CONST.WORLD_WIDTH + widthDiff / 2;
+            this.camera.right = WORLD.WIDTH + widthDiff / 2;
             this.camera.left = -widthDiff / 2;
-            this.camera.top = CONST.WORLD_HEIGHT;
+            this.camera.top = WORLD.HEIGHT;
             this.camera.bottom = 0;
         }
 

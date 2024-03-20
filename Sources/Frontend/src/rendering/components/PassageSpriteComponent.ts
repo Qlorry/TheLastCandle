@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { PassageType } from './models/PassageType';
+import { GRID } from '../constants';
 
 export class PassageSpriteComponent {
     public sprite: THREE.Sprite
@@ -24,6 +25,6 @@ export class PassageSpriteComponent {
         const material = new THREE.SpriteMaterial( { map: map } );
 
         this.sprite = new THREE.Sprite( material );
-        this.sprite.scale.set(35,35,35);
+        this.sprite.scale.set(GRID.BLOCK_SIZE-10,GRID.BLOCK_SIZE-10,GRID.BLOCK_SIZE-10);
     }
 }

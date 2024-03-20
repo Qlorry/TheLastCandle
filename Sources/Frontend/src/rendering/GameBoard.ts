@@ -12,7 +12,6 @@ import { TileRenderingSystem } from './systems/TileRenderSystem';
 import { PendingActionsSystem } from './systems/PendingActionsSystem';
 
 export class GameBoard {
-  private canvas: HTMLCanvasElement;
   private systems: Array<System>;
   private entities: Array<Entity>;
 
@@ -21,9 +20,12 @@ export class GameBoard {
       new LoadingEntity(),
     ];
 
-    this.canvas = canvas;
     const renderSystem = new RenderSystem(canvas);
-    const game = new Game(renderSystem.renderer, undefined);
+    
+    let resizingEl = canvas.parentElement;
+    if(resizingEl == null)
+      resizingEl = canvas;
+    const game = new Game(renderSystem.renderer, undefined, resizingEl);
 
     this.systems = [ // Add more systems here.
       new PendingActionsSystem(true),

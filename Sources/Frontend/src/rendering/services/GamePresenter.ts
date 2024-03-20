@@ -2,8 +2,6 @@ import type { IAction } from "@/rendering/event/actions/IAction";
 import type { Game } from "@/rendering/game/Game";
 import type { EventBus } from "@/rendering/event/EventBus";
 
-import { WORLD_WIDTH } from "@/rendering/constants";
-
 import { BoardState } from "@/rendering/util/BoardState";
 import { GridEntity } from "@/rendering/entities/GridEntity";
 import { ServerConnector } from "./ServerConnector";
@@ -12,6 +10,7 @@ import { PassageEntity } from "../entities/PassageEntity";
 import { PassageComponent } from "../components/PassageComponent";
 import { PassageType } from "../components/models/PassageType";
 import { EntityAdded } from "../event/EntityAdded";
+import { GRID, WORLD } from "../constants";
 
 export class GamePresenter {
     private static instance: GamePresenter;
@@ -32,7 +31,7 @@ export class GamePresenter {
     public async setup(game: Game, sessionId: string) {
         this.eventBus = game.events;
 
-        const mainGrid = new GridEntity(6 * WORLD_WIDTH / 12, 6);
+        const mainGrid = new GridEntity();
         game.addEntity(mainGrid);
 
         this.state = new BoardState(mainGrid);

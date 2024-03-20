@@ -7,10 +7,10 @@ import { GridComponent } from '@/rendering/components/GridComponent'
 export class GridEntity extends Entity {
     private grid: GridComponent;
 
-    public constructor(size: number, rows: number) {
+    public constructor() {
         super();
         const group = new THREE.Group();
-        this.grid = new GridComponent(rows, rows, size, size)
+        this.grid = new GridComponent()
 
         const backMaterial = new THREE.MeshBasicMaterial({ color: 0xfafafa, side: THREE.DoubleSide });
         const frontMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });

@@ -1,12 +1,10 @@
+import { GRID } from "../constants";
+
 export class GridComponent {
-    public  blockSize: number;
-    public constructor(
-        public rows: number,
-        public cols: number,
-        public width: number,
-        public height: number,
-        public lineWidth: number = 2
-    ) {
-        this.blockSize = (width - this.lineWidth * (rows + 1)) / rows;
-    }
+    public blockSize: number = GRID.BLOCK_SIZE;;
+    public rows: number = GRID.ROWS;
+    public cols: number = GRID.COLS;
+    public width: number = GRID.WIDTH;
+    public height: number = GRID.HEIGHT;
+    public lineWidth: number = GRID.LINE_WIDTH;
 }

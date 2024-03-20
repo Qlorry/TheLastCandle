@@ -1,24 +1,26 @@
 import { getProportionateHeight } from './util/proportions'
 
-const WIDTH_RATIO = 16;
-const HEIGHT_RATIO = 9;
-const WORLD_WIDTH = 500;
-const WORLD_HEIGHT = getProportionateHeight(WIDTH_RATIO, HEIGHT_RATIO, WORLD_WIDTH);
 const PLAYER_LEVEL = 2;
 const TILE_LEVEL = 1;
 
-const GRID_WIDTH = 6;
-const GRID_HEIGHT = 6;
 
 export {
-    WIDTH_RATIO,
-    HEIGHT_RATIO,
-    WORLD_WIDTH,
-    WORLD_HEIGHT,
-
     PLAYER_LEVEL,
     TILE_LEVEL,
+}
 
-    GRID_WIDTH,
-    GRID_HEIGHT,
+export namespace WORLD {
+    export const WIDTH_RATIO = 16;
+    export const HEIGHT_RATIO = (WIDTH_RATIO/100) * 80;
+    export const WIDTH = 500;
+    export const HEIGHT = getProportionateHeight(WIDTH_RATIO, HEIGHT_RATIO, WIDTH);
+}
+export namespace GRID {
+    export const COLS = 6;
+    export const ROWS = 6;
+    export const LINE_WIDTH = 2;
+    export const MARGINS = (WORLD.WIDTH / 100) * 10; // 10%
+    export const WIDTH = WORLD.WIDTH - 2 * GRID.MARGINS;
+    export const HEIGHT = WORLD.HEIGHT;
+    export const BLOCK_SIZE = (WIDTH - LINE_WIDTH * (ROWS + 1)) / ROWS;
 }

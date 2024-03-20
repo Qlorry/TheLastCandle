@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 
-import { GRID_HEIGHT, WORLD_HEIGHT, WORLD_WIDTH } from '@/rendering/constants';
-
 import { Entity } from '@/rendering/entities/Entity';
 import { Game } from '@/rendering/game/Game';
 import { System } from './System';
@@ -9,6 +7,7 @@ import { System } from './System';
 import { GridComponent } from '@/rendering/components/GridComponent';
 import { GridPositionComponent } from '@/rendering/components/GridPosiotionComponent';
 import type { GridEntity } from '../entities/GridEntity';
+import { WORLD } from '../constants';
 
 export class GridRenderingSystem extends System {
     mainGrid?: GridEntity;
@@ -35,8 +34,8 @@ export class GridRenderingSystem extends System {
         for (const entity of this.filteredEntities) {
             const object = entity.getComponent(THREE.Group);
 
-            const xStart = (WORLD_WIDTH - gridProps.width) / 2;
-            const yStart = (WORLD_HEIGHT - gridProps.height) / 2;
+            const xStart = (WORLD.WIDTH - gridProps.width) / 2;
+            const yStart = (WORLD.HEIGHT - gridProps.height) / 2;
             object.position.set(xStart, yStart, 0);
         }
     }

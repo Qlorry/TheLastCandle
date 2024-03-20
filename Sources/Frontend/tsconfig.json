@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "strict": true,
+  },
   "files": [],
   "sourceMap": true,
   "references": [
