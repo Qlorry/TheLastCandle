@@ -11,7 +11,7 @@ import { PlayerControllerComponent } from "@/rendering/components/PlayerControll
 import { PlayerSpriteComponent } from "@/rendering/components/PlayerSpriteComponent";
 import type { GridEntity } from "@/rendering/entities/GridEntity";
 import { GamePresenter } from "@/rendering/services/GamePresenter";
-import { PlayerMove } from "../event/actions/PlayerMove";
+import { PlayerMove } from "../event/actions/PlayerMoveAction";
 import { Direction } from "../components/models/Direction";
 import { TempTileMoveAction } from "../event/actions/TempTileMoveAction";
 import { PlayerState } from "../components/models/PlayerState";
