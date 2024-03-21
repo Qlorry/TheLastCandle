@@ -36,6 +36,7 @@ export class Game {
 
         addEventListener('visibilitychange', this.onVisibilityChange.bind(this));
         addEventListener('resize', this.onResize.bind(this));
+        // this.sizer.addEventListener('resize', this.onResize.bind(this));
 
         this.camera = camera;
         this.onResize()

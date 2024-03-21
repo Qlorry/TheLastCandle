@@ -23,4 +23,5 @@ export namespace GRID {
     export const WIDTH = WORLD.WIDTH - 2 * GRID.MARGINS;
     export const HEIGHT = WORLD.HEIGHT;
     export const BLOCK_SIZE = (WIDTH - LINE_WIDTH * (ROWS + 1)) / ROWS;
+    export const TILE_SIZE = BLOCK_SIZE - 7;
 }

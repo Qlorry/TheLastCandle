@@ -5,9 +5,8 @@ import { GRID } from '../constants';
 export class PassageSpriteComponent {
     public sprite: THREE.Sprite
     public constructor(type: PassageType) {
-        let textureName= "";
-        switch(type)
-        {
+        let textureName = "";
+        switch (type) {
             case PassageType.T:
                 textureName = "passage_t"
                 break;
@@ -21,10 +20,10 @@ export class PassageSpriteComponent {
                 textureName = "passage_corner"
                 break;
         }
-        const map = new THREE.TextureLoader().load( `textures/${textureName}.png` );
-        const material = new THREE.SpriteMaterial( { map: map } );
+        const map = new THREE.TextureLoader().load(`textures/${textureName}.png`);
+        const material = new THREE.SpriteMaterial({ map: map });
 
-        this.sprite = new THREE.Sprite( material );
-        this.sprite.scale.set(GRID.BLOCK_SIZE-10,GRID.BLOCK_SIZE-10,GRID.BLOCK_SIZE-10);
+        this.sprite = new THREE.Sprite(material);
+        this.sprite.scale.set(GRID.TILE_SIZE, GRID.TILE_SIZE, GRID.TILE_SIZE);
     }
 }
