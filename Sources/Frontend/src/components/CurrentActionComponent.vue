@@ -3,17 +3,11 @@
     <button class="btn btn-primary" @click="call()">Call</button>
   </div>
   This is message from signalR: {{ message }}
-  <WelcomeItem />
-  <TilesUsedComponent :tilesUsed="[]" :tilesCount="10" />
-
 </template>
 
 <script  lang="ts">
 import * as signalR from '@microsoft/signalr'
 import { defineComponent } from 'vue'
-import WelcomeItem from './WelcomeItem.vue';
-import TilesUsedComponent from '../components/TilesUsedComponent.vue';
-
 
 export default defineComponent({
 
@@ -25,11 +19,6 @@ export default defineComponent({
         .configureLogging(signalR.LogLevel.Debug)
         .build()
     }
-  },
-  components:
-  {
-    WelcomeItem,
-    TilesUsedComponent
   },
   methods: {
     async call() {
