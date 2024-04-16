@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TheLastCandle.Models.Components;
 using TheLastCandle.Services.Providers.Interfaces;
 
 namespace TheLastCandle.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -33,10 +32,16 @@ namespace TheLastCandle.Controllers
             }
         }
 
+        [HttpGet]
+        public List<User> GetAllUsers()
+        {
+            return _userProvider.GetAllUsers();
+        }
+
         [HttpPost]
         public void AddUser(string name, string email)
         {
-            _userProvider.AddUser(new Player
+            _userProvider.AddUser(new User
             {
                 id = Guid.Empty,
                 name = name,

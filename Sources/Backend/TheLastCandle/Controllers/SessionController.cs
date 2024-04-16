@@ -13,12 +13,16 @@ namespace TheLastCandle.Controllers
     {
         private readonly ILogger<SessionController> _logger;
         private readonly ISessionProvider _sessionProvider;
+        private readonly IPlayerProvider _playerProvider;
+        private readonly IUserProvider _userProvider;
         private readonly SessionManager _sessionManager;
         public SessionController(ILogger<SessionController> logger,
-            ISessionProvider sessionProvider, SessionManager manager)
+            ISessionProvider sessionProvider, IUserProvider userProvider, IPlayerProvider playerProvider, SessionManager manager)
         {
             _logger = logger;
             _sessionProvider = sessionProvider;
+            _playerProvider = playerProvider;
+            _userProvider = userProvider;
             _sessionManager = manager;
         }
 
@@ -45,6 +49,42 @@ namespace TheLastCandle.Controllers
                 Name = descroption,
                 State = Session.Status.NotStarted
             });
+        }
+
+        [HttpPost]
+        public bool InitializeSession(Guid id, [FromBody] SessionSetupParams sessionSetupParams, [FromServices] IBoardProvider boardProvider)
+        {
+            var session = _sessionProvider.GetSession(id);
+            var hostUser = _userProvider.GetUser("test@gmail.com");
+            //User.Claims...
+
+            var initializer = new SessionInitializer(_playerProvider, boardProvider);
+            initializer.CurrentSession = session;
+
+            session.setupParams = sessionSetupParams;
+
+            initializer.Initialize(hostUser);
+
+            _sessionProvider.AddOrUpdate(initializer.CurrentSession);
+
+            return true;
+        }
+
+        [HttpPost]
+        public bool AddPlayerToSession(Guid id, [FromServices] IBoardProvider boardProvider)
+        {
+            var session = _sessionProvider.GetSession(id);
+            var hostUser = _userProvider.GetUser("1test@gmail.com");
+            //User.Claims...
+
+            var initializer = new SessionInitializer(_playerProvider, boardProvider);
+            initializer.CurrentSession = session;
+
+            var res = initializer.AddPlayerToSession(hostUser);
+
+            _sessionProvider.AddOrUpdate(initializer.CurrentSession);
+
+            return res;
         }
 
         [HttpGet]

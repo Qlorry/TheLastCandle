@@ -21,7 +21,9 @@ namespace TheLastCandle.Models
         public List<Passage> nextPassages { get; set; }
         public List<Passage> usedPassages { get; set; }
 
-        public PlayerState currentGameState {  get; set; }
+        public PlayerState currentGameState { get; set; }
+
+        public int availableKeys { get; set; } = 0;
 
         public readonly int width = 6;
         public readonly int height = 6;
@@ -88,6 +90,7 @@ namespace TheLastCandle.Models
             newData.usedPassages = [.. usedPassages];
             newData.nextPassages = [.. nextPassages];
             newData.currentGameState = currentGameState;
+            newData.availableKeys = availableKeys;
             return newData;
         }
     }

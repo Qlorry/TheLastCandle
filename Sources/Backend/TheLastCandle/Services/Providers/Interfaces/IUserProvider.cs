@@ -2,14 +2,15 @@
 
 namespace TheLastCandle.Services.Providers.Interfaces
 {
+    // rewrite for new struct 
     public interface IUserProvider
     {
-        List<Player> GetAllUsers();
-        Player GetUser(Guid guid);
-        Player GetUser(string userEmail);
-        IEnumerable<Player> GetUsers(IEnumerable<Guid> userGuids);
+        List<User> GetAllUsers();
+        User GetUser(Guid guid);
+        User GetUser(string userEmail);
+        IEnumerable<User> GetUsers(IEnumerable<Guid> userGuids);
 
-        Guid AddUser(Player newUser);
+        Guid AddUser(User newUser);
 
         public class AlreadyExistsException : Exception
         {

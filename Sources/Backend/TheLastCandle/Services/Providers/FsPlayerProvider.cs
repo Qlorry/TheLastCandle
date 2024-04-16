@@ -2,21 +2,22 @@
 using TheLastCandle.Models.Components;
 using TheLastCandle.Services.Providers.Interfaces;
 
+
 namespace TheLastCandle.Services.Providers
 {
-    public class FsUserProvider : IUserProvider
+    public class FsPlayerProvider : IPlayerProvider
     {
-        private readonly string _sessionsFile = "storage/user_storage.json";
-        private List<User> _users = new List<User>();
+        private readonly string _sessionsFile = "storage/player_storage.json";
+        private List<Player> _players = new List<Player>();
 
         private void Update()
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("Updating User list");
+                System.Diagnostics.Debug.WriteLine("Updating Player list");
                 using (FileStream fileStream = new FileStream(_sessionsFile, new FileStreamOptions { Mode = FileMode.Open, Access = FileAccess.Read }))
                 {
-                    _users = JsonSerializer.Deserialize<List<User>>(fileStream);
+                    _players = JsonSerializer.Deserialize<List<Player>>(fileStream);
                 }
             }
             catch (JsonException ex)
@@ -37,7 +38,7 @@ namespace TheLastCandle.Services.Providers
                 System.Diagnostics.Debug.WriteLine("Saving sessions list");
                 using (FileStream fileStream = new FileStream(_sessionsFile, new FileStreamOptions { Mode = FileMode.OpenOrCreate, Access = FileAccess.Write }))
                 {
-                    var str = JsonSerializer.Serialize(_users).ToString();
+                    var str = JsonSerializer.Serialize(_players).ToString();
                     StreamWriter writer = new StreamWriter(fileStream);
                     writer.Write(str);
                     writer.Close();
@@ -50,51 +51,37 @@ namespace TheLastCandle.Services.Providers
             }
         }
 
-        public List<User> GetAllUsers()
+        public List<Player> GetAllPlayers()
         {
             Update();
-            return _users;
+            return _players;
         }
 
-        public User GetUser(Guid guid)
+        public Player GetPlayer(Guid guid)
         {
             Update();
-            var pl = _users.Find(obj => obj.id == guid);
+            var pl = _players.Find(obj => obj.id == guid);
             return (pl ?? throw new KeyNotFoundException()).Copy();
         }
 
-        public IEnumerable<User> GetUsers(IEnumerable<Guid> userGuids)
+        public IEnumerable<Player> GetPlayers(IEnumerable<Guid> playerGuids)
         {
             Update();
-            List<User> users = new List<User>();
-            foreach (var userGuid in userGuids)
+            List<Player> players = new List<Player>();
+            foreach (var playerGuid in playerGuids)
             {
-                var pl = _users.Find(obj => obj.id == userGuid);
-                users.Add((pl ?? throw new KeyNotFoundException()).Copy());
+                var pl = _players.Find(obj => obj.id == playerGuid);
+                players.Add((pl ?? throw new KeyNotFoundException()).Copy());
             }
-            return users;
+            return players;
         }
 
-        public Guid AddUser(User newUser)
+        public Guid AddPlayer(Player newPlayer)
         {
-            try
-            {
-                var _ = GetUser(newUser.email);
-                throw new IUserProvider.AlreadyExistsException("User already exists!");
-            }
-            catch (KeyNotFoundException) { }
-
-            newUser.id = Guid.NewGuid();
-            _users.Add(newUser);
+            newPlayer.id = Guid.NewGuid();
+            _players.Add(newPlayer);
             Write();
-            return newUser.id;
-        }
-
-        public User GetUser(string userEmail)
-        {
-            Update();
-            var pl = _users.Find(obj => string.Equals(obj.email, userEmail, StringComparison.InvariantCultureIgnoreCase));
-            return (pl ?? throw new KeyNotFoundException()).Copy();
+            return newPlayer.id;
         }
     }
 }

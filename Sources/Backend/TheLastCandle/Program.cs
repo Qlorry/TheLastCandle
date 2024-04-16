@@ -71,6 +71,7 @@ builder.Services.Configure<PresenterConfig>(section);
 
 builder.Services.AddSingleton<ISessionProvider, FsSessionProvider>();
 builder.Services.AddSingleton<IUserProvider, FsUserProvider>();
+builder.Services.AddSingleton<IPlayerProvider, FsPlayerProvider>();
 builder.Services.AddSingleton<IBoardProvider, FsBoardProvider>();
 
 builder.Services.AddSingleton<SessionManager, SessionManager>();
